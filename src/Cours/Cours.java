@@ -14,7 +14,7 @@ private final Groupe groupe;
     private final TypeCourse type;
     private final Batiment bat;
     private final Campus campus;
-    private final Course matiere;
+    public final Course matiere;
 
 
     public Cours(Campus campus, Batiment bat, int room, TypeCourse type, Course matiere, Groupe groupe) {
