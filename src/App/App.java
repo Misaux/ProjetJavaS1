@@ -11,6 +11,7 @@ public class App extends JFrame {
     private JPanel panel1;
     private JButton buttonMsgButton;
     private JTextField textField1;
+    private JButton button1;
     private JCheckBox checkBox1;
 
 
