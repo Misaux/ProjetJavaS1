@@ -10,7 +10,7 @@ public class Cours {
 
     private final int room;
 
-private final Groupe groupe;
+    private final Groupe groupe;
     private final TypeCourse type;
     private final Batiment bat;
     private final Campus campus;
