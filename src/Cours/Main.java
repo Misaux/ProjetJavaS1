@@ -1,16 +1,20 @@
 package Cours;
-import SQL.*;
+import InterfaceGraphique.Affichage;
+/*import SQL;
 
-import java.sql.SQLException;
+import java.sql.SQLException;*/
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) /*throws SQLException */{
 
         System.out.println("test ines");
 
-        TestConnection testCo = new TestConnection();
+       /* TestConnection testCo = new TestConnection();
 
-        //testCo.ajouterDonnee("ines");
+        testCo.addRow();*/
+
+        Affichage test = new Affichage();
+        test.show();
 
 
 

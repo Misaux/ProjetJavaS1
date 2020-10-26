@@ -13,7 +13,7 @@ public class Affichage {
     private JButton bouton5 = new JButton("Vendredi");
     private JButton bouton6 = new JButton("Samedi");
     private JButton bouton7 = new JButton("Dimanche");
-    private JTextField textField = new JTextField("Text dans le bouton");
+    private JTextField textField = new JTextField("Rechercher");
 
     public Affichage() {
         fenetre.setSize(1062, 600);
