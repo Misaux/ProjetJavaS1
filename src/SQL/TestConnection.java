@@ -2,7 +2,7 @@ package SQL;
 
 //STEP 1. Import required packages
 
-import java.sql.*;
+/*import java.sql.*;
 
 public class TestConnection {
     // JDBC driver name and database URL
@@ -298,3 +298,4 @@ public class TestConnection {
         System.out.println("- - - - - - - - - - - - - - - - - - -\n");
     }
 }
+*/
