@@ -7,7 +7,7 @@ public class Course {
 
     public Course(int ID, String name) {
         this.ID = ID;
-        this.name = name;
+        this.name = "DS de " + name;
     }
 
     public int getID() {
@@ -26,4 +26,11 @@ public class Course {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "ID=" + ID +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

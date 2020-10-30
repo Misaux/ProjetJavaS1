@@ -3,7 +3,6 @@ package ClassesBDD;
 public class GroupPromo {
     private int ID;
     private String name;
-
     private int promotion;
 
     public GroupPromo(int ID, String name, Promotion promo) {
