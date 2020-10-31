@@ -5,6 +5,11 @@ public class Course {
     private String name;
 
 
+    public Course() {
+        this.ID = 0;
+        this.name = " ";
+    }
+
     public Course(int ID, String name) {
         this.ID = ID;
         this.name = "DS de " + name;
@@ -17,6 +22,7 @@ public class Course {
     public String getName() {
         return name;
     }
+
 
     public void setID(int ID) {
         this.ID = ID;
