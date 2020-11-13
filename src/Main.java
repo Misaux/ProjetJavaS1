@@ -1,7 +1,6 @@
-import InterfaceGraphique.*;
 import Models.*;
-import Models.DAO.GroupPromoDAO;
-import Models.DAO.SiteDAO;
+
+import DAO.SiteDAO;
 
 import java.sql.SQLException;
 
@@ -28,14 +27,14 @@ public class Main {
         aff.afficherSmallFen();
         aff.showSmallFen();*/
 
-        String url = "jdbc:mysql://localhost:3306/projetjava?serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost:3306/projetloupe?serverTimezone=UTC";
         String username = "root";
         String password = "";
 
 
         Site site= new Site();
 
-       site.setName(" Campus INSEEC U Lyon");
+       site.setName(" Campus INSEEC U Paris");
 
         SiteDAO siteDAO= new SiteDAO(url,username,password);
 
