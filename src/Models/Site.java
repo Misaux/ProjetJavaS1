@@ -9,6 +9,9 @@ public class Site {
         this.name = name;
     }
 
+    public Site() {
+    }
+
     public Long getID() {
         return ID;
     }
