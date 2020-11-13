@@ -1,5 +1,5 @@
 
-package User;
+package Models;
 
 public abstract class User { //USER (ID, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME, PERMISSION)
 
@@ -22,7 +22,6 @@ public abstract class User { //USER (ID, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME,
         this.last_name = last_name;
         this.permission = permission;
         this.m_ID=Id;
-
 
     }
 

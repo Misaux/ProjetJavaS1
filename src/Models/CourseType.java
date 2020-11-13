@@ -1,4 +1,4 @@
-package ClassesBDD;
+package Models;
 
 public class CourseType {
     private int ID;

@@ -1,4 +1,4 @@
-package ClassesBDD;
+package Models;
 
 public class Room {
     private int ID;

@@ -1,5 +1,4 @@
-package User;
-import ClassesBDD.GroupPromo;
+package Models;
 
 //(#ID_USER, NUMBER, #ID_GROUP …)
 public class Student extends User {

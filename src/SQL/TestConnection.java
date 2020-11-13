@@ -2,12 +2,12 @@ package SQL;
 
 //STEP 1. Import required packages
 
-/*import java.sql.*;
+import java.sql.*;
 
 public class TestConnection {
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/projetjava?serverTimezone=UTC";
+    static final String DB_URL = "jdbc:mysql://localhost/projets1?serverTimezone=UTC";
 
     //  Database credentials
     static final String USER = "root";
@@ -254,7 +254,7 @@ public class TestConnection {
             //STEP 4: Execute a query
             stmt = conn.createStatement();
 
-            String sql1 = "SELECT Last_Name FROM profs WHERE (Last_Name) = '" + reserach + "'";
+            String sql1 = "SELECT last_name FROM user WHERE (last_name) = '" + reserach + "'";
 
             ResultSet rs = stmt.executeQuery(sql1);
             //STEP 5: Extract data from result set
@@ -298,4 +298,3 @@ public class TestConnection {
         System.out.println("- - - - - - - - - - - - - - - - - - -\n");
     }
 }
-*/

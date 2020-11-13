@@ -1,7 +1,5 @@
-package User;
+package Models;
 
-
-import ClassesBDD.Course;
 
 import java.util.ArrayList;
 import java.util.List;

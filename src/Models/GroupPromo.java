@@ -1,12 +1,14 @@
-package ClassesBDD;
+package Models;
 
-public class Site {
+public class GroupPromo {
     private int ID;
     private String name;
+    private int promotion;
 
-    public Site(int ID, String name) {
+    public GroupPromo(int ID, String name, Promotion promo) {
         this.ID = ID;
         this.name = name;
+        this.promotion = promo.getID();
     }
 
     public int getID() {
@@ -23,5 +25,13 @@ public class Site {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(int promotion) {
+        this.promotion = promotion;
     }
 }
