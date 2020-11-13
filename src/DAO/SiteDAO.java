@@ -1,4 +1,4 @@
-package Models.DAO;
+package DAO;
 
 import Models.*;
 
@@ -44,11 +44,6 @@ public class SiteDAO {
 
 
             System.out.println(site.getName() + " saved into the database");
-
-
-
-
-
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,32 +1,12 @@
-import InterfaceGraphique.*;
+import DAO.CourseDAO;
+import DAO.PromotionDAO;
 import Models.*;
-import Models.DAO.GroupPromoDAO;
-import Models.DAO.SiteDAO;
+import DAO.SiteDAO;
 
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-
-        /*Course course = new Course();
-        Course course1 = new Course();
-        Course course2 = new Course();
-        Course course3 = new Course();
-        Teacher teacher = new Teacher(10, "novnrop","ohufirgivgir","jean ", "jean", User.Permission.ENSEIGNANT);
-        teacher.addCourse(course);
-        teacher.addCourse(course1);
-        teacher.addCourse(course2);
-        teacher.addCourse(course3);
-        System.out.println(teacher.returnIdCourse());
-        TestConnection testCo = new TestConnection();
-        testCo.cleanDB();
-        testCo.addRow("toto", "burdin");
-        testCo.searchName("Parraud");
-        Affichage aff = new Affichage();
-        aff.showFenetrePrincipale();
-        aff.afficherFen();
-        aff.afficherSmallFen();
-        aff.showSmallFen();*/
 
         String url = "jdbc:mysql://localhost:3306/projetjava?serverTimezone=UTC";
         String username = "root";
@@ -34,14 +14,22 @@ public class Main {
 
 
         Site site= new Site();
+        Course course = new Course();
+        Promotion promotion = new Promotion();
 
-       site.setName(" Campus INSEEC U Lyon");
+        course.setName(" Informatique ");
+        site.setName(" Campus INSEEC U Lyon");
+        promotion.setName(" Promotion 2023");
 
         SiteDAO siteDAO= new SiteDAO(url,username,password);
+        CourseDAO courseDAO = new CourseDAO(url,username,password);
+        PromotionDAO promotionDAO = new PromotionDAO(url,username,password);
 
-        siteDAO.saveSite(site);
+       /* courseDAO.saveCourse(course);
 
+        siteDAO.saveSite(site);*/
 
+        promotionDAO.savePromotion(promotion);
 
 
 
