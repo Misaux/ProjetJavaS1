@@ -1,21 +1,21 @@
 package Models;
 
 public class Room {
-    private int ID;
+    private Long ID;
     private int capacity;
-    private int Id_site;
+    private Long Id_site;
 
-    public Room(int ID, int capacity, Site site) {
+    public Room(Long ID, int capacity, Site site) {
         this.ID = ID;
         this.capacity = capacity;
         this.Id_site = site.getID();
     }
 
-    public int getID() {
+    public Long getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 

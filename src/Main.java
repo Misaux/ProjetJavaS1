@@ -13,11 +13,11 @@ public class Main {
         testCo.searchName("Parraud");*/
 
 
-        Affichage aff = new Affichage();
+        /*Affichage aff = new Affichage();
         aff.showFenetrePrincipale();
         aff.afficherFen();
         aff.afficherSmallFen();
-        aff.showSmallFen();
+        aff.showSmallFen();*/
 
 
 

@@ -1,19 +1,19 @@
 package Models;
 
 public class Promotion {
-    private int ID;
+    private Long ID;
     private String name;
 
-    public Promotion(int ID, String name) {
+    public Promotion(Long ID, String name) {
         this.ID = ID;
         this.name = name;
     }
 
-    public int getID() {
+    public Long getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 

@@ -1,21 +1,19 @@
 package Models;
 
 public class Course {
-    private int ID;
+    private Long ID;
     private String name;
 
 
     public Course() {
-        this.ID = 0;
-        this.name = " ";
     }
 
-    public Course(int ID, String name) {
+    public Course(Long ID, String name) {
         this.ID = ID;
         this.name = "DS de " + name;
     }
 
-    public int getID() {
+    public Long getID() {
         return ID;
     }
 
@@ -24,7 +22,7 @@ public class Course {
     }
 
 
-    public void setID(int ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 

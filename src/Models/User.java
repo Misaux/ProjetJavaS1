@@ -9,25 +9,25 @@ public abstract class User { //USER (ID, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME,
     private final String password;
     private final String first_name;
     private final String last_name;
-    private  final int m_ID;
+    private  final Long ID;
 
     private final Permission permission;
 
 
 
-    public User(int Id,String email,String password,String first_name,String last_name,Permission permission){
+    public User(Long Id,String email,String password,String first_name,String last_name,Permission permission){
         this.email = email;
         this.password = password;
         this.first_name = first_name;
         this.last_name = last_name;
         this.permission = permission;
-        this.m_ID=Id;
+        this.ID=Id;
 
     }
 
-    public int getId(){
+    public Long getId(){
 
-        return m_ID;
+        return ID;
 
     }
 
@@ -36,7 +36,7 @@ public abstract class User { //USER (ID, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME,
     @Override
     public String toString() {
         return "User{" +
-                "Id='" + m_ID + '\'' +
+                "Id='" + ID + '\'' +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", first_name='" + first_name + '\'' +

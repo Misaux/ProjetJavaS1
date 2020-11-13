@@ -5,15 +5,15 @@ package Models;
 import java.time.LocalDateTime;
 
 public class Session {
-    private int ID;
+    private long ID;
     private int week;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalDateTime date;
-    private int ID_course;
-    private int ID_type;
+    private Long ID_course;
+    private Long ID_type;
 
-    public Session(int ID, int week, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime date, Course course, CourseType ct, State state) {
+    public Session(Long ID, int week, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime date, Course course, CourseType ct, State state) {
         this.ID = ID;
         this.week = week;
         this.startTime = startTime;
@@ -27,11 +27,11 @@ public class Session {
     private enum State {PROGRESS, DONE, CANCELLED}
     public State state;
 
-    public int getID() {
+    public Long getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 

@@ -1,21 +1,21 @@
 package Models;
 
 public class GroupPromo {
-    private int ID;
+    private Long ID;
     private String name;
-    private int promotion;
+    private Long promotion;
 
-    public GroupPromo(int ID, String name, Promotion promo) {
+    public GroupPromo(Long ID, String name, Promotion promo) {
         this.ID = ID;
         this.name = name;
         this.promotion = promo.getID();
     }
 
-    public int getID() {
+    public Long getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 
@@ -27,11 +27,11 @@ public class GroupPromo {
         this.name = name;
     }
 
-    public int getPromotion() {
+    public Long getPromotion() {
         return promotion;
     }
 
-    public void setPromotion(int promotion) {
+    public void setPromotion(Long promotion) {
         this.promotion = promotion;
     }
 }
