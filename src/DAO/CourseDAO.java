@@ -9,54 +9,62 @@ public class CourseDAO {
     private String url;
     private String username;
     private String password;
+    private Connection connection;
+    private PreparedStatement preparedStatement;
 
     public CourseDAO(String url, String username, String password){
         this.url = url;
         this.username = username;
         this.password = password;
+
     }
 
     public void saveCourse(Course course){
         try{
-            Connection connection = DriverManager.getConnection(url,username,password);
-
+            this.connection= DriverManager.getConnection(url,username,password);
             if(course.getID()!=null){
-                PreparedStatement statement = connection.prepareStatement
+                this.preparedStatement = this.connection.prepareStatement
                         ("update course set name = ? where id = ?;");
-                statement.setString(1, course.getName());
-                statement.setLong(2, course.getID());
-                statement.execute();
+                this.preparedStatement.setString(1, course.getName());
+                this.preparedStatement.setLong(2, course.getID());
+                this.preparedStatement.execute();
             }else{
-                PreparedStatement statement = connection.prepareStatement
+               this.preparedStatement = this.connection.prepareStatement
                         ("insert into course (name) values (?);");
-                statement.setString(1, course.getName());
-                statement.execute();
+               this.preparedStatement.setString(1, course.getName());
+               this.preparedStatement.execute();
             }
 
             System.out.println(course.getName() + "saved into the database");
+            this.preparedStatement.close();
+            this.connection.close();
 
         } catch (SQLException e){
             e.printStackTrace();
             System.out.println("unable to save the product");
         }
+
     }
 
     public Course getCourseById(Long id){
         try{
-            Connection connection = DriverManager.getConnection(url,username,password);
-            PreparedStatement statement = connection.prepareStatement
+            this.connection= DriverManager.getConnection(url,username,password);
+            this.preparedStatement = this.connection.prepareStatement
                     ("select * from course where id = ?");
-            statement.setLong(1, id);
+            this.preparedStatement.setLong(1, id);
 
-            ResultSet resultset = statement.executeQuery();
+            ResultSet resultSet = this.preparedStatement.executeQuery();
 
             Course course = new Course();
 
-            while(resultset.next()){
-                course.setID(resultset.getLong("id"));
-                course.setName(resultset.getString("name"));
+            while(resultSet.next()){
+                course.setID(resultSet.getLong("id"));
+                course.setName(resultSet.getString("name"));
             }
+            this.preparedStatement.close();
+            this.connection.close();
             return course;
+
         } catch(SQLException e){
             e.printStackTrace();
             return null;
