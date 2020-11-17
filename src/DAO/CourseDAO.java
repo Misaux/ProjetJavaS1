@@ -34,11 +34,13 @@ public class CourseDAO {
             }
 
             System.out.println(course.getName() + "saved into the database");
+            connection.close();
 
         } catch (SQLException e){
             e.printStackTrace();
             System.out.println("unable to save the product");
         }
+
     }
 
     public Course getCourseById(Long id){
@@ -56,7 +58,9 @@ public class CourseDAO {
                 course.setID(resultset.getLong("id"));
                 course.setName(resultset.getString("name"));
             }
+            connection.close();
             return course;
+
         } catch(SQLException e){
             e.printStackTrace();
             return null;

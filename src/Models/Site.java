@@ -27,4 +27,12 @@ public class Site {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Site{" +
+                "ID=" + ID +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

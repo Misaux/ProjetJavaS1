@@ -4,8 +4,8 @@ public class Promotion {
     private Long ID;
     private String name;
 
-    public Promotion(Long ID, String name) {
-        this.ID = ID;
+    public Promotion(Long id, String name) {
+        this.ID = id;
         this.name = name;
     }
 
@@ -26,5 +26,13 @@ public class Promotion {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Promotion{" +
+                "ID=" + ID +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
