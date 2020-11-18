@@ -9,7 +9,9 @@ public class CourseDAO {
     private String url;
     private String username;
     private String password;
+
     private Connection connection;
+    private ResultSet resultSet;
     private PreparedStatement preparedStatement;
 
     public CourseDAO(String url, String username, String password){

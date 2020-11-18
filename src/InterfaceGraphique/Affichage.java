@@ -3,6 +3,8 @@ package InterfaceGraphique;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -13,10 +15,19 @@ public class Affichage extends Component {
     private int mPosX = MouseInfo.getPointerInfo().getLocation().x;
     private int mPosY = MouseInfo.getPointerInfo().getLocation().y;
 
+    private JButton[][] tabButton;
+
 
     //objets menu pour afficher les cours dans le planning
     private final JPopupMenu popupMenu = new JPopupMenu();
 
+
+    JComboBox comboBox;
+    JTextField textField;
+    JButton button;
+    JLabel label;
+
+    JButton buttonReset;
 
 
     public static final Color meduimpurple = new Color(147, 112, 219);
@@ -36,8 +47,7 @@ public class Affichage extends Component {
     private List<JPanel> panels = new ArrayList<>(8);
 
 
-
-//liste des colonnes avec les boutons pour interragir
+    //liste des colonnes avec les boutons pour interragir
     private List<JButton> heures = new ArrayList<>();
     private List<JButton> lundi = new ArrayList<>();
     private List<JButton> mardi = new ArrayList<>();
@@ -49,9 +59,11 @@ public class Affichage extends Component {
 
 
     public Affichage() {
-            }
+    }
 
     public void afficherFen() {
+
+
         //Definition de la fenetre++
         fenetre.setSize((800 * 16 / 9), 800);
         fenetre.setContentPane(pan);
@@ -88,9 +100,11 @@ public class Affichage extends Component {
         }
         //Exception pour dimanche avec seulement un gros bouton
         dimanche.setText("Dimanche, école fermée");
-         JLabel test = new JLabel();
 
 
+        JLabel labelCours = new JLabel("test ajout cours");
+
+        JLabel test = new JLabel();
         for (JButton jButton : lundi) {
             jButton.addMouseListener(new MouseListener() {
                 @Override
@@ -137,8 +151,11 @@ public class Affichage extends Component {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     popupMenu.add(test);
+                    popupMenu.add(labelCours);
+                    labelCours.setPreferredSize(new Dimension(300, 50));
                     test.setPreferredSize(new Dimension(200, 60));
                     test.setText("Essai d'ajout d'un popup");
+
 
                     popupMenu.show(e.getComponent(), e.getX(), e.getY());
                     popupMenu.isVisible();
@@ -342,7 +359,6 @@ public class Affichage extends Component {
         //Ajout des boutons dans les colonnes
         for (int j = 0; j < 11; j++) {
             panels.get(0).add(heures.get(j));
-
             heures.get(j).setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
             panels.get(1).add(lundi.get(j));
@@ -379,12 +395,18 @@ public class Affichage extends Component {
         heures.get(9).setText("17h45-19h15");
         heures.get(10).setText("19h15-20h45");
 
+        addColor();
+
+
+    }
+
+    public void addColor() {
         //Ajout des couleurs sur la colonne des heures
         for (int i = 0; i < 11; i++) {
             heures.get(i).setBackground(new Color(221, 160, 221));
+
         }
-
-
+        //remplissage des colonnes pour les couleurs
         for (int i = 0; i < 11; i++) {
 
             if (i != 2 || i != 5 || i != 8) {
@@ -397,7 +419,6 @@ public class Affichage extends Component {
             }
 
         }
-
         //Ajout des pauses
         heures.get(2).setText("PAUSE 15min");
         heures.get(2).setBackground(meduimpurple);
@@ -468,27 +489,64 @@ public class Affichage extends Component {
         samedi.get(8).setText("PAUSE 15min");
         samedi.get(8).setBackground(meduimpurple);
         samedi.get(8).setForeground(Color.white);
-
-
     }
-
 
     public void afficherSmallFen() {
 
-        smallFen.setSize(300, 200);
+        smallFen.setBounds(300, 200, 400, 300);
         smallFen.setContentPane(panSmall);
         smallFen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        smallFen.setLocation(1600, 540);
+        smallFen.setLocation(1000, 540);
+
+        panSmall.setLayout(null);
 
 
-        panSmall.setLayout(new CardLayout());
+        //Ajout de la text box pour saisir les infos
+        textField = new JTextField("");
+        panSmall.add(textField);
+        textField.setBounds(0, 0, 200, 50);
 
-        JMenu menu = new JMenu();
+        //ajout du bouton pour valider
+        button = new JButton("Rechercher");
+        panSmall.add(button);
+        button.setBounds(220, 0, 150, 50);
 
-        panSmall.add(menu);
+        //ajout du listener du bouton
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int i = Integer.parseInt(String.valueOf(comboBox.getSelectedIndex()));
+                int j = Integer.parseInt(textField.getText());
+                lundi.get(i).setBackground(Color.red);
+                lundi.get(j).setBackground(Color.red);
+            }
+        });
 
+        //Ajout d'une combobox
+
+        String[] tab = {"1", "2", "3", "4"};
+        comboBox = new JComboBox(tab);
+        panSmall.add(comboBox);
+        comboBox.setBounds(0, 60, 200, 50);
+
+
+        //ajout du resetr
+        buttonReset = new JButton("Reset");
+        panSmall.add(buttonReset);
+        buttonReset.setBounds(220, 60, 100, 50);
+
+        buttonReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addColor();
+                textField.setText(String.valueOf(comboBox.getSelectedIndex() + 1));
+                label = new JLabel();
+                panSmall.add(label);
+            }
+
+
+        });
     }
-
 
     public void showFenetrePrincipale() {
         pan.setBackground(Color.white);
@@ -500,5 +558,8 @@ public class Affichage extends Component {
         smallFen.setVisible(true);
     }
 
-
+/*
+faudra aajouter une list de prof, d'eleve, pur pouvoir faire un menu defilant qui
+affichera les profs possible et les eleves et quandon clique on affiche
+ */
 }
