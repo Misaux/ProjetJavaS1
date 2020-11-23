@@ -110,7 +110,7 @@ public class UserDAO implements UserDao {
                 this.preparedStatement.setString(4, user.getFirst_name());
                 this.preparedStatement.setString(5, user.getPermission());
                 this.preparedStatement.execute();
-            }
+            } //pour oscar test2
 
 
             System.out.println(" user saved into the database");
