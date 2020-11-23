@@ -2,30 +2,42 @@ package Models;
 
 
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Session {
-    private long ID;
+
+    public enum State {PROGRESS, DONE, CANCELLED}
+
+    public State state;
+    private Long ID;
     private int week;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private LocalDateTime date;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private LocalDate date; // Regarder TP prof pour date !!!!
     private Long ID_course;
     private Long ID_type;
 
-    public Session(Long ID, int week, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime date, Course course, CourseType ct, State state) {
+    public Session(Long ID, int week, String startTime, String endTime, String date, Long course, Long ct, State state) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         this.ID = ID;
         this.week = week;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.date = date;
-        this.ID_course = course.getID();
-        this.ID_type = ct.getID();
+        this.ID_course = course;
+        this.ID_type = ct;
         this.state = state;
+        this.date= LocalDate.parse(date,dateFormatter);
+        this.startTime= LocalTime.parse(startTime,timeFormatter);
+        this.endTime = LocalTime.parse(endTime,timeFormatter);
     }
 
-    private enum State {PROGRESS, DONE, CANCELLED}
-    public State state;
+
+    public Session() {
+    }
 
     public Long getID() {
         return ID;
@@ -43,35 +55,71 @@ public class Session {
         this.week = week;
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
+        public String getStartTime() {
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return startTime.format(timeFormatter);
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+    public String getEndTime() {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return endTime.format(timeFormatter);
     }
 
-    public LocalDateTime getEndTime() {
-        return endTime;
+    public String getDate() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return date.format(dateFormatter);
     }
 
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+    public void setStartTime(String startTime) {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        this.startTime = LocalTime.parse(startTime,timeFormatter);
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public void setEndTime(String endTime) {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        this.endTime = LocalTime.parse(endTime,timeFormatter);
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setDate(String date) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.date = LocalDate.parse(date,dateFormatter);
     }
 
-    public State getState() {
-        return state;
+    public String getState() {
+        return state.name();
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setState(String state) {
+        this.state = State.valueOf(state);
+    }
+
+    public Long getID_course() {
+        return ID_course;
+    }
+
+    public void setID_course(Long ID_course) {
+        this.ID_course = ID_course;
+    }
+
+    public Long getID_type() {
+        return ID_type;
+    }
+
+    public void setID_type(Long ID_type) {
+        this.ID_type = ID_type;
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "state=" + state +
+                ", ID=" + ID +
+                ", week=" + week +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", date=" + date +
+                ", ID_course=" + ID_course +
+                ", ID_type=" + ID_type +
+                '}';
     }
 }
