@@ -4,7 +4,7 @@ import Models.User;
 
 import java.util.List;
 
-public interface UserDao {
+public interface UserDao {//test pour commit
 
     List<User> getAllUser();
     void createUser(User user);
