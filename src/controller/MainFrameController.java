@@ -31,7 +31,7 @@ public class MainFrameController {
     }
 
     public void getPromotion(Long id){
-        this.promotion.setPromo(promotionDao.getPromotionByID(id));
+        this.promotion.setPromotion(promotionDao.getPromotionByID(id));
     }
 
     public Session  getSession(){

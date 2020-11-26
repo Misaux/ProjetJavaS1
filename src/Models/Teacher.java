@@ -8,20 +8,50 @@ import java.util.List;
 public class Teacher extends User {
 
 
-    private final Long IdTeacher;
-    private List<Long> idCourse = new ArrayList<>();
+    private  Long idUser;
+    private ArrayList<Long> idAllCourse = new ArrayList<>();
+    private Long idCourse;
 
-    public Teacher(Long Id, String email, String password, String first_name, String last_name, Permission permission) {
+    public Teacher(Long Id, String email, String password, String first_name, String last_name, Permission permission, Long idCourse) {
         super(Id, email, password, first_name, last_name, permission);
-        this.IdTeacher = getId();
+        this.idUser = getID();
+        this.idCourse= idCourse;
     }
 
-    public void addCourse(Course cours){
-        idCourse.add(cours.getID());
+    public Teacher() {
     }
 
-    public List<Long> returnIdCourse(){
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
+    public ArrayList<Long> getIdAllCourse() {
+        return idAllCourse;
+    }
+
+    public void setIdAllCourse(ArrayList<Long> idAllCourse) {
+        this.idAllCourse = idAllCourse;
+    }
+
+    public Long getIdCourse() {
         return idCourse;
     }
 
+    public void setIdCourse(Long idCourse) {
+        this.idCourse = idCourse;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                super.toString() +
+                "idUser=" + idUser +
+                ", idAllCourse=" + idAllCourse +
+                ", idCourse=" + idCourse +
+                '}';
+    }
 }

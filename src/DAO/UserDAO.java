@@ -12,9 +12,10 @@ import java.util.List;
 
 public class UserDAO implements UserDao {
 
-    private final String url;
-    private final String username;
-    private final String password;
+    private String url;
+    private String username;
+    private String password;
+    private User user;
 
     private Connection connection;
     private PreparedStatement preparedStatement;
@@ -69,28 +70,30 @@ public class UserDAO implements UserDao {
     public List<User> getAllUser() {
         List<User> list = new ArrayList<>();
         try{
-            connection = DriverManager.getConnection(url, username,password);
-            preparedStatement = connection.prepareStatement("SELECT * from user");
-            resultSet = preparedStatement.executeQuery();
+            this.connection = DriverManager.getConnection(url, username,password);
+            this.preparedStatement = connection.prepareStatement("SELECT * from user");
+            this.resultSet = this.preparedStatement.executeQuery();
 
-            while(resultSet.next()){
-                String emailUser = resultSet.getString("email");
-                String passwordUser = resultSet.getString("password");
-                String lastNameUser = resultSet.getString("last_name");
-                String firstNameUser = resultSet.getString("first_name");
-                String permissionUser = resultSet.getString("permission");
-                Long idUser = resultSet.getLong("id");
+            while(this.resultSet.next()){
+                String emailUser = this.resultSet.getString("email");
+                String passwordUser =this.resultSet.getString("password");
+                String lastNameUser = this.resultSet.getString("last_name");
+                String firstNameUser =this.resultSet.getString("first_name");
+                String permissionUser = this.resultSet.getString("permission");
+                Long idUser = this.resultSet.getLong("id");
                 list.add(new User(idUser, emailUser, passwordUser, firstNameUser, lastNameUser,User.Permission.valueOf(permissionUser)));
             }
 
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
+            this.resultSet.close();
+            this.preparedStatement.close();
+            this.connection.close();
+            return list;
+
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        list.toString();
-        return list;
+
     }
 
     @Override
@@ -192,13 +195,13 @@ public class UserDAO implements UserDao {
     public User findUserByLastName(String lastName) {
         User user = new User();
         try{
-            connection = DriverManager.getConnection(url, username, password);
-            preparedStatement = connection.prepareStatement("SELECT * from user where (last_name) = ?");
+            this.connection = DriverManager.getConnection(url, username, password);
+            this.preparedStatement = this.connection.prepareStatement("SELECT * from user where (last_name) = ?");
             this.preparedStatement.setString(1, lastName);
             this.resultSet = this.preparedStatement.executeQuery();
 
             try {
-                resultSet.next();
+                this.resultSet.next();
                 user.setLast_name(this.resultSet.getString("last_name"));
                 user.setID(this.resultSet.getLong("id"));
                 System.out.println(user.toString());
@@ -207,9 +210,9 @@ public class UserDAO implements UserDao {
                 System.out.println("ERREUR, user introuvable");
             }
 
-            preparedStatement.close();
-            resultSet.close();
-            connection.close();
+            this.preparedStatement.close();
+            this.resultSet.close();
+            this.connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -221,30 +224,30 @@ public class UserDAO implements UserDao {
     public User findUserByID(Long id) {
         try{
             User user = new User();
-            connection =DriverManager.getConnection(url, username,password);
+            this.connection =DriverManager.getConnection(url, username,password);
 
-            preparedStatement= connection.prepareStatement("SELECT * from user where (id) = ?");
-            preparedStatement.setLong(1, id);
+            this.preparedStatement= this.connection.prepareStatement("SELECT * from user where (id) = ?");
+            this.preparedStatement.setLong(1, id);
 
-            resultSet = preparedStatement.executeQuery();
+            this.resultSet = this.preparedStatement.executeQuery();
 
             try{
-                resultSet.next();
-                user.setID(resultSet.getLong("id"));
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
-                user.setLast_name(resultSet.getString("last_name"));
-                user.setFirst_name(resultSet.getString("first_name"));
-                user.setPermission(resultSet.getString("permission"));
+                this.resultSet.next();
+                user.setID(this.resultSet.getLong("id"));
+                user.setEmail(this.resultSet.getString("email"));
+                user.setPassword(this.resultSet.getString("password"));
+                user.setLast_name(this.resultSet.getString("last_name"));
+                user.setFirst_name(this.resultSet.getString("first_name"));
+                user.setPermission(this.resultSet.getString("permission"));
 
                 System.out.println(user.toString());
             } catch (SQLException throwables) {
                 System.out.println("Site introuvable dans la BDD");
             }
 
-            preparedStatement.close();
-            resultSet.close();
-            connection.close();
+            this.preparedStatement.close();
+            this.resultSet.close();
+            this.connection.close();
 
             return user;
 
@@ -258,21 +261,78 @@ public class UserDAO implements UserDao {
     @Override
     public void deleteUser(User user) {
         try{
-            connection = DriverManager.getConnection(url, username, password);
+            this.connection = DriverManager.getConnection(url, username, password);
 
-            preparedStatement = connection.prepareStatement("DELETE from user where (id) = ? ");
-            preparedStatement.setLong(1, user.getID());
+            this.preparedStatement = this.connection.prepareStatement("DELETE from user where (id) = ? ");
+            this.preparedStatement.setLong(1, user.getID());
 
             this.preparedStatement.execute();
             System.out.println("L'user a bien été supprimée.");
 
-            preparedStatement.close();
-            connection.close();
+            this.preparedStatement.close();
+            this.connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    public String getUserName(String connexion, String passwordEmail) {
+        try {
 
+            this.connection = DriverManager.getConnection(url, username, password);
+
+            this.preparedStatement =  this.connection.prepareStatement("SELECT * from user where email = ? and password = ?");
+            this.preparedStatement.setString(1, connexion);
+            this.preparedStatement.setString(2, passwordEmail);
+
+            this.resultSet =  this.preparedStatement.executeQuery();
+
+            while ( this.resultSet.next()) {
+                this.user.setLast_name( this.resultSet.getString("last_name"));
+            }
+
+            if ( this.user.getLast_name() == null) {
+                throw new Exception();
+            }
+            this.resultSet.close();
+            this.preparedStatement.close();
+            this.connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return this.user.getLast_name();
+    }
+
+    @Override
+    public String getUserFirstName(String connexion, String passwordEmail) {
+        try {
+            this.connection = DriverManager.getConnection(url, username, password);
+
+            this.preparedStatement =  this.connection.prepareStatement("SELECT * from user where email = ? and password = ?");
+            this.preparedStatement.setString(1, connexion);
+            this.preparedStatement.setString(2, passwordEmail);
+
+            this.resultSet =  this.preparedStatement.executeQuery();
+
+            while ( this.resultSet.next()) {
+                this.user.setFirst_name( this.resultSet.getString("first_name"));
+            }
+
+            if ( this.user.getFirst_name() == null) {
+                throw new Exception();
+            }
+            this.resultSet.close();
+            this.preparedStatement.close();
+            this.connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return this.user.getFirst_name();
+    }
 }

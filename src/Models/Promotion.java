@@ -1,8 +1,13 @@
 package Models;
 
-public class Promotion {
+import java.util.Observable;
+
+public class Promotion extends Observable {
     private Long ID;
     private String name;
+    private Promotion promotion;
+
+
 
     public Promotion(Long id, String name) {
         this.ID = id;
@@ -10,6 +15,13 @@ public class Promotion {
     }
 
     public Promotion() {
+    }
+
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+        setChanged();
+        notifyObservers(this.promotion);
     }
 
     public Long getID() {

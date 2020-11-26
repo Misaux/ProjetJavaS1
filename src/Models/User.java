@@ -1,7 +1,9 @@
 
 package Models;
 
-public class User { //USER (ID, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME, PERMISSION)
+import java.util.Observable;
+
+public class User extends Observable { //USER (ID, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME, PERMISSION)
 
     public enum Permission {REFERENT, ETUDIANT, ENSEIGNANT, ADMIN}
 

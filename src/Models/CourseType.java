@@ -1,14 +1,19 @@
 package Models;
 
-public class CourseType {
+import java.util.Observable;
+
+public class CourseType extends Observable {
     private Long ID;
-    private enum Type {INTERACTIF,MAGISTRAL, TD,TP,PROJET,SOUTIEN}
+    public enum Type {INTERACTIF,MAGISTRAL, TD,TP,PROJET,SOUTIEN}
 
     public Type type;
 
     public CourseType(Long ID, Type type) {
         this.ID = ID;
         this.type = type;
+    }
+
+    public CourseType() {
     }
 
     public Long getID() {
@@ -19,11 +24,19 @@ public class CourseType {
         this.ID = ID;
     }
 
-    public Type getType() {
-        return type;
+    public String getType() {
+        return type.name();
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = Type.valueOf(type);
+    }
+
+    @Override
+    public String toString() {
+        return "CourseType{" +
+                "ID=" + ID +
+                ", type=" + type +
+                '}';
     }
 }

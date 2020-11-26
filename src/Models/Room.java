@@ -1,14 +1,21 @@
 package Models;
 
-public class Room {
+import java.util.Observable;
+
+public class Room  extends Observable {
     private Long ID;
+    private String name;
     private int capacity;
     private Long Id_site;
 
-    public Room(Long ID, int capacity, Site site) {
+    public Room(Long ID, int capacity, Long idSite, String name) {
         this.ID = ID;
         this.capacity = capacity;
-        this.Id_site = site.getID();
+        this.Id_site = idSite;
+        this.name = name;
+    }
+
+    public Room() {
     }
 
     public Long getID() {
@@ -25,5 +32,31 @@ public class Room {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getId_site() {
+        return Id_site;
+    }
+
+    public void setId_site(Long id_site) {
+        Id_site = id_site;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "ID=" + ID +
+                ", name='" + name + '\'' +
+                ", capacity=" + capacity +
+                ", Id_site=" + Id_site +
+                '}';
     }
 }

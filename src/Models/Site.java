@@ -1,6 +1,8 @@
 package Models;
 
-public class Site {
+import java.util.Observable;
+
+public class Site extends Observable {
     private Long ID;
     private String name;
 

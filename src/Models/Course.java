@@ -1,6 +1,8 @@
 package Models;
 
-public class Course {
+import java.util.Observable;
+
+public class Course extends Observable {
     private Long ID;
     private String name;
 

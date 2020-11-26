@@ -8,8 +8,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Observable;
 
-public class Session {
+public class Session extends Observable {
 
     public enum State {PROGRESS, DONE, CANCELLED}
 
@@ -21,6 +22,7 @@ public class Session {
     private LocalDate date; // Regarder TP prof pour date !!!!
     private Long ID_course;
     private Long ID_type;
+    private Session session;
 
     public Session(Long ID, int week, String startTime, String endTime, String date, Long course, Long ct, State state) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -37,6 +39,13 @@ public class Session {
 
 
     public Session() {
+    }
+
+    public void setSession(Session session) {
+
+        this.session = session;
+        setChanged();
+        notifyObservers(this.session);
     }
 
     public Long getID() {

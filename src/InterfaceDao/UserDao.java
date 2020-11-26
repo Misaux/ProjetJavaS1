@@ -14,6 +14,8 @@ public interface UserDao {//test pour commit
     User findUserByID(Long id);
     void deleteUser(User user);
     User getUserConnection(String email, String password);
+    String getUserName(String connexion, String passwordEmail);
+    String getUserFirstName(String connexion, String passwordEmail);
 
 
 }
