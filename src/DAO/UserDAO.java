@@ -33,13 +33,13 @@ public class UserDAO implements UserDao {
         try {
             User user = new User();
 
-            connection = DriverManager.getConnection(url, username, password);
+            this.connection = DriverManager.getConnection(url, username, password);
 
-            preparedStatement = connection.prepareStatement("SELECT * from user where email = ? and password = ?");
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, password);
+            this.preparedStatement = this.connection.prepareStatement("SELECT * from user where email = ? and password = ?");
+            this.preparedStatement.setString(1, email);
+            this.preparedStatement.setString(2, password);
 
-            resultSet = preparedStatement.executeQuery();
+            this.resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 user.setLast_name(resultSet.getString("last_name"));
@@ -49,10 +49,9 @@ public class UserDAO implements UserDao {
             if (user.getLast_name() == null) {
                 throw new Exception();
             }
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
-
+            this.resultSet.close();
+            this.preparedStatement.close();
+            this.connection.close();
             return user;
 
         } catch (Exception e) {

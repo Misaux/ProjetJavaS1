@@ -2,6 +2,12 @@ package DAO;
 
 import Models.CourseType;
 import Models.Session;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
+import org.jfree.data.jdbc.JDBCPieDataset;
+import org.w3c.dom.css.Counter;
+
+import java.lang.Object;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -59,6 +65,59 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             return null;
         }
     }
+
+
+    @Override
+
+    public List<Session> getInfomatiqueSession() {
+
+        List<Session> sessionInformatique = new ArrayList<>();
+
+        for (Session s : getAllSession()) {
+            if (s.getID_course() == 1) {
+
+                sessionInformatique.add(s);
+
+            }
+        }
+
+        return sessionInformatique;
+    }
+
+    @Override
+
+    public List<Session> getMathematiqueSession() {
+
+        List<Session> sessionMaths = new ArrayList<>();
+
+        for (Session s : getAllSession()) {
+            if (s.getID_course() == 2) {
+
+                sessionMaths.add(s);
+
+            }
+        }
+
+        return sessionMaths;
+    }
+
+
+    @Override
+    public List<Session> getAnglaisSession() {
+
+        List<Session> sessionAnglais = new ArrayList<>();
+
+        for (Session s : getAllSession()) {
+            if (s.getID_course() == 3) {
+
+                sessionAnglais.add(s);
+
+            }
+        }
+
+        return sessionAnglais;
+    }
+
 
     @Override
     public void createSession(Session session) {
@@ -148,7 +207,7 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
                 this.preparedStatement.setString(5, session.getState());
                 this.preparedStatement.setLong(6, session.getID_course());
                 this.preparedStatement.setLong(7, session.getID_type());
-                this.preparedStatement.setLong(8,session.getID());
+                this.preparedStatement.setLong(8, session.getID());
                 this.preparedStatement.execute();
 
             } else {
@@ -193,6 +252,30 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         }
 
     }
+
+    @Override
+    public JDBCPieDataset readData() {
+        JDBCPieDataset data = null;
+
+        try {
+            this.connection = DriverManager.getConnection(this.url, this.username, this.password);
+            data = new JDBCPieDataset(this.connection);
+            String sql = "SELECT name, Count(id_course) FROM course c INNER JOIN session s WHERE c.id = s.id_course GROUP BY id_course";
+            data.executeQuery(sql);
+            this.connection.close();}
+        catch (SQLException e) {
+                System.err.print("SQLException: ");
+                System.err.println(e.getMessage());
+            }
+        catch (Exception e) {
+                System.err.print("Exception: ");
+                System.err.println(e.getMessage());
+            }
+            return data;
+
+    }
+
+
 
 
 }
