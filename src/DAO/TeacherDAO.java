@@ -72,7 +72,7 @@ public class TeacherDAO implements TeacherDao {
             this.connection = DriverManager.getConnection(url, username, password);
 
             if (teacher.getID() != null) {
-                System.out.println("This course already exists.");
+                System.out.println("This teacher already exists.");
 
             } else {
                 this.preparedStatement = this.connection.prepareStatement
@@ -80,12 +80,12 @@ public class TeacherDAO implements TeacherDao {
                 this.preparedStatement.setLong(1, teacher.getIdUser());
                 this.preparedStatement.setLong(2, teacher.getIdCourse());
                 this.preparedStatement.execute();
-            } //pour oscar test2
-
+            }
 
             System.out.println(" user saved into the database");
             this.preparedStatement.close();
             this.connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("unable to save the user");

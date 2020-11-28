@@ -2,6 +2,7 @@ package DAO;
 
 import Models.Room;
 import Models.Site;
+import org.jfree.data.jdbc.JDBCPieDataset;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -189,5 +190,53 @@ public class RoomDAO implements InterfaceDao.RoomDao {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public JDBCPieDataset readDataNumberPerSite() {
+        JDBCPieDataset data = null;
+
+        try
+        {
+            this.connection = DriverManager.getConnection(this.url, this.username, this.password);
+            data = new JDBCPieDataset(this.connection);
+            String sql = "SELECT s.name, Count(id_site) FROM room r INNER JOIN site s WHERE r.id_site = s.id GROUP BY id_site";
+            data.executeQuery(sql);
+            this.connection.close();
+        }
+        catch (SQLException e) {
+            System.err.print("SQLException: ");
+            System.err.println(e.getMessage());
+        }
+        catch (Exception e) {
+            System.err.print("Exception: ");
+            System.err.println(e.getMessage());
+        }
+
+        return data;
+    }
+
+    @Override
+    public JDBCPieDataset readDataCapacityPerSite() {
+        JDBCPieDataset data = null;
+
+        try
+        {
+            this.connection = DriverManager.getConnection(this.url, this.username, this.password);
+            data = new JDBCPieDataset(this.connection);
+            String sql = "SELECT s.name, SUM(capacity) FROM room r INNER JOIN site s WHERE r.id_site = s.id GROUP BY id_site";
+            data.executeQuery(sql);
+            this.connection.close();
+        }
+        catch (SQLException e) {
+            System.err.print("SQLException: ");
+            System.err.println(e.getMessage());
+        }
+        catch (Exception e) {
+            System.err.print("Exception: ");
+            System.err.println(e.getMessage());
+        }
+
+        return data;
     }
 }

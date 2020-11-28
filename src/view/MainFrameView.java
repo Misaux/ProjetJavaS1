@@ -56,6 +56,21 @@ public class MainFrameView implements Observer {
 
     public MainFrameView(MainFrameController mainFrameController) {
 
+
+
+
+
+
+        fenetre.setVisible(false);
+
+
+
+
+
+
+
+
+
         this.mainFrameController = mainFrameController;
         //Definition de la fenetre++
         fenetre.setSize((800 * 16 / 9), 800);

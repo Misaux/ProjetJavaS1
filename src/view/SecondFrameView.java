@@ -29,33 +29,40 @@ public class SecondFrameView implements Observer {
     private JPanel panSmall = new JPanel();
     JTextField jTextField = new JTextField();
     private SecondFrameController secondFrameControllerExtern = new SecondFrameController();
+    private SecondFrameController secondFrameController = new SecondFrameController();
 
-/*-------------------------------------------------------------------------------------------*/
+    /*-------------------------------------------------------------------------------------------*/
     JFrame adminFrame = new JFrame("Admin fenetre");
-    JPanel adminPanel = new JPanel(new GridLayout(6,2));
+    JPanel adminPanel = new JPanel(new GridLayout(6, 2));
     JButton addTeacher = new JButton();
     JButton removeTeacher = new JButton();
     JButton addStudent = new JButton();
     JButton removeStudent = new JButton();
     JButton addSession = new JButton();
     JButton removeSession = new JButton();
+    JButton consultData = new JButton();
+    JButton deconnexion = new JButton();
     JLabel labelAdminInfo = new JLabel();
-/*-------------------------------------------------------------------------------------------*/
-
-
-
-
+    /*-------------------------------------------------------------------------------------------*/
 
 
     public SecondFrameView(SecondFrameController secondFrameController) {
 
+        this.secondFrameController = secondFrameController;
+        connexionUser();
+
+
+    }
+
+    public void connexionUser(){
 
         smallFen.setBounds(300, 200, 600, 300);
         smallFen.setContentPane(panSmall);
         smallFen.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         smallFen.setLocation(1000, 540);
 
-
+        panSmall.removeAll();
+        SwingUtilities.updateComponentTreeUI(smallFen);
         panSmall.setLayout(null);
 
 
@@ -121,6 +128,11 @@ public class SecondFrameView implements Observer {
         });
 
 
+
+
+
+
+
     }
 
     public void display(String name) {
@@ -131,7 +143,7 @@ public class SecondFrameView implements Observer {
     public void update(Observable o, Object arg) {
 
         //JOptionPane.showMessageDialog(null, id);
-        System.out.println(user);
+
 
     }
 
@@ -169,8 +181,6 @@ public class SecondFrameView implements Observer {
         adminFrame.setLocation(1000, 540);
 
 
-
-
         adminPanel.add(addTeacher);
 
         addTeacher.setText("Ajouter Enseignant");
@@ -185,7 +195,8 @@ public class SecondFrameView implements Observer {
         addStudent.setText("Ajouter Eleve");
 
         adminPanel.add(removeStudent);
-                removeStudent.setText("Retirer Eleve");
+
+        removeStudent.setText("Retirer Eleve");
 
         /*///////////////////////////////////////////////////////////*/
 
@@ -194,15 +205,20 @@ public class SecondFrameView implements Observer {
         addSession.setText("Ajouter Session");
 
 
-
-
         adminPanel.add(removeSession);
 
         removeSession.setText("Retirer Session");
 
 
+        /*/////////////////////////////////////////////////////*/
 
+        adminPanel.add(consultData);
+        consultData.setText(("Consult data"));
 
+        /*///////////////////////////////////////////////////////////*/
+
+        adminPanel.add(deconnexion);
+        deconnexion.setText("Deconnexion");
 
         /*///////////////////////////////////////////////////////////*/
 
@@ -233,15 +249,25 @@ public class SecondFrameView implements Observer {
             }
         });
 
-
-
-        removeSession.addActionListener(new ActionListener() {
+        consultData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondFrameControllerExtern.getChartSession();
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                dataConsulting();
             }
         });
 
+        deconnexion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminFrame.setVisible(false);
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+
+                connexionUser();
+            }
+        });
 
     }
 
@@ -261,13 +287,13 @@ public class SecondFrameView implements Observer {
         studentFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    public void addTeacherAdmin(){
-        JTextField addTeacherLastName= new JTextField();
-        JTextField addTeacherFirstName= new JTextField();
-        JTextField addTeacherEmail= new JTextField();
-        JTextField addTeacherPassword= new JTextField();
-        JTextField addTeacherPermission= new JTextField("Permission :");
-        JTextField addTeacherCourse= new JTextField();
+    public void addTeacherAdmin() {
+        JTextField addTeacherLastName = new JTextField();
+        JTextField addTeacherFirstName = new JTextField();
+        JTextField addTeacherEmail = new JTextField();
+        JTextField addTeacherPassword = new JTextField();
+        JTextField addTeacherPermission = new JTextField("Permission :");
+        JTextField addTeacherCourse = new JTextField();
 
         JButton buttonAddTeacher = new JButton("Ajouter Enseigant");
 
@@ -278,12 +304,12 @@ public class SecondFrameView implements Observer {
             }
         });
 
-        addTeacherFirstName.setFont(new Font(" Arial ",Font.BOLD,30));
-        addTeacherLastName.setFont(new Font(" Arial ",Font.BOLD,30));
-        addTeacherEmail.setFont(new Font(" Arial ",Font.BOLD,30));
-        addTeacherPassword.setFont(new Font(" Arial ",Font.BOLD,30));
-        addTeacherPermission.setFont(new Font(" Arial ",Font.BOLD,30));
-        addTeacherCourse.setFont(new Font(" Arial ",Font.BOLD,30));
+        addTeacherFirstName.setFont(new Font(" Arial ", Font.BOLD, 30));
+        addTeacherLastName.setFont(new Font(" Arial ", Font.BOLD, 30));
+        addTeacherEmail.setFont(new Font(" Arial ", Font.BOLD, 30));
+        addTeacherPassword.setFont(new Font(" Arial ", Font.BOLD, 30));
+        addTeacherPermission.setFont(new Font(" Arial ", Font.BOLD, 30));
+        addTeacherCourse.setFont(new Font(" Arial ", Font.BOLD, 30));
 
         adminPanel.add(addTeacherFirstName);
         adminPanel.add(addTeacherEmail);
@@ -295,7 +321,7 @@ public class SecondFrameView implements Observer {
         adminPanel.add(buttonAddTeacher);
     }
 
-    public void removeTeacher(){
+    public void removeTeacher() {
 
     }
 
@@ -326,6 +352,42 @@ public class SecondFrameView implements Observer {
 
         referentFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
+
+    public void dataConsulting(){
+
+        JButton buttonSessionData = new JButton("Sessions Data");
+        JButton buttonSiteData = new JButton("Site Data");
+        JButton buttonReturn = new JButton("Return");
+
+        adminPanel.add(buttonSessionData);
+        adminPanel.add(buttonSiteData);
+        adminPanel.add(buttonReturn);
+
+        buttonSessionData.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                secondFrameControllerExtern.getChartSession().setVisible(true);
+            }
+        });
+
+        buttonSiteData.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                secondFrameControllerExtern.getChartSite().setVisible(true);
+            }
+        });
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                adminFrame();
+            }
+        });
+
+    }
+
 }
 
 

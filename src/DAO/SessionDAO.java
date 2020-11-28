@@ -257,12 +257,14 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
     public JDBCPieDataset readData() {
         JDBCPieDataset data = null;
 
-        try {
+        try
+        {
             this.connection = DriverManager.getConnection(this.url, this.username, this.password);
             data = new JDBCPieDataset(this.connection);
             String sql = "SELECT name, Count(id_course) FROM course c INNER JOIN session s WHERE c.id = s.id_course GROUP BY id_course";
             data.executeQuery(sql);
-            this.connection.close();}
+            this.connection.close();
+        }
         catch (SQLException e) {
                 System.err.print("SQLException: ");
                 System.err.println(e.getMessage());
@@ -271,11 +273,7 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
                 System.err.print("Exception: ");
                 System.err.println(e.getMessage());
             }
+
             return data;
-
     }
-
-
-
-
 }

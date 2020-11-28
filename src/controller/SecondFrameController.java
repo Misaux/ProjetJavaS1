@@ -3,13 +3,17 @@ package controller;
 import DAO.*;
 import InterfaceDao.UserDao;
 import Models.Promotion;
+import Models.Room;
 import Models.Session;
 import Models.User;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Observable;
 
 public class SecondFrameController extends Observable {
@@ -23,8 +27,12 @@ public class SecondFrameController extends Observable {
 
     private PromotionDAO promotionDao = new PromotionDAO(url, username, password);
     private Promotion promotion = new Promotion();
+
     private SessionDAO sessionDAO = new SessionDAO(url, username, password);
     private Session session = new Session();
+
+    private RoomDAO roomDAO = new RoomDAO(url,username,password);
+    private Room room = new Room();
 
     public SecondFrameController() {
     }
@@ -45,7 +53,9 @@ public class SecondFrameController extends Observable {
         this.promotion.setName(promotionDao.getPromotionByID(id).getName());
     }
 
-    public void getChartSession() {
+    public JFrame getChartSession() {
+
+        JFrame frame = new JFrame();
         DefaultPieDataset dataset = new DefaultPieDataset();
 
         // create a chart...
@@ -57,9 +67,38 @@ public class SecondFrameController extends Observable {
                 false // URLs?
         );
         // create and display a frame...
-        ChartFrame frame = new ChartFrame("First", chart);
+        frame = new ChartFrame("Répartitions des cours ", chart);
         frame.pack();
-        frame.setVisible(true);
+        return frame;
+
+    }
+
+
+    public JFrame getChartSite() {
+
+
+        JFrame frame = new JFrame();
+        frame.setLayout( new FlowLayout() );
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Capacity per site",
+                roomDAO.readDataCapacityPerSite(),
+                true, // legend?
+                true, // tooltips?
+                false );// URLs?
+
+        frame.getContentPane().add(new ChartPanel(chart));
+        JFreeChart chart1 = ChartFactory.createPieChart(
+                "Number of room per site",
+                roomDAO.readDataNumberPerSite(),
+                true, // legend?
+                true, // tooltips?
+                false );// URLs?
+
+        frame.getContentPane().add(new ChartPanel(chart1));
+        frame.pack();
+
+        return frame;
+
     }
 
     public void getSession() {
