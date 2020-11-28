@@ -30,6 +30,22 @@ public class SecondFrameView implements Observer {
     JTextField jTextField = new JTextField();
     private SecondFrameController secondFrameControllerExtern = new SecondFrameController();
 
+/*-------------------------------------------------------------------------------------------*/
+    JFrame adminFrame = new JFrame("Admin fenetre");
+    JPanel adminPanel = new JPanel(new GridLayout(6,2));
+    JButton addTeacher = new JButton();
+    JButton removeTeacher = new JButton();
+    JButton addStudent = new JButton();
+    JButton removeStudent = new JButton();
+    JButton addSession = new JButton();
+    JButton removeSession = new JButton();
+    JLabel labelAdminInfo = new JLabel();
+/*-------------------------------------------------------------------------------------------*/
+
+
+
+
+
 
     public SecondFrameView(SecondFrameController secondFrameController) {
 
@@ -79,21 +95,25 @@ public class SecondFrameView implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 user = secondFrameController.getUser(textFieldConnexion.getText(), textFieldPssword.getText());
-                switch (user.getPermission()) {
-                    case "ADMIN":
-                        adminFrame();
-                        break;
-                    case "ENSEIGNANT":
-                        teacherFrame();
-                        break;
-                    case "REFERENT":
-                        referentFrame();
-                        break;
-                    case "ELEVE":
-                        studentFrame();
-                        break;
-                    default:
-                        break;
+                try {
+                    switch (user.getPermission()) {
+                        case "ADMIN":
+                            adminFrame();
+                            break;
+                        case "ENSEIGNANT":
+                            teacherFrame();
+                            break;
+                        case "REFERENT":
+                            referentFrame();
+                            break;
+                        case "ELEVE":
+                            studentFrame();
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(null, "Identification incorrecte, veuillez réessayer. ");
                 }
 
 
@@ -139,65 +159,88 @@ public class SecondFrameView implements Observer {
 
     public void adminFrame() {
         smallFen.setVisible(false);
-        JFrame adminFrame = new JFrame("Admin fenetre");
-        JPanel adminPanel = new JPanel();
+
         adminFrame.setVisible(true);
 
         adminFrame.setContentPane(adminPanel);
-        adminPanel.setLayout(null);
+
         adminFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        adminFrame.setBounds(300, 200, 460, 400);
+        adminFrame.setBounds(300, 200, 817, 417);
         adminFrame.setLocation(1000, 540);
 
-        JButton addTeacher = new JButton();
-        JButton removeTeacher = new JButton();
-        JButton addStudent = new JButton();
-        JButton removeStudent = new JButton();
-        JButton addSession = new JButton();
-        JButton removeSession = new JButton();
 
-        JLabel labelAdminInfo = new JLabel();
 
 
         adminPanel.add(addTeacher);
-        addTeacher.setBounds(10, 10, 200, 70);
+
         addTeacher.setText("Ajouter Enseignant");
 
         adminPanel.add(removeTeacher);
-        removeTeacher.setBounds(230, 10, 200, 70);
+
         removeTeacher.setText("Retirer Enseignant");
 
         /*///////////////////////////////////////////////////////////*/
         adminPanel.add(addStudent);
-        addStudent.setBounds(10, 100, 200, 70);
+
         addStudent.setText("Ajouter Eleve");
 
         adminPanel.add(removeStudent);
-        removeStudent.setBounds(230, 100, 200, 70);
-        removeStudent.setText("Retirer Eleve");
+                removeStudent.setText("Retirer Eleve");
 
         /*///////////////////////////////////////////////////////////*/
 
         adminPanel.add(addSession);
-        addSession.setBounds(10, 190, 200, 70);
+
         addSession.setText("Ajouter Session");
 
+
+
+
         adminPanel.add(removeSession);
-        removeSession.setBounds(230, 190, 200, 70);
+
         removeSession.setText("Retirer Session");
+
+
+
+
+
+        /*///////////////////////////////////////////////////////////*/
+
+        adminPanel.add(labelAdminInfo);
+
+        labelAdminInfo.setText("Session ouvert par : " + user.getLast_name() + " " + user.getFirst_name());
+        labelAdminInfo.setFont(new Font(labelAdminInfo.getName(), Font.BOLD, 16));
+
+
+        /*///////////////////////////////////////////////////////////*/
+
+
+        addSession.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+
+            }
+        });
+
+        addTeacher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                addTeacherAdmin();
+            }
+        });
+
+
+
         removeSession.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 secondFrameControllerExtern.getChartSession();
             }
         });
-
-        /*///////////////////////////////////////////////////////////*/
-
-        adminPanel.add(labelAdminInfo);
-        labelAdminInfo.setBounds(10, 300, 300, 70);
-        labelAdminInfo.setText("Session ouvert par : " + user.getLast_name() + " " + user.getFirst_name());
-        labelAdminInfo.setFont(new Font(labelAdminInfo.getName(), Font.BOLD, 16));
 
 
     }
@@ -206,16 +249,55 @@ public class SecondFrameView implements Observer {
         smallFen.setVisible(false);
 
         JFrame studentFrame = new JFrame("Student Frame");
+        JPanel studentPanel = new JPanel();
+
         studentFrame.setBounds(0, 0, 460, 400);
         studentFrame.setLocation(1000, 540);
         studentFrame.setVisible(true);
 
-        JPanel studentPanel = new JPanel();
+
         studentPanel.setLayout(null);
 
         studentFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    public void addTeacherAdmin(){
+        JTextField addTeacherLastName= new JTextField();
+        JTextField addTeacherFirstName= new JTextField();
+        JTextField addTeacherEmail= new JTextField();
+        JTextField addTeacherPassword= new JTextField();
+        JTextField addTeacherPermission= new JTextField("Permission :");
+        JTextField addTeacherCourse= new JTextField();
+
+        JButton buttonAddTeacher = new JButton("Ajouter Enseigant");
+
+        buttonAddTeacher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(addTeacherPermission.getText());
+            }
+        });
+
+        addTeacherFirstName.setFont(new Font(" Arial ",Font.BOLD,30));
+        addTeacherLastName.setFont(new Font(" Arial ",Font.BOLD,30));
+        addTeacherEmail.setFont(new Font(" Arial ",Font.BOLD,30));
+        addTeacherPassword.setFont(new Font(" Arial ",Font.BOLD,30));
+        addTeacherPermission.setFont(new Font(" Arial ",Font.BOLD,30));
+        addTeacherCourse.setFont(new Font(" Arial ",Font.BOLD,30));
+
+        adminPanel.add(addTeacherFirstName);
+        adminPanel.add(addTeacherEmail);
+        adminPanel.add(addTeacherPassword);
+        adminPanel.add(addTeacherPermission);
+        adminPanel.add(addTeacherCourse);
+
+        adminPanel.add(addTeacherLastName);
+        adminPanel.add(buttonAddTeacher);
+    }
+
+    public void removeTeacher(){
+
+    }
 
     public void teacherFrame() {
         smallFen.setVisible(false);
