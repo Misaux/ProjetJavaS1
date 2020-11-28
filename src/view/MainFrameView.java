@@ -1,10 +1,6 @@
 package view;
 
-import DAO.SessionDAO;
-import Models.Promotion;
 import Models.Session;
-import Models.User;
-import com.mysql.cj.protocol.x.XMessage;
 import controller.MainFrameController;
 import controller.SecondFrameController;
 
@@ -23,9 +19,9 @@ public class MainFrameView implements Observer {
     private int mPosX = MouseInfo.getPointerInfo().getLocation().x;
     private int mPosY = MouseInfo.getPointerInfo().getLocation().y;
 
-    public static final Color meduimpurple = new Color(147, 112, 219);
+    public static final Color bleuClair = new Color(51, 153, 255);
     public static final Color colorTotoBubuSamsam = new Color(50, 179, 190);
-    public static final Color thistle = new Color(216, 191, 216);
+    public static final Color bleuPale = new Color(153, 204, 255);
 
     private JFrame fenetre = new JFrame("fenetre");
 
@@ -123,7 +119,7 @@ public class MainFrameView implements Observer {
 
             panels.get(7).add(dimanche, BorderLayout.CENTER);
             dimanche.setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
-            dimanche.setBackground(Color.LIGHT_GRAY);
+            dimanche.setBackground(bleuClair);
 
         }
 
@@ -167,95 +163,100 @@ public class MainFrameView implements Observer {
         }*/
 
 
+        /*
+        NE PAS OUBLIER DE REMETTRE EN VISIBLE
+         */
+
+            fenetre.setVisible(false);
     }
 
     public void addColor() {
         //Ajout des couleurs sur la colonne des heures
         for (int i = 0; i < 11; i++) {
-            heures.get(i).setBackground(new Color(221, 160, 221));
+            heures.get(i).setBackground(new Color(102, 178, 255));
         }
         //remplissage des colonnes pour les couleurs
         for (int i = 0; i < 11; i++) {
 
             if (i != 2 || i != 5 || i != 8) {
-                lundi.get(i).setBackground(thistle);
-                mardi.get(i).setBackground(thistle);
-                mercredi.get(i).setBackground(thistle);
-                jeudi.get(i).setBackground(thistle);
-                vendredi.get(i).setBackground(thistle);
-                samedi.get(i).setBackground(thistle);
+                lundi.get(i).setBackground(bleuPale);
+                mardi.get(i).setBackground(bleuPale);
+                mercredi.get(i).setBackground(bleuPale);
+                jeudi.get(i).setBackground(bleuPale);
+                vendredi.get(i).setBackground(bleuPale);
+                samedi.get(i).setBackground(bleuPale);
             }
 
         }
         //Ajout des pauses
         heures.get(2).setText("PAUSE 15min");
-        heures.get(2).setBackground(meduimpurple);
+        heures.get(2).setBackground(bleuClair);
         heures.get(2).setForeground(Color.white);
         heures.get(5).setText("PAUSE 15min");
-        heures.get(5).setBackground(meduimpurple);
+        heures.get(5).setBackground(bleuClair);
         heures.get(5).setForeground(Color.white);
         heures.get(8).setText("PAUSE 15min");
-        heures.get(8).setBackground(meduimpurple);
+        heures.get(8).setBackground(bleuClair);
         heures.get(8).setForeground(Color.white);
 
         lundi.get(2).setText("PAUSE 15min");
-        lundi.get(2).setBackground(meduimpurple);
+        lundi.get(2).setBackground(bleuClair);
         lundi.get(2).setForeground(Color.white);
         lundi.get(5).setText("PAUSE 15min");
-        lundi.get(5).setBackground(meduimpurple);
+        lundi.get(5).setBackground(bleuClair);
         lundi.get(5).setForeground(Color.white);
         lundi.get(8).setText("PAUSE 15min");
-        lundi.get(8).setBackground(meduimpurple);
+        lundi.get(8).setBackground(bleuClair);
         lundi.get(8).setForeground(Color.white);
 
         mardi.get(2).setText("PAUSE 15min");
-        mardi.get(2).setBackground(meduimpurple);
+        mardi.get(2).setBackground(bleuClair);
         mardi.get(2).setForeground(Color.white);
         mardi.get(5).setText("PAUSE 15min");
-        mardi.get(5).setBackground(meduimpurple);
+        mardi.get(5).setBackground(bleuClair);
         mardi.get(5).setForeground(Color.white);
         mardi.get(8).setText("PAUSE 15min");
-        mardi.get(8).setBackground(meduimpurple);
+        mardi.get(8).setBackground(bleuClair);
         mardi.get(8).setForeground(Color.white);
 
         mercredi.get(2).setText("PAUSE 15min");
-        mercredi.get(2).setBackground(meduimpurple);
+        mercredi.get(2).setBackground(bleuClair);
         mercredi.get(2).setForeground(Color.white);
         mercredi.get(5).setText("PAUSE 15min");
-        mercredi.get(5).setBackground(meduimpurple);
+        mercredi.get(5).setBackground(bleuClair);
         mercredi.get(5).setForeground(Color.white);
         mercredi.get(8).setText("PAUSE 15min");
-        mercredi.get(8).setBackground(meduimpurple);
+        mercredi.get(8).setBackground(bleuClair);
         mercredi.get(8).setForeground(Color.white);
 
         jeudi.get(2).setText("PAUSE 15min");
-        jeudi.get(2).setBackground(meduimpurple);
+        jeudi.get(2).setBackground(bleuClair);
         jeudi.get(2).setForeground(Color.white);
         jeudi.get(5).setText("PAUSE 15min");
-        jeudi.get(5).setBackground(meduimpurple);
+        jeudi.get(5).setBackground(bleuClair);
         jeudi.get(5).setForeground(Color.white);
         jeudi.get(8).setText("PAUSE 15min");
-        jeudi.get(8).setBackground(meduimpurple);
+        jeudi.get(8).setBackground(bleuClair);
         jeudi.get(8).setForeground(Color.white);
 
         vendredi.get(2).setText("PAUSE 15min");
-        vendredi.get(2).setBackground(meduimpurple);
+        vendredi.get(2).setBackground(bleuClair);
         vendredi.get(2).setForeground(Color.white);
         vendredi.get(5).setText("PAUSE 15min");
-        vendredi.get(5).setBackground(meduimpurple);
+        vendredi.get(5).setBackground(bleuClair);
         vendredi.get(5).setForeground(Color.white);
         vendredi.get(8).setText("PAUSE 15min");
-        vendredi.get(8).setBackground(meduimpurple);
+        vendredi.get(8).setBackground(bleuClair);
         vendredi.get(8).setForeground(Color.white);
 
         samedi.get(2).setText("PAUSE 15min");
-        samedi.get(2).setBackground(meduimpurple);
+        samedi.get(2).setBackground(bleuClair);
         samedi.get(2).setForeground(Color.white);
         samedi.get(5).setText("PAUSE 15min");
-        samedi.get(5).setBackground(meduimpurple);
+        samedi.get(5).setBackground(bleuClair);
         samedi.get(5).setForeground(Color.white);
         samedi.get(8).setText("PAUSE 15min");
-        samedi.get(8).setBackground(meduimpurple);
+        samedi.get(8).setBackground(bleuClair);
         samedi.get(8).setForeground(Color.white);
 
 
@@ -394,7 +395,7 @@ public class MainFrameView implements Observer {
     public void update(Observable o, Object arg) {
 
         if(o instanceof SecondFrameController){
-                showSession();
+               // showSession();
         }
         
 

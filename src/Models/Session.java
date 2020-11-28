@@ -2,6 +2,7 @@ package Models;
 
 
 
+
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -117,6 +118,8 @@ public class Session extends Observable {
     public void setID_type(Long ID_type) {
         this.ID_type = ID_type;
     }
+
+
 
     @Override
     public String toString() {

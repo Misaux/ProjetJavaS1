@@ -8,14 +8,15 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 
-public class UserDAO implements UserDao {
+public class UserDAO implements UserDao  {
 
     private String url;
     private String username;
     private String password;
-    private User user;
+    private User user = new User();
 
     private Connection connection;
     private PreparedStatement preparedStatement;
@@ -29,29 +30,35 @@ public class UserDAO implements UserDao {
     }
 
 
-    public User getUserConnection(String email, String password) {
+    public User getUserConnection(String email, String psswrd) {
         try {
-            User user = new User();
 
-            this.connection = DriverManager.getConnection(url, username, password);
 
-            this.preparedStatement = this.connection.prepareStatement("SELECT * from user where email = ? and password = ?");
-            this.preparedStatement.setString(1, email);
-            this.preparedStatement.setString(2, password);
+            connection = DriverManager.getConnection(url, username, password);
 
-            this.resultSet = preparedStatement.executeQuery();
+            preparedStatement = connection.prepareStatement("SELECT * from user where email = ? and password = ?");
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, psswrd);
+
+            resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                user.setLast_name(resultSet.getString("last_name"));
-                user.setFirst_name(resultSet.getString("first_name"));
+                this.user.setID(resultSet.getLong("id"));
+                this.user.setEmail(resultSet.getString("email"));
+                this.user.setPassword(resultSet.getString("password"));
+                this.user.setLast_name(resultSet.getString("last_name"));
+                this.user.setFirst_name(resultSet.getString("first_name"));
+                this.user.setPermission(resultSet.getString("permission"));
             }
 
-            if (user.getLast_name() == null) {
-                throw new Exception();
+            if (user == null) {
+                throw new Exception("le user n'exitse pas");
             }
-            this.resultSet.close();
-            this.preparedStatement.close();
-            this.connection.close();
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+
             return user;
 
         } catch (Exception e) {

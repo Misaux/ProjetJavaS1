@@ -5,7 +5,7 @@ import java.util.Observable;
 
 public class User extends Observable { //USER (ID, EMAIL, PASSWORD, LAST_NAME, FIRST_NAME, PERMISSION)
 
-    public enum Permission {REFERENT, ETUDIANT, ENSEIGNANT, ADMIN}
+    public enum Permission {REFERENT, ELEVE, ENSEIGNANT, ADMIN}
 
     private String email;
     private String password;
@@ -13,6 +13,7 @@ public class User extends Observable { //USER (ID, EMAIL, PASSWORD, LAST_NAME, F
     private String last_name;
     private Long ID;
     private Permission permission;
+    private User user;
 
     public User() {
     }
@@ -28,12 +29,15 @@ public class User extends Observable { //USER (ID, EMAIL, PASSWORD, LAST_NAME, F
 
 
 
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+        setChanged();
+        notifyObservers(this.user);
     }
 
     public String getPassword() {
@@ -50,6 +54,8 @@ public class User extends Observable { //USER (ID, EMAIL, PASSWORD, LAST_NAME, F
 
     public void setFirst_name(String first_name) {
         this.first_name = first_name;
+        setChanged();
+        notifyObservers(this);
     }
 
     public String getLast_name() {
@@ -58,6 +64,8 @@ public class User extends Observable { //USER (ID, EMAIL, PASSWORD, LAST_NAME, F
 
     public void setLast_name(String last_name) {
         this.last_name = last_name;
+        setChanged();
+        notifyObservers(this);
     }
 
     public Long getID() {
@@ -72,8 +80,18 @@ public class User extends Observable { //USER (ID, EMAIL, PASSWORD, LAST_NAME, F
         return permission.name();
     }
 
+
+
     public void setPermission(String permission) {
         this.permission = Permission.valueOf(permission);
+    }
+
+
+
+    public void setUser(User user) {
+        this.user = user;
+        setChanged();
+        notifyObservers(this.user);
     }
 
     @Override

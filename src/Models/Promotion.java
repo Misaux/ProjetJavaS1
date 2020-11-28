@@ -40,6 +40,12 @@ public class Promotion extends Observable {
         this.name = name;
     }
 
+    public void setPromo(Promotion promo){
+        this.promotion = promo;
+        setChanged();
+        notifyObservers(this.promotion);
+    }
+
     @Override
     public String toString() {
         return "Promotion{" +
