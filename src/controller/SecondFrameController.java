@@ -37,6 +37,7 @@ public class SecondFrameController extends Observable {
     private Room room = new Room();
 
 
+
     public SecondFrameController() {
     }
 
@@ -238,6 +239,10 @@ public class SecondFrameController extends Observable {
 
     }
 
+
+    public List<Session> getSessionByWeek(User user, String weekSelected){
+        return sessionDAO.getWeekSession(user, weekSelected);
+    }
 
 }
 

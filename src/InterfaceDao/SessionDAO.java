@@ -2,6 +2,7 @@ package InterfaceDao;
 
 
 import Models.Session;
+import Models.User;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.data.jdbc.JDBCPieDataset;
@@ -21,4 +22,5 @@ public interface SessionDAO {
     List<Session> getAnglaisSession();
     JDBCPieDataset readData();
     List<String> getAllSessionState();
+    List<Session> getWeekSession(User user, String semaine);
 }

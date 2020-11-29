@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import static java.lang.String.valueOf;
+
 public class SecondFrameView implements Observer {
 
     public static final Color grisClair = new Color(192, 192, 192);
@@ -47,6 +49,10 @@ public class SecondFrameView implements Observer {
     JButton deconnexion = new JButton();
     JLabel labelAdminInfo = new JLabel();
     /*-------------------------------------------------------------------------------------------*/
+    JFrame studentFrame = new JFrame("Student Frame");
+    JPanel studentPanel = new JPanel();
+
+
 
 
     public SecondFrameView(SecondFrameController secondFrameController) {
@@ -330,18 +336,77 @@ public class SecondFrameView implements Observer {
 
     public void studentFrame() {
         smallFen.setVisible(false);
-
-        JFrame studentFrame = new JFrame("Student Frame");
-        JPanel studentPanel = new JPanel();
+        studentPanel.setLayout(new GridLayout(2,1));
 
         studentFrame.setBounds(0, 0, 460, 400);
         studentFrame.setLocation(1000, 540);
+        studentFrame.setContentPane(studentPanel);
+
+        //premiere page
+        //-------------------------------------------
+        JButton viewPlaning1 = new JButton();
+        studentPanel.add(viewPlaning1);
+        viewPlaning1.setText("view planning");
+
+        JButton deconnexionStudent = new JButton();
+        studentPanel.add(deconnexionStudent);
+        deconnexionStudent.setText("Deconnexion");
+
+        //--------------------------------------------
+
+
         studentFrame.setVisible(true);
-
-
         studentPanel.setLayout(null);
-
         studentFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+
+        viewPlaning1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                studentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(studentFrame);
+                viewPlanning();
+            }
+        });
+
+        deconnexionStudent.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                studentFrame.setVisible(false);
+                studentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(studentFrame);
+
+                connexionUser();
+            }
+        });
+
+
+    }
+
+    public void viewPlanning(){
+        JButton buttonSearch = new JButton("search");
+
+        studentPanel.setLayout(new GridLayout(2,1));
+        String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
+        int nb = 1;
+        for (int i = 0; i < tabWeek.length; i++) {
+            tabWeek[i] = valueOf(nb+i);
+        }
+        JComboBox comboBoxStudent;
+        comboBoxStudent = new JComboBox(tabWeek);
+        studentPanel.add(comboBoxStudent);
+        studentPanel.add(buttonSearch);
+
+        buttonSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                studentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(studentFrame);
+                secondFrameController.getSessionByWeek(user, comboBoxStudent.getSelectedItem().toString());
+            }
+        });
+
+
     }
 
     public void addTeacherAdmin() {

@@ -2,6 +2,7 @@ package DAO;
 
 import Models.CourseType;
 import Models.Session;
+import Models.User;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.data.jdbc.JDBCPieDataset;
@@ -60,6 +61,72 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             connection.close();
             return list;
 
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Session> getWeekSession(User user, String weekSelected) {
+
+        List<Session> list = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(this.url, this.username, this.password);
+            preparedStatement = connection.prepareStatement("SELECT id_group_promotion FROM student WHERE id_user = ?");
+            preparedStatement.setLong(1, user.getID());
+
+            resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+
+            int gp = resultSet.getInt("id_group_promotion");
+
+            resultSet.close();
+            preparedStatement.close();
+            /*--------------------------------*/
+
+            preparedStatement = connection.prepareStatement("SELECT id_session FROM group_session WHERE id_group = ?");
+            preparedStatement.setInt(1,gp );
+
+            resultSet = preparedStatement.executeQuery();
+
+            List<Long> id_session = new ArrayList<>();
+            while(resultSet.next()){
+                id_session.add(resultSet.getLong("id_session"));
+            }
+
+
+            resultSet.close();
+            preparedStatement.close();
+            /*------------------------*/
+            for(int i = 0; i < id_session.size();i++){
+            preparedStatement = connection.prepareStatement("SELECT * FROM session WHERE id = ? AND week = ?");
+            preparedStatement.setLong(1, id_session.get(i));
+            preparedStatement.setString(2, weekSelected);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                Long Id = resultSet.getLong("id");
+                int week = resultSet.getInt("week");
+                String date = resultSet.getString("date");
+                String startTime = resultSet.getString("start_time");
+                String endTime = resultSet.getString("end_time");
+                String state = resultSet.getString("state");
+                Long idCourse = resultSet.getLong("id_course");
+                Long idType = resultSet.getLong("id_type");
+                list.add(new Session(Id, week, startTime, endTime, date, idCourse, idType, Session.State.valueOf(state)));
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+
+            }
+            connection.close();
+
+            return list;
 
         } catch (SQLException e) {
             e.printStackTrace();
