@@ -1,6 +1,7 @@
 package view;
 
 import Models.Session;
+import Models.Teacher;
 import controller.SecondFrameController;
 import Models.User;
 
@@ -9,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -33,7 +35,7 @@ public class SecondFrameView implements Observer {
 
     /*-------------------------------------------------------------------------------------------*/
     JFrame adminFrame = new JFrame("Admin fenetre");
-    JPanel adminPanel = new JPanel(new GridLayout(6, 2));
+
     JButton addTeacher = new JButton();
     JButton removeTeacher = new JButton();
     JButton addStudent = new JButton();
@@ -51,10 +53,10 @@ public class SecondFrameView implements Observer {
         this.secondFrameController = secondFrameController;
         connexionUser();
 
-
     }
 
-    public void connexionUser(){
+    public void connexionUser() {
+        adminFrame.setVisible(false);
 
         smallFen.setBounds(300, 200, 600, 300);
         smallFen.setContentPane(panSmall);
@@ -128,16 +130,8 @@ public class SecondFrameView implements Observer {
         });
 
 
-
-
-
-
-
     }
 
-    public void display(String name) {
-        this.jTextField.setText(name);
-    }
 
     @Override
     public void update(Observable o, Object arg) {
@@ -148,30 +142,9 @@ public class SecondFrameView implements Observer {
     }
 
 
-    public void controlPanel() {
-        smallFen.setVisible(false);
-        JFrame controlPanelFrame = new JFrame("Control Panel Frame");
-        JPanel panelControlFrame = new JPanel();
-
-        panelControlFrame.setBackground(grisClair);
-        panelControlFrame.setLayout(null);
-        controlPanelFrame.setVisible(true);
-
-        controlPanelFrame.setBounds(300, 200, 450, 300);
-        controlPanelFrame.setContentPane(panelControlFrame);
-        controlPanelFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        controlPanelFrame.setLocation(1000, 540);
-
-        JButton getSession = new JButton("Rechercher session");
-        panelControlFrame.add(getSession);
-        getSession.setBounds(10, 10, 150, 50);
-
-    }
-
-
     public void adminFrame() {
-        smallFen.setVisible(false);
 
+        JPanel adminPanel = new JPanel(new GridLayout(6, 2));
         adminFrame.setVisible(true);
 
         adminFrame.setContentPane(adminPanel);
@@ -188,6 +161,7 @@ public class SecondFrameView implements Observer {
         adminPanel.add(removeTeacher);
 
         removeTeacher.setText("Retirer Enseignant");
+
 
         /*///////////////////////////////////////////////////////////*/
         adminPanel.add(addStudent);
@@ -269,6 +243,15 @@ public class SecondFrameView implements Observer {
             }
         });
 
+        removeTeacher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                removeTeacherAdmin();
+            }
+        });
+
     }
 
     public void studentFrame() {
@@ -288,10 +271,12 @@ public class SecondFrameView implements Observer {
     }
 
     public void addTeacherAdmin() {
+        JPanel adminPanel = new JPanel(new GridLayout(6, 2));
+
         JTextField addTeacherLastName = new JTextField();
         JTextField addTeacherFirstName = new JTextField();
         JTextField addTeacherEmail = new JTextField();
-        JTextField addTeacherPassword = new JTextField();
+        JLabel addTeacherPassword = new JLabel("permission :");
         JTextField addTeacherPermission = new JTextField("Permission :");
         JTextField addTeacherCourse = new JTextField();
 
@@ -321,9 +306,52 @@ public class SecondFrameView implements Observer {
         adminPanel.add(buttonAddTeacher);
     }
 
-    public void removeTeacher() {
+    public void removeTeacherAdmin() {
+
+
+        String[] tab = new String[secondFrameController.getAllTeacher().size()];
+
+        for (int i = 0; i < tab.length; i++) {
+            tab[i] = secondFrameController.getAllTeacher().get(i).getFirst_name() + "  " + secondFrameController.getAllTeacher().get(i).getLast_name();
+        }
+
+        JComboBox comboBox;
+        comboBox = new JComboBox(tab);
+        panSmall.add(comboBox);
+        comboBox.setFont(new Font(" TimesRoman ", Font.BOLD, 30));
+        comboBox.setBounds(0, 60, 200, 50);
+        JPanel adminPanel = new JPanel(new GridLayout(3, 1));
+
+        adminFrame.setContentPane(adminPanel);
+        adminPanel.add(comboBox);
+
+        JButton buttonRemove = new JButton("Retirer enseignant.");
+        JButton buttonreturn = new JButton("Retour.");
+
+        adminPanel.add(buttonRemove);
+        adminPanel.add(buttonreturn);
+
+
+        buttonreturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                adminFrame();
+            }
+        });
+
+        buttonRemove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                System.out.println(comboBox.getSelectedItem().toString());
+
+            }
+        });
 
     }
+
 
     public void teacherFrame() {
         smallFen.setVisible(false);
@@ -353,11 +381,13 @@ public class SecondFrameView implements Observer {
         referentFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    public void dataConsulting(){
+    public void dataConsulting() {
 
         JButton buttonSessionData = new JButton("Sessions Data");
         JButton buttonSiteData = new JButton("Site Data");
         JButton buttonReturn = new JButton("Return");
+
+        JPanel adminPanel = new JPanel(new GridLayout(6, 2));
 
         adminPanel.add(buttonSessionData);
         adminPanel.add(buttonSiteData);

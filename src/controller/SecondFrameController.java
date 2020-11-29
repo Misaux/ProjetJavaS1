@@ -2,10 +2,7 @@ package controller;
 
 import DAO.*;
 import InterfaceDao.UserDao;
-import Models.Promotion;
-import Models.Room;
-import Models.Session;
-import Models.User;
+import Models.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
@@ -14,6 +11,7 @@ import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.Observable;
 
 public class SecondFrameController extends Observable {
@@ -29,6 +27,7 @@ public class SecondFrameController extends Observable {
     private Promotion promotion = new Promotion();
 
     private SessionDAO sessionDAO = new SessionDAO(url, username, password);
+    private TeacherDAO teacherDAO = new TeacherDAO(url, username, password);
     private Session session = new Session();
 
     private RoomDAO roomDAO = new RoomDAO(url,username,password);
@@ -72,6 +71,11 @@ public class SecondFrameController extends Observable {
         return frame;
 
     }
+
+    public List<Teacher> getAllTeacher(){
+      return teacherDAO.getAllTeacher();
+    }
+
 
 
     public JFrame getChartSite() {
