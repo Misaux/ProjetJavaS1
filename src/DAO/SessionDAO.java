@@ -7,6 +7,7 @@ import org.jfree.data.general.PieDataset;
 import org.jfree.data.jdbc.JDBCPieDataset;
 import org.w3c.dom.css.Counter;
 
+import javax.swing.*;
 import java.lang.Object;
 
 import java.sql.*;
@@ -66,6 +67,31 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         }
     }
 
+
+    @Override
+    public List<String> getAllSessionState() {
+
+        List<String> list = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(this.url, this.username, this.password);
+            preparedStatement = connection.prepareStatement("SELECT DISTINCT state from session ");
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String state = resultSet.getString("state");
+                list.add(state);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+            return list;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
 
@@ -141,7 +167,8 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             }
 
 
-            System.out.println(session.getState() + " saved into the database");
+            System.out.println(" Session saved into the database");
+            JOptionPane.showMessageDialog(null, "Session Successfully added in the user database");
             this.preparedStatement.close();
             this.connection.close();
         } catch (SQLException e) {

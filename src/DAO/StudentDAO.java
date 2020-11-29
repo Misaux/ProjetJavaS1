@@ -5,6 +5,7 @@ import Models.Student;
 import Models.Teacher;
 import Models.User;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,13 +77,14 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
 
             } else {
                 this.preparedStatement = this.connection.prepareStatement
-                        ("insert into student (id_user, number, id_course) values (?,?,?)");
+                        ("insert into student (id_user, number, id_group_promotion) values (?,?,?)");
                 this.preparedStatement.setLong(1, student.getIdUser());
                 this.preparedStatement.setInt(2,student.getNumber());
                 this.preparedStatement.setLong(3, student.getIdGroupPromotion());
                 this.preparedStatement.execute();
             }
             System.out.println(" student saved into the database");
+            JOptionPane.showMessageDialog(null, "Student Successfully added in the teacher database");
             this.preparedStatement.close();
             this.connection.close();
 

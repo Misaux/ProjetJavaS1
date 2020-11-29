@@ -13,14 +13,14 @@ import java.util.Observable;
 
 public class Session extends Observable {
 
-    public enum State {PROGRESS, DONE, CANCELLED}
+    public enum State {PROGRESS,DONE,CANCELLED}
 
     public State state;
     private Long ID;
     private int week;
     private LocalTime startTime;
     private LocalTime endTime;
-    private LocalDate date; // Regarder TP prof pour date !!!!
+    private LocalDate date;
     private Long ID_course;
     private Long ID_type;
     private Session session;
@@ -100,7 +100,7 @@ public class Session extends Observable {
     }
 
     public void setState(String state) {
-        this.state = State.valueOf(state);
+        this.state = Session.State.valueOf(state);
     }
 
     public Long getID_course() {

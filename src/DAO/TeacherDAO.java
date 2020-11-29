@@ -6,6 +6,7 @@ import Models.Student;
 import Models.Teacher;
 import Models.User;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,18 +72,14 @@ public class TeacherDAO implements TeacherDao {
         try {
             this.connection = DriverManager.getConnection(url, username, password);
 
-            if (teacher.getID() != null) {
-                System.out.println("This teacher already exists.");
-
-            } else {
                 this.preparedStatement = this.connection.prepareStatement
                         ("insert into teacher (id_user, id_course) values (?,?)");
                 this.preparedStatement.setLong(1, teacher.getIdUser());
                 this.preparedStatement.setLong(2, teacher.getIdCourse());
                 this.preparedStatement.execute();
-            }
 
             System.out.println(" user saved into the database");
+            JOptionPane.showMessageDialog(null, "Teacher Successfully added in the teacher database");
             this.preparedStatement.close();
             this.connection.close();
 

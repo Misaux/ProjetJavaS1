@@ -21,6 +21,7 @@ public class SecondFrameView implements Observer {
     JPasswordField textFieldPssword;
     JTextField textFieldConnexion;
     JButton buttonSearch;
+    JButton buttonQuit;
     public Long id;
 
     User user = new User();
@@ -53,10 +54,10 @@ public class SecondFrameView implements Observer {
         this.secondFrameController = secondFrameController;
         connexionUser();
 
+
     }
 
     public void connexionUser() {
-        adminFrame.setVisible(false);
 
         smallFen.setBounds(300, 200, 600, 300);
         smallFen.setContentPane(panSmall);
@@ -87,6 +88,10 @@ public class SecondFrameView implements Observer {
         panSmall.add(buttonSearch);
         buttonSearch.setBounds(400, 0, 150, 50);
 
+        //ajout du bouton pour quitter
+        buttonQuit = new JButton("Quit");
+        panSmall.add(buttonQuit);
+        buttonQuit.setBounds(400, 60, 150, 50);
 
 
         /*///////////////////////////////// */
@@ -129,9 +134,20 @@ public class SecondFrameView implements Observer {
             }
         });
 
+        buttonQuit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+
+            }
+        });
+
 
     }
 
+    public void display(String name) {
+        this.jTextField.setText(name);
+    }
 
     @Override
     public void update(Observable o, Object arg) {
@@ -142,8 +158,30 @@ public class SecondFrameView implements Observer {
     }
 
 
+    public void controlPanel() {
+        smallFen.setVisible(false);
+        JFrame controlPanelFrame = new JFrame("Control Panel Frame");
+        JPanel panelControlFrame = new JPanel();
+
+        panelControlFrame.setBackground(grisClair);
+        panelControlFrame.setLayout(null);
+        controlPanelFrame.setVisible(true);
+
+        controlPanelFrame.setBounds(300, 200, 450, 300);
+        controlPanelFrame.setContentPane(panelControlFrame);
+        controlPanelFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        controlPanelFrame.setLocation(1000, 540);
+
+        JButton getSession = new JButton("Rechercher session");
+        panelControlFrame.add(getSession);
+        getSession.setBounds(10, 10, 150, 50);
+
+    }
+
+
     public void adminFrame() {
 
+        smallFen.setVisible(false);
         JPanel adminPanel = new JPanel(new GridLayout(6, 2));
         adminFrame.setVisible(true);
 
@@ -161,7 +199,6 @@ public class SecondFrameView implements Observer {
         adminPanel.add(removeTeacher);
 
         removeTeacher.setText("Retirer Enseignant");
-
 
         /*///////////////////////////////////////////////////////////*/
         adminPanel.add(addStudent);
@@ -223,6 +260,43 @@ public class SecondFrameView implements Observer {
             }
         });
 
+        addStudent.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                addStudentAdmin();
+            }
+        });
+
+        removeStudent.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                removeStudentAdmin();
+            }
+        });
+
+        addSession.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                addSessionAdmin();
+
+            }
+        });
+
+        removeSession.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                removeSessionAdmin();
+            }
+        });
+
         consultData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -271,39 +345,89 @@ public class SecondFrameView implements Observer {
     }
 
     public void addTeacherAdmin() {
-        JPanel adminPanel = new JPanel(new GridLayout(6, 2));
 
-        JTextField addTeacherLastName = new JTextField();
+        String[] tab = new String[secondFrameController.getAllCourse().size()];
+
+        for (int i = 0; i < tab.length; i++) {
+            tab[i] = secondFrameController.getAllCourse().get(i).getName();
+        }
+
+        JLabel jLabelCourse = new JLabel("Teacher of :");
+        JComboBox comboBox = new JComboBox(tab);
+
+        JPanel addTeacherAdmin = new JPanel(new GridLayout(7, 2));
+
+        adminFrame.setContentPane(addTeacherAdmin);
+
+        JLabel jLabelFirstName = new JLabel("First Name :");
         JTextField addTeacherFirstName = new JTextField();
+
+        JLabel jLabelLastName = new JLabel("Last Name :");
+        JTextField addTeacherLastName = new JTextField();
+
+        JLabel jLabelEmail = new JLabel("Email :");
         JTextField addTeacherEmail = new JTextField();
-        JLabel addTeacherPassword = new JLabel("permission :");
-        JTextField addTeacherPermission = new JTextField("Permission :");
-        JTextField addTeacherCourse = new JTextField();
+
+        JLabel jLabelPassword = new JLabel("Password :");
+        JTextField addTeacherPassword = new JTextField();
 
         JButton buttonAddTeacher = new JButton("Ajouter Enseigant");
+        JButton buttonReturn = new JButton("Return");
+
+
+        jLabelFirstName.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addTeacherFirstName.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelLastName.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addTeacherLastName.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelEmail.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addTeacherEmail.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelPassword.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addTeacherPassword.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelCourse.setFont(new Font(" Arial ", Font.BOLD, 20));
+        panSmall.add(comboBox);
+        comboBox.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBox.setBounds(0, 60, 200, 50);
+
+
+        addTeacherAdmin.add((jLabelFirstName));
+        addTeacherAdmin.add(addTeacherFirstName);
+
+        addTeacherAdmin.add((jLabelLastName));
+        addTeacherAdmin.add(addTeacherLastName);
+
+        addTeacherAdmin.add(jLabelEmail);
+        addTeacherAdmin.add(addTeacherEmail);
+
+        addTeacherAdmin.add(jLabelPassword);
+        addTeacherAdmin.add(addTeacherPassword);
+
+        addTeacherAdmin.add(jLabelCourse);
+        addTeacherAdmin.add(comboBox);
+
+        addTeacherAdmin.add(buttonAddTeacher);
+        addTeacherAdmin.add(buttonReturn);
 
         buttonAddTeacher.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(addTeacherPermission.getText());
+                secondFrameControllerExtern.addTeacher(addTeacherEmail.getText(), addTeacherPassword.getText(), addTeacherFirstName.getText(), addTeacherLastName.getText(), comboBox.getSelectedItem().toString());
+
+
             }
         });
 
-        addTeacherFirstName.setFont(new Font(" Arial ", Font.BOLD, 30));
-        addTeacherLastName.setFont(new Font(" Arial ", Font.BOLD, 30));
-        addTeacherEmail.setFont(new Font(" Arial ", Font.BOLD, 30));
-        addTeacherPassword.setFont(new Font(" Arial ", Font.BOLD, 30));
-        addTeacherPermission.setFont(new Font(" Arial ", Font.BOLD, 30));
-        addTeacherCourse.setFont(new Font(" Arial ", Font.BOLD, 30));
-
-        adminPanel.add(addTeacherFirstName);
-        adminPanel.add(addTeacherEmail);
-        adminPanel.add(addTeacherPassword);
-        adminPanel.add(addTeacherPermission);
-        adminPanel.add(addTeacherCourse);
-
-        adminPanel.add(addTeacherLastName);
-        adminPanel.add(buttonAddTeacher);
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addTeacherAdmin.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                adminFrame();
+            }
+        });
     }
 
     public void removeTeacherAdmin() {
@@ -345,13 +469,331 @@ public class SecondFrameView implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println(comboBox.getSelectedItem().toString());
+                secondFrameControllerExtern.removeTeacher(comboBox.getSelectedItem().toString());
 
             }
         });
 
     }
 
+    public void addStudentAdmin() {
+
+        String[] tab = new String[secondFrameController.getAllGroupPromotion().size()];
+
+        for (int i = 0; i < tab.length; i++) {
+            tab[i] = secondFrameController.getAllGroupPromotion().get(i).getName();
+        }
+
+        JLabel jLabelCourse = new JLabel("Promotion Group :");
+        JComboBox comboBox = new JComboBox(tab);
+
+        JPanel addStudentAdmin = new JPanel(new GridLayout(8, 2));
+
+        adminFrame.setContentPane(addStudentAdmin);
+
+        JLabel jLabelFirstName = new JLabel("First Name :");
+        JTextField addStudentFirstName = new JTextField();
+
+        JLabel jLabelLastName = new JLabel("Last Name :");
+        JTextField addStudentLastName = new JTextField();
+
+        JLabel jLabelEmail = new JLabel("Email :");
+        JTextField addStudentEmail = new JTextField();
+
+        JLabel jLabelPassword = new JLabel("Password :");
+        JTextField addStudentPassword = new JTextField();
+
+        JLabel jLabelNumber = new JLabel("Number :");
+        JTextField addStudentNumber = new JTextField();
+
+        JButton buttonAddStudent = new JButton("Add Student");
+        JButton buttonReturn = new JButton("Return");
+
+
+        jLabelFirstName.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addStudentFirstName.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelLastName.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addStudentLastName.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelEmail.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addStudentEmail.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelPassword.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addStudentPassword.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelNumber.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addStudentNumber.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelCourse.setFont(new Font(" Arial ", Font.BOLD, 20));
+        panSmall.add(comboBox);
+        comboBox.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBox.setBounds(0, 60, 200, 50);
+
+
+        addStudentAdmin.add((jLabelFirstName));
+        addStudentAdmin.add(addStudentFirstName);
+
+        addStudentAdmin.add((jLabelLastName));
+        addStudentAdmin.add(addStudentLastName);
+
+        addStudentAdmin.add(jLabelEmail);
+        addStudentAdmin.add(addStudentEmail);
+
+        addStudentAdmin.add(jLabelPassword);
+        addStudentAdmin.add(addStudentPassword);
+
+        addStudentAdmin.add(jLabelNumber);
+        addStudentAdmin.add(addStudentNumber);
+
+        addStudentAdmin.add(jLabelCourse);
+        addStudentAdmin.add(comboBox);
+
+        addStudentAdmin.add(buttonAddStudent);
+        addStudentAdmin.add(buttonReturn);
+
+        buttonAddStudent.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                secondFrameControllerExtern.addStudent(addStudentEmail.getText(), addStudentPassword.getText(), addStudentFirstName.getText(), addStudentLastName.getText(), addStudentNumber.getText(), comboBox.getSelectedItem().toString());
+
+
+            }
+        });
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addStudentAdmin.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                adminFrame();
+            }
+        });
+
+
+    }
+
+    public void removeStudentAdmin() {
+
+
+        String[] tab = new String[secondFrameController.getAllStudent().size()];
+
+        for (int i = 0; i < tab.length; i++) {
+            tab[i] = secondFrameController.getAllStudent().get(i).getFirst_name() + "  " + secondFrameController.getAllStudent().get(i).getLast_name();
+        }
+
+        JComboBox comboBoxStudent;
+        comboBoxStudent = new JComboBox(tab);
+        panSmall.add(comboBoxStudent);
+        comboBoxStudent.setFont(new Font(" TimesRoman ", Font.BOLD, 30));
+        comboBoxStudent.setBounds(0, 60, 200, 50);
+        JPanel adminPanel = new JPanel(new GridLayout(3, 1));
+
+        adminFrame.setContentPane(adminPanel);
+        adminPanel.add(comboBoxStudent);
+
+        JButton buttonRemove = new JButton("Remove student.");
+        JButton buttonreturn = new JButton("Return.");
+
+        adminPanel.add(buttonRemove);
+        adminPanel.add(buttonreturn);
+
+
+        buttonreturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                adminFrame();
+            }
+        });
+
+        buttonRemove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                secondFrameControllerExtern.removeStudent(comboBoxStudent.getSelectedItem().toString());
+
+            }
+        });
+
+    }
+
+    public void addSessionAdmin() {
+
+        ///////////////
+
+        String[] tab = new String[secondFrameController.getAllCourse().size()];
+
+        for (int i = 0; i < tab.length; i++) {
+            tab[i] = secondFrameController.getAllCourse().get(i).getName();
+        }
+
+        JLabel jLabelCourse = new JLabel("Session of :");
+        JComboBox comboBox = new JComboBox(tab);
+
+        ///////////////
+
+        String[] tab1 = new String[secondFrameController.getAllCourseType().size()];
+
+        for (int i = 0; i < tab1.length; i++) {
+            tab1[i] = secondFrameController.getAllCourseType().get(i).getType();
+        }
+
+        JLabel jLabelCourseType = new JLabel("Type of :");
+        JComboBox comboBoxType = new JComboBox(tab1);
+
+        ///////////////
+        String[] tab2 = new String[secondFrameController.getAllSessionState().size()];
+
+        for (int i = 0; i < tab2.length; i++) {
+            tab2[i] = secondFrameController.getAllSessionState().get(i);
+        }
+
+        JLabel jLabelSessionState = new JLabel("Session State :");
+        JComboBox comboBoxState = new JComboBox(tab2);
+
+
+        ///////////////
+
+
+        JPanel addSessionAdmin = new JPanel(new GridLayout(9, 2));
+
+        adminFrame.setContentPane(addSessionAdmin);
+
+        JLabel jLabelDate = new JLabel("Date (yyyy-MM-dd) :");
+        JTextField addSessionDate = new JTextField();
+
+        JLabel jLabelStartTime = new JLabel("Start Time (HH:mm:ss) :");
+        JTextField addSessionStartTime = new JTextField();
+
+        JLabel jLabelEndTime = new JLabel("End Time (HH:mm:ss) :");
+        JTextField addSessionEndTime = new JTextField();
+
+        JLabel jLabelWeek = new JLabel("Week :");
+        JTextField addSessionWeek = new JTextField();
+
+        JButton buttonAddTeacher = new JButton("Ajouter Enseigant");
+        JButton buttonReturn = new JButton("Return");
+
+
+        jLabelDate.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addSessionDate.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelStartTime.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addSessionStartTime.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelEndTime.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addSessionEndTime.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelWeek.setFont(new Font(" Arial ", Font.BOLD, 20));
+        addSessionWeek.setFont(new Font(" Arial ", Font.BOLD, 20));
+
+        jLabelCourse.setFont(new Font(" Arial ", Font.BOLD, 20));
+        panSmall.add(comboBox);
+        comboBox.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBox.setBounds(0, 60, 200, 50);
+
+        jLabelCourseType.setFont(new Font(" Arial ", Font.BOLD, 20));
+        panSmall.add(comboBoxType);
+        comboBoxType.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBoxType.setBounds(0, 60, 200, 50);
+
+        jLabelSessionState.setFont(new Font(" Arial ", Font.BOLD, 20));
+        panSmall.add(comboBoxState);
+        comboBoxState.setBounds(0, 60, 200, 50);
+
+
+        addSessionAdmin.add((jLabelDate));
+        addSessionAdmin.add(addSessionDate);
+
+        addSessionAdmin.add((jLabelStartTime));
+        addSessionAdmin.add(addSessionStartTime);
+
+        addSessionAdmin.add((jLabelEndTime));
+        addSessionAdmin.add(addSessionEndTime);
+
+        addSessionAdmin.add(jLabelWeek);
+        addSessionAdmin.add(addSessionWeek);
+
+        addSessionAdmin.add(jLabelCourse);
+        addSessionAdmin.add(comboBox);
+
+        addSessionAdmin.add(jLabelCourseType);
+        addSessionAdmin.add(comboBoxType);
+
+        addSessionAdmin.add(jLabelSessionState);
+        addSessionAdmin.add(comboBoxState);
+
+        addSessionAdmin.add(buttonAddTeacher);
+        addSessionAdmin.add(buttonReturn);
+
+        buttonAddTeacher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                secondFrameControllerExtern.addSession(addSessionWeek.getText(), addSessionDate.getText(),
+                        addSessionStartTime.getText(), addSessionEndTime.getText(), comboBoxState.getSelectedItem().toString(), comboBox.getSelectedItem().toString(), comboBoxType.getSelectedItem().toString());
+
+
+            }
+        });
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addSessionAdmin.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                adminFrame();
+            }
+        });
+
+
+    }
+
+    public void removeSessionAdmin() {
+
+        String[] tab = new String[secondFrameController.getAllTeacher().size()];
+
+        for (int i = 0; i < tab.length; i++) {
+            tab[i] = secondFrameController.getAllTeacher().get(i).getFirst_name() + "  " + secondFrameController.getAllTeacher().get(i).getLast_name();
+        }
+
+        JPanel adminPanel = new JPanel(new GridLayout(5, 1));
+        adminFrame.setContentPane(adminPanel);
+        adminFrame.setTitle("Remove session ");
+
+        JComboBox comboBoxType = new JComboBox(tab);
+        comboBoxType.setFont(new Font(" TimesRoman ", Font.BOLD, 25));
+
+        JComboBox comboBoxCourse = new JComboBox();
+        comboBoxCourse.setFont(new Font(" TimesRoman ", Font.BOLD, 25));
+
+        JComboBox comboBoxSession = new JComboBox();
+        comboBoxSession.setFont(new Font(" TimesRoman ", Font.BOLD, 25));
+
+
+        JButton buttonReturn = new JButton("Return");
+        buttonReturn.setFont(new Font(" TimesRoman ", Font.BOLD, 30));
+
+        JButton buttonRemove = new JButton("Research");
+        buttonRemove.setFont(new Font(" TimesRoman ", Font.BOLD, 30));
+
+        adminPanel.add(comboBoxType);
+        adminPanel.add(comboBoxCourse);
+        adminPanel.add(comboBoxSession);
+        adminPanel.add(buttonRemove);
+        adminPanel.add(buttonReturn);
+
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adminPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(adminFrame);
+                adminFrame();
+            }
+        });
+    }
 
     public void teacherFrame() {
         smallFen.setVisible(false);
@@ -383,11 +825,11 @@ public class SecondFrameView implements Observer {
 
     public void dataConsulting() {
 
+        JPanel adminPanel = new JPanel(new GridLayout(6, 2));
+        adminFrame.setContentPane(adminPanel);
         JButton buttonSessionData = new JButton("Sessions Data");
         JButton buttonSiteData = new JButton("Site Data");
         JButton buttonReturn = new JButton("Return");
-
-        JPanel adminPanel = new JPanel(new GridLayout(6, 2));
 
         adminPanel.add(buttonSessionData);
         adminPanel.add(buttonSiteData);

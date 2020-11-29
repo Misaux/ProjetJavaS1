@@ -119,9 +119,9 @@ public class UserDAO implements UserDao  {
                 this.preparedStatement.setString(4, user.getFirst_name());
                 this.preparedStatement.setString(5, user.getPermission());
                 this.preparedStatement.execute();
-            } //pour oscar test2
+            }
 
-
+            JOptionPane.showMessageDialog(null, "User Successfully added in the user database");
             System.out.println(" user saved into the database");
             this.preparedStatement.close();
             this.connection.close();
@@ -170,60 +170,68 @@ public class UserDAO implements UserDao  {
 
     @Override
     public User findUserByFirstName(String firstName){
-        User user = new User();
-        try{
-            connection = DriverManager.getConnection(url, username, password);
-            preparedStatement = connection.prepareStatement("SELECT * from user where (first_name) = ?");
-            this.preparedStatement.setString(1, firstName);
+        try {
+            this.connection= DriverManager.getConnection(this.url,this.username,this.password);
+            this.preparedStatement= this.connection.prepareStatement
+                    ("select * from user where first_name = ?");
+            this.preparedStatement.setString(1,firstName);
             this.resultSet = this.preparedStatement.executeQuery();
 
-            try {
-                resultSet.next();
+            User user = new User();
+
+
+            while(this.resultSet.next()){
+
+                user.setEmail(this.resultSet.getString("email"));
+                user.setPassword(this.resultSet.getString("password"));
+                user.setLast_name(this.resultSet.getString("last_name"));
                 user.setFirst_name(this.resultSet.getString("first_name"));
+                user.setPermission(this.resultSet.getString("permission"));
                 user.setID(this.resultSet.getLong("id"));
-                System.out.println(user.toString());
-                return user;
-            } catch (SQLException throwables) {
-                System.out.println("ERREUR, user introuvable");
+
             }
+            this.resultSet.close();
+            this.preparedStatement.close();
+            this.connection.close();
+            return user;
 
-            preparedStatement.close();
-            resultSet.close();
-            connection.close();
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     @Override
     public User findUserByLastName(String lastName) {
-        User user = new User();
-        try{
-            this.connection = DriverManager.getConnection(url, username, password);
-            this.preparedStatement = this.connection.prepareStatement("SELECT * from user where (last_name) = ?");
-            this.preparedStatement.setString(1, lastName);
+        try {
+            this.connection= DriverManager.getConnection(this.url,this.username,this.password);
+            this.preparedStatement= this.connection.prepareStatement
+                    ("select * from user where last_name = ?");
+            this.preparedStatement.setString(1,lastName);
             this.resultSet = this.preparedStatement.executeQuery();
 
-            try {
-                this.resultSet.next();
+           User user = new User();
+
+
+            while(this.resultSet.next()){
+
+                user.setEmail(this.resultSet.getString("email"));
+                user.setPassword(this.resultSet.getString("password"));
                 user.setLast_name(this.resultSet.getString("last_name"));
+                user.setFirst_name(this.resultSet.getString("first_name"));
+                user.setPermission(this.resultSet.getString("permission"));
                 user.setID(this.resultSet.getLong("id"));
-                System.out.println(user.toString());
-                return user;
-            } catch (SQLException throwables) {
-                System.out.println("ERREUR, user introuvable");
+
             }
-
-            this.preparedStatement.close();
             this.resultSet.close();
+            this.preparedStatement.close();
             this.connection.close();
+            return user;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -269,15 +277,17 @@ public class UserDAO implements UserDao  {
         try{
             this.connection = DriverManager.getConnection(url, username, password);
 
-            this.preparedStatement = this.connection.prepareStatement("DELETE from user where (id) = ? ");
-            this.preparedStatement.setLong(1, user.getID());
+            this.preparedStatement = this.connection.prepareStatement("DELETE from user where last_name = ? and first_name = ? ");
+            this.preparedStatement.setString(1,user.getLast_name());
+            this.preparedStatement.setString(2,user.getFirst_name());
 
             this.preparedStatement.execute();
+
             System.out.println("L'user a bien été supprimée.");
 
             this.preparedStatement.close();
             this.connection.close();
-
+            JOptionPane.showMessageDialog(null, "User Successfully deleted");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -12,7 +12,7 @@ public class Course extends Observable {
 
     public Course(Long ID, String name) {
         this.ID = ID;
-        this.name = "DS de " + name;
+        this.name = name;
     }
 
     public Long getID() {

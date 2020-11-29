@@ -20,4 +20,5 @@ public interface SessionDAO {
     List<Session> getMathematiqueSession();
     List<Session> getAnglaisSession();
     JDBCPieDataset readData();
+    List<String> getAllSessionState();
 }

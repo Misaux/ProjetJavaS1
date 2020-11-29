@@ -1,10 +1,14 @@
 package DAO;
+import InterfaceDao.CoursDao;
 import Models.Course;
+import Models.CourseType;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class CourseDAO {
+public class CourseDAO implements CoursDao {
 
     private String url;
     private String username;
@@ -18,6 +22,65 @@ public class CourseDAO {
         this.url = url;
         this.username = username;
         this.password = password;
+
+    }
+
+
+    @Override
+    public List<Course> getAllCourse() {
+        List<Course> list = new ArrayList<>();
+
+        try {
+            this.connection=DriverManager.getConnection(this.url,this.username,this.password);
+            preparedStatement = connection.prepareStatement("SELECT * from course");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                String name = resultSet.getString("name");
+                Long id = resultSet.getLong("id");
+                list.add(new Course(id, name));
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+            return list;
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Course readCourseByName(String name) {
+        try {
+            this.connection= DriverManager.getConnection(this.url,this.username,this.password);
+            this.preparedStatement= this.connection.prepareStatement
+                    ("select * from course where name = ?");
+            this.preparedStatement.setString(1,name);
+            this.resultSet = this.preparedStatement.executeQuery();
+
+            Course course=new Course();
+
+            while(this.resultSet.next()){
+
+                course.setID(this.resultSet.getLong("id"));
+                course.setName(this.resultSet.getString("name"));
+
+            }
+
+            this.resultSet.close();
+            this.preparedStatement.close();
+            this.connection.close();
+            return course;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 
@@ -72,4 +135,7 @@ public class CourseDAO {
             return null;
         }
     }
+
+
+
 }

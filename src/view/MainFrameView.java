@@ -87,6 +87,7 @@ public class MainFrameView implements Observer {
             panels.add(i, new JPanel());
         }
 
+
         //Ajouts des panneaux au grand panneaux
         for (int i = 0; i < panels.size(); i++) {
             pan.add(panels.get(i));
