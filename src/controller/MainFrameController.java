@@ -36,10 +36,10 @@ public class MainFrameController {
 
 
 
-    public List<Session> getSessionLundi() {
+    public List<Session> getSessionLundi(User user, String week) {
         List<Session> list = new ArrayList<>();
 
-        for (Session s : this.sessionDAO.getAllSession()){
+        for (Session s : this.sessionDAO.getWeekSessionStudent(user, week)){
             LocalDate date;
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             date  = LocalDate.parse(s.getDate(),dateFormatter);
@@ -50,10 +50,10 @@ public class MainFrameController {
         return list;
     }
 
-    public List<Session> getSessionMardi() {
+    public List<Session> getSessionMardi(User user, String week) {
         List<Session> list = new ArrayList<>();
 
-                     for (Session s : this.sessionDAO.getAllSession()){
+                     for (Session s : this.sessionDAO.getWeekSessionStudent(user, week)){
             LocalDate date;
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             date  = LocalDate.parse(s.getDate(),dateFormatter);
@@ -63,10 +63,10 @@ public class MainFrameController {
         }
         return list;
     }
-    public List<Session> getSessionMercredi() {
+    public List<Session> getSessionMercredi(User user, String week) {
         List<Session> list = new ArrayList<>();
 
-        for (Session s : this.sessionDAO.getAllSession()){
+        for (Session s : this.sessionDAO.getWeekSessionStudent(user, week)){
             LocalDate date;
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             date  = LocalDate.parse(s.getDate(),dateFormatter);
@@ -77,10 +77,10 @@ public class MainFrameController {
 
         return list;
     }
-    public List<Session> getSessionJeudi() {
+    public List<Session> getSessionJeudi(User user, String week) {
         List<Session> list = new ArrayList<>();
 
-        for (Session s : this.sessionDAO.getAllSession()){
+        for (Session s : this.sessionDAO.getWeekSessionStudent(user, week)){
             LocalDate date;
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             date  = LocalDate.parse(s.getDate(),dateFormatter);
@@ -91,10 +91,10 @@ public class MainFrameController {
 
         return list;
     }
-    public List<Session> getSessionVendredi() {
+    public List<Session> getSessionVendredi(User user, String week) {
         List<Session> list = new ArrayList<>();
 
-        for (Session s : this.sessionDAO.getAllSession()){
+        for (Session s : this.sessionDAO.getWeekSessionStudent(user, week)){
             LocalDate date;
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             date  = LocalDate.parse(s.getDate(),dateFormatter);
@@ -104,10 +104,10 @@ public class MainFrameController {
         }
         return list;
     }
-    public List<Session> getSessionSamedi() {
+    public List<Session> getSessionSamedi(User user, String week) {
         List<Session> list = new ArrayList<>();
 
-        for (Session s : this.sessionDAO.getAllSession()){
+        for (Session s : this.sessionDAO.getWeekSessionStudent(user, week)){
             LocalDate date;
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             date  = LocalDate.parse(s.getDate(),dateFormatter);

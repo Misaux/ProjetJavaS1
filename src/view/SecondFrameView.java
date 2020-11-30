@@ -25,7 +25,7 @@ public class SecondFrameView implements Observer {
      */
     public static final Color bleuClair = new Color(51, 153, 255);
     public static final Color colorTotoBubuSamsam = new Color(50, 179, 190);
-    public static final Color bleuPale = new Color(153, 204, 255);
+    public static final Color bleuPale = new Color(0, 0, 0);
 
     private JFrame fenetre = new JFrame("fenetre");
 
@@ -53,9 +53,6 @@ public class SecondFrameView implements Observer {
     private java.util.List<Session> jeudiSession = new ArrayList<>();
     private java.util.List<Session> vendrediSession = new ArrayList<>();
     private List<Session> samediSession = new ArrayList<>();
-
-
-
 
 
     /*
@@ -99,16 +96,16 @@ public class SecondFrameView implements Observer {
     JPanel studentPanel = new JPanel();
     JFrame teacherFrame = new JFrame("Teacher Frame");
     JPanel teacherPanel = new JPanel();
-    JPanel referentPanel= new JPanel();
-
+    JPanel referentPanel = new JPanel();
 
 
     public SecondFrameView(SecondFrameController secondFrameController, MainFrameController mainFrameController) {
 
         this.mainFrameController = mainFrameController;
         this.secondFrameController = secondFrameController;
-        connexionUser();
         showMainFrame();
+        connexionUser();
+
 
     }
 
@@ -200,14 +197,10 @@ public class SecondFrameView implements Observer {
 
     }
 
-    public void showMainFrame(){
-
+    public void showMainFrame() {
 
 
         fenetre.setVisible(true);
-
-
-
 
 
         //Definition de la fenetre++
@@ -569,7 +562,7 @@ public class SecondFrameView implements Observer {
 
     public void studentFrame() {
         smallFen.setVisible(false);
-        studentPanel.setLayout(new GridLayout(2,1));
+        studentPanel.setLayout(new GridLayout(3, 1));
 
         studentFrame.setBounds(0, 0, 460, 400);
         studentFrame.setLocation(1000, 540);
@@ -577,6 +570,8 @@ public class SecondFrameView implements Observer {
 
         //premiere page
         //-------------------------------------------
+
+
         JButton viewPlaning1 = new JButton();
         studentPanel.add(viewPlaning1);
         viewPlaning1.setText("view planning");
@@ -585,11 +580,12 @@ public class SecondFrameView implements Observer {
         studentPanel.add(deconnexionStudent);
         deconnexionStudent.setText("Deconnexion");
 
+
         //--------------------------------------------
 
 
         studentFrame.setVisible(true);
-        studentPanel.setLayout(null);
+
         studentFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
@@ -617,37 +613,50 @@ public class SecondFrameView implements Observer {
     }
 
 
-    public void viewPlanningStudent(){
+    public void viewPlanningStudent() {
+        JButton buttonReturn = new JButton("Return");
+
+
         JButton buttonSearch = new JButton("search");
-        studentPanel.setLayout(new GridLayout(2,1));
+        studentPanel.setLayout(new GridLayout(3, 1));
 
         String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
         int nb = 1;
         for (int i = 0; i < tabWeek.length; i++) {
-            tabWeek[i] = valueOf(nb+i);
+            tabWeek[i] = valueOf(nb + i);
         }
         JComboBox comboBoxStudent;
         comboBoxStudent = new JComboBox(tabWeek);
         studentPanel.add(comboBoxStudent);
 
         studentPanel.add(buttonSearch);
+        studentPanel.add(buttonReturn);
 
         buttonSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                studentPanel.removeAll();
-                SwingUtilities.updateComponentTreeUI(studentFrame);
 
-                mainFrameController.getSessionByWeekForStudent(user, comboBoxStudent.getSelectedItem().toString());
+
+                showSession(comboBoxStudent.getSelectedItem().toString());
             }
         });
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                studentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(studentFrame);
+                studentFrame();
+            }
+        });
+
 
     }
 
 
     public void teacherFrame() {
         smallFen.setVisible(false);
-        teacherPanel.setLayout(new GridLayout(2,1));
+        teacherPanel.setLayout(new GridLayout(2, 1));
 
         teacherFrame.setBounds(0, 0, 460, 400);
         teacherFrame.setLocation(1000, 540);
@@ -693,14 +702,14 @@ public class SecondFrameView implements Observer {
 
     }
 
-    public void viewPlanningTeacher(){
+    public void viewPlanningTeacher() {
         JButton buttonSearch = new JButton("search");
 
-        teacherPanel.setLayout(new GridLayout(2,1));
+        teacherPanel.setLayout(new GridLayout(2, 1));
         String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
         int nb = 1;
         for (int i = 0; i < tabWeek.length; i++) {
-            tabWeek[i] = valueOf(nb+i);
+            tabWeek[i] = valueOf(nb + i);
         }
         JComboBox comboBoxTeacher;
         comboBoxTeacher = new JComboBox(tabWeek);
@@ -717,7 +726,6 @@ public class SecondFrameView implements Observer {
         });
 
     }
-
 
 
     public void addTeacherAdmin() {
@@ -1051,7 +1059,7 @@ public class SecondFrameView implements Observer {
 
         String[] tab4 = new String[secondFrameController.getAllGroupPromotion().size()];
         for (int i = 0; i < tab4.length; i++) {
-            tab4[i] = secondFrameController.getAllGroupPromotion().get(i).getName() ;
+            tab4[i] = secondFrameController.getAllGroupPromotion().get(i).getName();
         }
         JLabel jLabelGroupPromo = new JLabel("Group :");
         JComboBox comboBoxGroupPromo = new JComboBox(tab4);
@@ -1138,7 +1146,7 @@ public class SecondFrameView implements Observer {
         addSessionAdmin.add(comboBoxState);
 
         addSessionAdmin.add(jLabelTeacher);
-        addSessionAdmin.add(comboBoxTeacher );
+        addSessionAdmin.add(comboBoxTeacher);
 
         addSessionAdmin.add(jLabelGroupPromo);
         addSessionAdmin.add(comboBoxGroupPromo);
@@ -1232,11 +1240,10 @@ public class SecondFrameView implements Observer {
         buttonRemove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondFrameControllerExtern.removeSession(comboBoxDate.getSelectedItem().toString(), comboBoxStartTime.getSelectedItem().toString(),comboBoxCourse.getSelectedItem().toString());
+                secondFrameControllerExtern.removeSession(comboBoxDate.getSelectedItem().toString(), comboBoxStartTime.getSelectedItem().toString(), comboBoxCourse.getSelectedItem().toString());
             }
         });
     }
-
 
 
     public void referentFrame() {
@@ -1248,7 +1255,7 @@ public class SecondFrameView implements Observer {
         referentFrame.setVisible(true);
 
         referentFrame.setContentPane(referentPanel);
-        referentPanel.setLayout(new GridLayout(4,2));
+        referentPanel.setLayout(new GridLayout(4, 2));
 
         JButton buttonShowTeacher = new JButton("Show Teacher Planning");
         JButton buttonShowStudent = new JButton("Show Student Planning");
@@ -1258,9 +1265,8 @@ public class SecondFrameView implements Observer {
         JButton buttonShowAllStudents = new JButton("Show All Students");
 
 
-
         JButton buttonDisconnect = new JButton("Disconnect");
-        JLabel labelReferentName = new JLabel("Connected as : " + user.getLast_name().toUpperCase()  + " " + user.getFirst_name().toUpperCase());
+        JLabel labelReferentName = new JLabel("Connected as : " + user.getLast_name().toUpperCase() + " " + user.getFirst_name().toUpperCase());
         labelReferentName.setFont(new Font(" Arial ", Font.BOLD, 15));
 
         referentPanel.add(buttonShowTeacher);
@@ -1278,7 +1284,7 @@ public class SecondFrameView implements Observer {
         buttonShowTeacher.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showSession();
+                //showSession();
             }
         });
     }
@@ -1321,9 +1327,9 @@ public class SecondFrameView implements Observer {
     }
 
 
-    public void getCouleurFromCourseType(List<JButton> list,Session session, int index){
+    public void getCouleurFromCourseType(List<JButton> list, Session session, int index) {
 
-        switch (Math.toIntExact(session.getID_course())){
+        switch (Math.toIntExact(session.getID_course())) {
             case 1:
                 list.get(index).setBackground(colorTotoBubuSamsam);
                 break;
@@ -1337,6 +1343,8 @@ public class SecondFrameView implements Observer {
                 list.get(index).setBackground(Color.green);
                 break;
             case 5:
+                list.get(index).setBackground(Color.magenta);
+
 
                 break;
 
@@ -1345,14 +1353,14 @@ public class SecondFrameView implements Observer {
         }
     }
 
-    public int getIntFromSessionHour(Session session){
+    public int getIntFromSessionHour(Session session) {
 
         LocalTime startTime;
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         startTime = LocalTime.parse(session.getStartTime(), timeFormatter);
-        int i =0;
+        int i = 0;
 
-        switch (startTime.getHour()){
+        switch (startTime.getHour()) {
             case 8:
                 i = 0;
                 break;
@@ -1388,14 +1396,13 @@ public class SecondFrameView implements Observer {
         return i;
     }
 
-    public  void showSession(){
-        lundiSession = mainFrameController.getSessionLundi();
-        mardiSession = mainFrameController.getSessionMardi();
-        mercrediSession = mainFrameController.getSessionMercredi();
-        jeudiSession = mainFrameController.getSessionJeudi();
-        vendrediSession = mainFrameController.getSessionVendredi();
-        samediSession = mainFrameController.getSessionSamedi();
-
+    public void showSession(String item) {
+        lundiSession = mainFrameController.getSessionLundi(user, item);
+        mardiSession = mainFrameController.getSessionMardi(user, item);
+        mercrediSession = mainFrameController.getSessionMercredi(user, item);
+        jeudiSession = mainFrameController.getSessionJeudi(user, item);
+        vendrediSession = mainFrameController.getSessionVendredi(user, item);
+        samediSession = mainFrameController.getSessionSamedi(user, item);
 
 
         for (Session s : lundiSession) {

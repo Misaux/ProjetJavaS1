@@ -68,14 +68,7 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         }
     }
 
-    public List<Session> getWeekSessionStudent(User user, String weekSelected) { //faire la meme fonct pour le teacher
-
-        /*pour la version teacher
-        1- SELECT id_course FROM teacher WHERE id_user = (ici user connecté)
-
-        2 - SELECT * FROM session WHERE id_course = (ici obtenu avec la requette precedente))
-         */
-
+    public List<Session> getWeekSessionStudent(User user, String weekSelected) {
 
         List<Session> list = new ArrayList<>();
 
@@ -168,11 +161,11 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             /*--------------------------------*/
 
             preparedStatement = connection.prepareStatement("SELECT * FROM session WHERE id_course = ?");
-            preparedStatement.setInt(1,idCourse);
+            preparedStatement.setInt(1, idCourse);
 
             resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 Long Id = resultSet.getLong("id");
                 int week = resultSet.getInt("week");
                 String date = resultSet.getString("date");
@@ -197,7 +190,6 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             return null;
         }
     }
-
 
 
     @Override
@@ -451,7 +443,7 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             preparedStatement = connection.prepareStatement("DELETE from session where date= ? and start_time = ? and id_course = ? ");
             preparedStatement.setString(1, session.getDate());
             preparedStatement.setString(2, session.getStartTime());
-            preparedStatement.setLong(3,session.getID_course());
+            preparedStatement.setLong(3, session.getID_course());
 
             this.preparedStatement.execute();
             System.out.println("La session a bien été supprimée.");
@@ -470,23 +462,20 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
     public JDBCPieDataset readData() {
         JDBCPieDataset data = null;
 
-        try
-        {
+        try {
             this.connection = DriverManager.getConnection(this.url, this.username, this.password);
             data = new JDBCPieDataset(this.connection);
             String sql = "SELECT name, Count(id_course) FROM course c INNER JOIN session s WHERE c.id = s.id_course GROUP BY id_course";
             data.executeQuery(sql);
             this.connection.close();
+        } catch (SQLException e) {
+            System.err.print("SQLException: ");
+            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.print("Exception: ");
+            System.err.println(e.getMessage());
         }
-        catch (SQLException e) {
-                System.err.print("SQLException: ");
-                System.err.println(e.getMessage());
-            }
-        catch (Exception e) {
-                System.err.print("Exception: ");
-                System.err.println(e.getMessage());
-            }
 
-            return data;
+        return data;
     }
 }
