@@ -24,5 +24,7 @@ public interface SessionDAO {
     List<String> getAllSessionStartTime();
     List<String> getAllSessionDate();
     List<String> getAllSessionState();
-    List<Session> getWeekSession(User user, String semaine);
+    List<Session> getWeekSessionTeacher(User user, String weekSelected);
+    List<Session> getWeekSessionStudent(User user, String weekSelected);
+
 }

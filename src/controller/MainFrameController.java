@@ -118,5 +118,13 @@ public class MainFrameController {
         return list;
     }
 
+    public List<Session> getSessionByWeekForStudent(User user, String weekSelected){
+        return sessionDAO.getWeekSessionStudent(user, weekSelected);
+    }
+
+    public List<Session> getSessionByWeekForTeacher(User user, String weekSelected){
+        return sessionDAO.getWeekSessionTeacher(user, weekSelected);
+    }
+
 
 }

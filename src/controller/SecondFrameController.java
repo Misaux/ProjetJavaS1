@@ -17,9 +17,9 @@ import java.util.Observable;
 
 public class SecondFrameController extends Observable {
 
-    String url = "jdbc:mysql://localhost:3306/projets1?serverTimezone=UTC";
+    String url = "jdbc:mysql://localhost:8889/projets1?serverTimezone=UTC";
     String username = "root";
-    String password = "";
+    String password = "root";
 
     private UserDAO userDao = new UserDAO(url, username, password);
     private PromotionDAO promotionDao = new PromotionDAO(url, username, password);
@@ -270,9 +270,7 @@ public class SecondFrameController extends Observable {
     }
 
 
-    public List<Session> getSessionByWeek(User user, String weekSelected){
-        return sessionDAO.getWeekSession(user, weekSelected);
-    }
+
 
 }
 

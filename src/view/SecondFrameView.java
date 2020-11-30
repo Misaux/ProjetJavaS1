@@ -97,7 +97,8 @@ public class SecondFrameView implements Observer {
     /*-------------------------------------------------------------------------------------------*/
     JFrame studentFrame = new JFrame("Student Frame");
     JPanel studentPanel = new JPanel();
-
+    JFrame teacherFrame = new JFrame("Teacher Frame");
+    JPanel teacherPanel = new JPanel();
     JPanel referentPanel= new JPanel();
 
 
@@ -597,7 +598,7 @@ public class SecondFrameView implements Observer {
             public void actionPerformed(ActionEvent e) {
                 studentPanel.removeAll();
                 SwingUtilities.updateComponentTreeUI(studentFrame);
-                viewPlanning();
+                viewPlanningStudent();
             }
         });
 
@@ -615,10 +616,11 @@ public class SecondFrameView implements Observer {
 
     }
 
-    public void viewPlanning(){
-        JButton buttonSearch = new JButton("search");
 
+    public void viewPlanningStudent(){
+        JButton buttonSearch = new JButton("search");
         studentPanel.setLayout(new GridLayout(2,1));
+
         String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
         int nb = 1;
         for (int i = 0; i < tabWeek.length; i++) {
@@ -627,6 +629,7 @@ public class SecondFrameView implements Observer {
         JComboBox comboBoxStudent;
         comboBoxStudent = new JComboBox(tabWeek);
         studentPanel.add(comboBoxStudent);
+
         studentPanel.add(buttonSearch);
 
         buttonSearch.addActionListener(new ActionListener() {
@@ -634,12 +637,88 @@ public class SecondFrameView implements Observer {
             public void actionPerformed(ActionEvent e) {
                 studentPanel.removeAll();
                 SwingUtilities.updateComponentTreeUI(studentFrame);
-                secondFrameController.getSessionByWeek(user, comboBoxStudent.getSelectedItem().toString());
+
+                mainFrameController.getSessionByWeekForStudent(user, comboBoxStudent.getSelectedItem().toString());
+            }
+        });
+
+    }
+
+
+    public void teacherFrame() {
+        smallFen.setVisible(false);
+        teacherPanel.setLayout(new GridLayout(2,1));
+
+        teacherFrame.setBounds(0, 0, 460, 400);
+        teacherFrame.setLocation(1000, 540);
+        teacherFrame.setContentPane(teacherPanel);
+
+        //premiere page
+        //-------------------------------------------
+        JButton viewPlaning = new JButton();
+        teacherPanel.add(viewPlaning);
+        viewPlaning.setText("view planning");
+
+        JButton deconnexionTeacher = new JButton();
+        teacherPanel.add(deconnexionTeacher);
+        deconnexionTeacher.setText("Deconnexion");
+
+        //--------------------------------------------
+
+        teacherFrame.setVisible(true);
+        teacherPanel.setLayout(null);
+        teacherFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+
+        viewPlaning.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(teacherFrame);
+                viewPlanningTeacher();
             }
         });
 
 
+        deconnexionTeacher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherFrame.setVisible(false);
+                teacherPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(teacherPanel);
+
+                connexionUser();
+            }
+        });
+
     }
+
+    public void viewPlanningTeacher(){
+        JButton buttonSearch = new JButton("search");
+
+        teacherPanel.setLayout(new GridLayout(2,1));
+        String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
+        int nb = 1;
+        for (int i = 0; i < tabWeek.length; i++) {
+            tabWeek[i] = valueOf(nb+i);
+        }
+        JComboBox comboBoxTeacher;
+        comboBoxTeacher = new JComboBox(tabWeek);
+        teacherPanel.add(comboBoxTeacher);
+        teacherPanel.add(buttonSearch);
+
+        buttonSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(teacherFrame);
+                mainFrameController.getSessionByWeekForTeacher(user, comboBoxTeacher.getSelectedItem().toString());
+            }
+        });
+
+    }
+
+
 
     public void addTeacherAdmin() {
 
@@ -1158,19 +1237,7 @@ public class SecondFrameView implements Observer {
         });
     }
 
-    public void teacherFrame() {
-        smallFen.setVisible(false);
 
-        JFrame teacherFrame = new JFrame("Teacher Frame");
-        teacherFrame.setBounds(0, 0, 460, 400);
-        teacherFrame.setLocation(1000, 540);
-        teacherFrame.setVisible(true);
-
-        JPanel studentPanel = new JPanel();
-        studentPanel.setLayout(null);
-
-        teacherFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    }
 
     public void referentFrame() {
         smallFen.setVisible(false);
