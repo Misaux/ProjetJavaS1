@@ -70,8 +70,6 @@ public class UserDAO implements UserDao  {
     }
 
 
-
-
     @Override
     public List<User> getAllUser() {
         List<User> list = new ArrayList<>();

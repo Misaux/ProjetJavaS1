@@ -34,10 +34,7 @@ public class MainFrameController {
         this.promotion.setPromotion(promotionDao.getPromotionByID(id));
     }
 
-    public Session  getSession(){
-        this.session.setSession(sessionDAO.readSession(1, "2020-09-17", "09:30:00"));
-        return this.session;
-    }
+
 
     public List<Session> getSessionLundi() {
         List<Session> list = new ArrayList<>();

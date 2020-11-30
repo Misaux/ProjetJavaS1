@@ -26,9 +26,11 @@ public class SecondFrameController extends Observable {
     private GroupPromoDAO groupPromoDAO = new GroupPromoDAO(url, username, password);
     private SessionDAO sessionDAO = new SessionDAO(url, username, password);
     private TeacherDAO teacherDAO = new TeacherDAO(url, username, password);
+    private TeacherSessionDAO teacherSessionDAO = new TeacherSessionDAO(url,username,password);
     private StudentDAO studentDAO = new StudentDAO(url, username, password);
     private CourseDAO courseDAO = new CourseDAO(url, username, password);
     private CourseTypeDAO courseTypeDAO = new CourseTypeDAO(url, username, password);
+    private GroupSessionDAO groupSessionDAO = new GroupSessionDAO(url,username,password);
 
     private User user = new User();
     private Session session = new Session();
@@ -93,6 +95,18 @@ public class SecondFrameController extends Observable {
         return sessionDAO.getAllSessionState();
     }
 
+    public List<Session> getAllSession() {
+        return sessionDAO.getAllSession();
+    }
+
+    public List<String> getAllSessionStartTime() {
+        return sessionDAO.getAllSessionStartTime();
+    }
+
+    public List<String> getAllSessionDate() {
+        return sessionDAO.getAllSessionDate();
+    }
+
     public List<GroupPromo> getAllGroupPromotion() {
         return groupPromoDAO.getAllGroupPromo();
     }
@@ -128,10 +142,6 @@ public class SecondFrameController extends Observable {
 
     }
 
-    public void getSession() {
-        this.session.setSession(sessionDAO.readSession(1, "2020-11-23", "09:30:00"));
-        System.out.println(this.session.toString());
-    }
 
     public void showSessionPlanning() {
 
@@ -216,9 +226,12 @@ public class SecondFrameController extends Observable {
 
     }
 
-    public void addSession(String weekSession, String date, String startTime, String endTime, String state, String courseSelected, String typeSelected) {
+    public void addSession(String weekSession, String date, String startTime, String endTime, String state, String courseSelected, String typeSelected, String teacherSelected, String groupSelected) {
 
 
+        String output[] = teacherSelected.split("\\s+");
+        String firstName = output[0];
+        String lastName = output[1];
         Session session = new Session();
         int week = Integer.parseInt(weekSession);
         session.setWeek(week);
@@ -228,13 +241,30 @@ public class SecondFrameController extends Observable {
         session.setID_course(courseDAO.readCourseByName(courseSelected).getID());
         session.setID_type(courseTypeDAO.readCourseTypeByName(typeSelected).getID());
         session.setState(state);
-
         sessionDAO.createSession(session);
+
+        TeacherSession teacherSession = new TeacherSession();
+        teacherSession.setIdSession(sessionDAO.readSession(session.getWeek(),session.getDate(),session.getStartTime(),session.getID_course()).getID());
+        teacherSession.setIdTeacher(userDao.findUserByLastName(lastName).getID());
+        teacherSessionDAO.createTeacherSession(teacherSession);
+
+        GroupSession groupSession = new GroupSession();
+        groupSession.setIdGroup(groupPromoDAO.readGroupPromoByName(groupSelected).getID());
+        groupSession.setIdSession(sessionDAO.readSession(session.getWeek(),session.getDate(),session.getStartTime(),session.getID_course()).getID());
+        groupSessionDAO.createGroupSession(groupSession);
+
 
 
     }
 
-    public void removeSession(String courseSelected) {
+    public void removeSession(String dateselected , String startTimeSelected , String courseSelected) {
+
+
+        Session session = new Session();
+        session.setDate(dateselected);
+        session.setStartTime(startTimeSelected);
+        session.setID_course(courseDAO.readCourseByName(courseSelected).getID());
+        sessionDAO.deleteSession(session);
 
 
     }

@@ -161,6 +161,56 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
     }
 
     @Override
+    public List<String> getAllSessionStartTime() {
+
+        List<String> list = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(this.url, this.username, this.password);
+            preparedStatement = connection.prepareStatement("SELECT DISTINCT start_time from session order by start_time asc ");
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String start_time = resultSet.getString("start_time");
+                list.add(start_time);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+            return list;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<String> getAllSessionDate() {
+
+        List<String> list = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(this.url, this.username, this.password);
+            preparedStatement = connection.prepareStatement("SELECT DISTINCT date from session order by start_time asc ");
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String date = resultSet.getString("date");
+                list.add(date);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+            return list;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
 
     public List<Session> getInfomatiqueSession() {
 
@@ -246,14 +296,15 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
     }
 
     @Override
-    public Session readSession(int week, String date, String time) {
+    public Session readSession(int week, String date, String time, Long idcourse) {
         try {
             this.connection = DriverManager.getConnection(this.url, this.username, this.password);
             this.preparedStatement = this.connection.prepareStatement
-                    ("select * from session where week = ? AND date = ? AND start_time = ? ");
+                    ("select * from session where week = ? AND date = ? AND start_time = ? and id_course = ? ");
             this.preparedStatement.setInt(1, week);
             this.preparedStatement.setString(2, date);
             this.preparedStatement.setString(3, time);
+            this.preparedStatement.setLong(4, idcourse);
             this.resultSet = this.preparedStatement.executeQuery();
 
             Session session = new Session();
@@ -332,17 +383,20 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         try {
             connection = DriverManager.getConnection(url, username, password);
 
-            preparedStatement = connection.prepareStatement("DELETE from session where (id) = ? ");
-            preparedStatement.setLong(1, session.getID());
+            preparedStatement = connection.prepareStatement("DELETE from session where date= ? and start_time = ? and id_course = ? ");
+            preparedStatement.setString(1, session.getDate());
+            preparedStatement.setString(2, session.getStartTime());
+            preparedStatement.setLong(3,session.getID_course());
 
             this.preparedStatement.execute();
-            System.out.println("La matière a bien été supprimée.");
+            System.out.println("La session a bien été supprimée.");
 
             preparedStatement.close();
             connection.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.print("SQLException: ");
+            System.err.println(e.getMessage());
         }
 
     }

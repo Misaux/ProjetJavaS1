@@ -736,15 +736,19 @@ public class SecondFrameView implements Observer {
             tab[i] = secondFrameController.getAllTeacher().get(i).getFirst_name() + "  " + secondFrameController.getAllTeacher().get(i).getLast_name();
         }
 
-        JComboBox comboBox;
-        comboBox = new JComboBox(tab);
-        panSmall.add(comboBox);
-        comboBox.setFont(new Font(" TimesRoman ", Font.BOLD, 30));
-        comboBox.setBounds(0, 60, 200, 50);
+
+        JComboBox comboBoxCourse = new JComboBox(tab);
+
+
+        panSmall.add(comboBoxCourse);
+
+        comboBoxCourse.setFont(new Font(" TimesRoman ", Font.BOLD, 30));
+        comboBoxCourse.setBounds(0, 60, 200, 50);
         JPanel adminPanel = new JPanel(new GridLayout(3, 1));
 
+
         adminFrame.setContentPane(adminPanel);
-        adminPanel.add(comboBox);
+        adminPanel.add(comboBoxCourse);
 
         JButton buttonRemove = new JButton("Retirer enseignant.");
         JButton buttonreturn = new JButton("Retour.");
@@ -766,7 +770,7 @@ public class SecondFrameView implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                secondFrameControllerExtern.removeTeacher(comboBox.getSelectedItem().toString());
+                secondFrameControllerExtern.removeTeacher(comboBoxCourse.getSelectedItem().toString());
 
             }
         });
@@ -954,7 +958,28 @@ public class SecondFrameView implements Observer {
         ///////////////
 
 
-        JPanel addSessionAdmin = new JPanel(new GridLayout(9, 2));
+        String[] tab3 = new String[secondFrameController.getAllTeacher().size()];
+
+        for (int i = 0; i < tab3.length; i++) {
+            tab3[i] = secondFrameController.getAllTeacher().get(i).getFirst_name() + "  " + secondFrameController.getAllTeacher().get(i).getLast_name();
+        }
+
+        JLabel jLabelTeacher = new JLabel("Teacher :");
+        JComboBox comboBoxTeacher = new JComboBox(tab3);
+
+        //////////////
+
+
+        String[] tab4 = new String[secondFrameController.getAllGroupPromotion().size()];
+        for (int i = 0; i < tab4.length; i++) {
+            tab4[i] = secondFrameController.getAllGroupPromotion().get(i).getName() ;
+        }
+        JLabel jLabelGroupPromo = new JLabel("Group :");
+        JComboBox comboBoxGroupPromo = new JComboBox(tab4);
+
+        ///////////////
+
+        JPanel addSessionAdmin = new JPanel(new GridLayout(10, 2));
 
         adminFrame.setContentPane(addSessionAdmin);
 
@@ -970,7 +995,7 @@ public class SecondFrameView implements Observer {
         JLabel jLabelWeek = new JLabel("Week :");
         JTextField addSessionWeek = new JTextField();
 
-        JButton buttonAddTeacher = new JButton("Ajouter Enseigant");
+        JButton buttonAddSession = new JButton("Add Session");
         JButton buttonReturn = new JButton("Return");
 
 
@@ -998,7 +1023,18 @@ public class SecondFrameView implements Observer {
 
         jLabelSessionState.setFont(new Font(" Arial ", Font.BOLD, 20));
         panSmall.add(comboBoxState);
+        comboBoxState.setFont(new Font(" Arial", Font.BOLD, 20));
         comboBoxState.setBounds(0, 60, 200, 50);
+
+        jLabelTeacher.setFont(new Font(" Arial ", Font.BOLD, 20));
+        panSmall.add(comboBoxTeacher);
+        comboBoxTeacher.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBoxTeacher.setBounds(0, 60, 200, 50);
+
+        jLabelGroupPromo.setFont(new Font(" Arial ", Font.BOLD, 20));
+        panSmall.add(comboBoxGroupPromo);
+        comboBoxGroupPromo.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBoxGroupPromo.setBounds(0, 60, 200, 50);
 
 
         addSessionAdmin.add((jLabelDate));
@@ -1022,14 +1058,22 @@ public class SecondFrameView implements Observer {
         addSessionAdmin.add(jLabelSessionState);
         addSessionAdmin.add(comboBoxState);
 
-        addSessionAdmin.add(buttonAddTeacher);
+        addSessionAdmin.add(jLabelTeacher);
+        addSessionAdmin.add(comboBoxTeacher );
+
+        addSessionAdmin.add(jLabelGroupPromo);
+        addSessionAdmin.add(comboBoxGroupPromo);
+
+        addSessionAdmin.add(buttonAddSession);
         addSessionAdmin.add(buttonReturn);
 
-        buttonAddTeacher.addActionListener(new ActionListener() {
+        buttonAddSession.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 secondFrameControllerExtern.addSession(addSessionWeek.getText(), addSessionDate.getText(),
-                        addSessionStartTime.getText(), addSessionEndTime.getText(), comboBoxState.getSelectedItem().toString(), comboBox.getSelectedItem().toString(), comboBoxType.getSelectedItem().toString());
+                        addSessionStartTime.getText(), addSessionEndTime.getText(), comboBoxState.getSelectedItem().toString(),
+                        comboBox.getSelectedItem().toString(), comboBoxType.getSelectedItem().toString(), comboBoxTeacher.getSelectedItem().toString(),
+                        comboBoxGroupPromo.getSelectedItem().toString());
 
 
             }
@@ -1049,35 +1093,49 @@ public class SecondFrameView implements Observer {
 
     public void removeSessionAdmin() {
 
-        String[] tab = new String[secondFrameController.getAllTeacher().size()];
+        String[] tab = new String[secondFrameController.getAllSessionDate().size()];
 
         for (int i = 0; i < tab.length; i++) {
-            tab[i] = secondFrameController.getAllTeacher().get(i).getFirst_name() + "  " + secondFrameController.getAllTeacher().get(i).getLast_name();
+            tab[i] = secondFrameController.getAllSessionDate().get(i);
         }
+
+        String[] tab2 = new String[secondFrameController.getAllSessionStartTime().size()];
+
+        for (int i = 0; i < tab2.length; i++) {
+            tab2[i] = secondFrameController.getAllSessionStartTime().get(i);
+        }
+
+        String[] tab3 = new String[secondFrameController.getAllCourse().size()];
+
+        for (int i = 0; i < tab3.length; i++) {
+            tab3[i] = secondFrameController.getAllCourse().get(i).getName();
+        }
+
+        ///////////////
 
         JPanel adminPanel = new JPanel(new GridLayout(5, 1));
         adminFrame.setContentPane(adminPanel);
         adminFrame.setTitle("Remove session ");
 
-        JComboBox comboBoxType = new JComboBox(tab);
-        comboBoxType.setFont(new Font(" TimesRoman ", Font.BOLD, 25));
+        JComboBox comboBoxDate = new JComboBox(tab);
+        comboBoxDate.setFont(new Font(" TimesRoman ", Font.BOLD, 25));
 
-        JComboBox comboBoxCourse = new JComboBox();
+        JComboBox comboBoxStartTime = new JComboBox(tab2);
+        comboBoxStartTime.setFont(new Font(" TimesRoman ", Font.BOLD, 25));
+
+        JComboBox comboBoxCourse = new JComboBox(tab3);
         comboBoxCourse.setFont(new Font(" TimesRoman ", Font.BOLD, 25));
-
-        JComboBox comboBoxSession = new JComboBox();
-        comboBoxSession.setFont(new Font(" TimesRoman ", Font.BOLD, 25));
 
 
         JButton buttonReturn = new JButton("Return");
         buttonReturn.setFont(new Font(" TimesRoman ", Font.BOLD, 30));
 
-        JButton buttonRemove = new JButton("Research");
+        JButton buttonRemove = new JButton("Search and Delete");
         buttonRemove.setFont(new Font(" TimesRoman ", Font.BOLD, 30));
 
-        adminPanel.add(comboBoxType);
+        adminPanel.add(comboBoxDate);
+        adminPanel.add(comboBoxStartTime);
         adminPanel.add(comboBoxCourse);
-        adminPanel.add(comboBoxSession);
         adminPanel.add(buttonRemove);
         adminPanel.add(buttonReturn);
 
@@ -1088,6 +1146,14 @@ public class SecondFrameView implements Observer {
                 adminPanel.removeAll();
                 SwingUtilities.updateComponentTreeUI(adminFrame);
                 adminFrame();
+            }
+        });
+
+
+        buttonRemove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                secondFrameControllerExtern.removeSession(comboBoxDate.getSelectedItem().toString(), comboBoxStartTime.getSelectedItem().toString(),comboBoxCourse.getSelectedItem().toString());
             }
         });
     }
