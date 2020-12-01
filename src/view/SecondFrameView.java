@@ -25,7 +25,7 @@ public class SecondFrameView implements Observer {
      */
     public static final Color bleuClair = new Color(51, 153, 255);
     public static final Color colorTotoBubuSamsam = new Color(50, 179, 190);
-    public static final Color bleuPale = new Color(0, 0, 0);
+    public static final Color bleuPale = new Color(153, 204, 255);
 
     private JFrame fenetre = new JFrame("fenetre");
 
@@ -103,6 +103,7 @@ public class SecondFrameView implements Observer {
 
         this.mainFrameController = mainFrameController;
         this.secondFrameController = secondFrameController;
+
         showMainFrame();
         connexionUser();
 
@@ -189,8 +190,7 @@ public class SecondFrameView implements Observer {
         buttonQuit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.exit(0);
-                secondFrameController.testMVC();
+                System.exit(0);
             }
         });
 
@@ -1240,7 +1240,7 @@ public class SecondFrameView implements Observer {
         buttonRemove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondFrameControllerExtern.removeSession(comboBoxDate.getSelectedItem().toString(), comboBoxStartTime.getSelectedItem().toString(), comboBoxCourse.getSelectedItem().toString());
+                secondFrameControllerExtern.removeSession(comboBoxDate.getSelectedItem().toString(), comboBoxStartTime.getSelectedItem().toString(),comboBoxCourse.getSelectedItem().toString());
             }
         });
     }
