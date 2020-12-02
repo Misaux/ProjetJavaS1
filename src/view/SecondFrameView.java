@@ -85,8 +85,7 @@ public class SecondFrameView {
 
     private final JPanel panSmall = new JPanel();
 
-   private final JFrame referentFrame = new JFrame("Referent Frame");
-
+    private final JFrame referentFrame = new JFrame("Referent Frame");
 
 
     private final SecondFrameController secondFrameController;
@@ -308,6 +307,22 @@ public class SecondFrameView {
 
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * permet de remettre le texte des boutons a 0 pour un nouvel affichage
      */
@@ -428,6 +443,17 @@ public class SecondFrameView {
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -589,7 +615,7 @@ public class SecondFrameView {
      */
     public void studentFrame() {
         smallFen.setVisible(false);
-        studentPanel.setLayout(new GridLayout(3, 1));
+        studentPanel.setLayout(new GridLayout(4, 1));
 
         studentFrame.setBounds(0, 0, 460, 400);
         studentFrame.setLocation(1000, 540);
@@ -603,6 +629,11 @@ public class SecondFrameView {
         studentPanel.add(viewPlaning1);
         viewPlaning1.setText("View planning");
         viewPlaning1.setFont(new Font("Arial", Font.BOLD, 20));
+
+        JButton viewSessionTable = new JButton();
+        studentPanel.add(viewSessionTable);
+        viewSessionTable.setText("View session table");
+        viewSessionTable.setFont(new Font("Arial", Font.BOLD, 20));
 
         JButton deconnexionStudent = new JButton();
         studentPanel.add(deconnexionStudent);
@@ -631,6 +662,15 @@ public class SecondFrameView {
             }
         });
 
+        viewSessionTable.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                studentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(studentFrame);
+                viewSessionTableStudent();
+            }
+        });
+
         deconnexionStudent.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -644,6 +684,139 @@ public class SecondFrameView {
 
 
     }
+
+    /**
+     * Fenetre menu lorsque l'utilisateur est un enseignant
+     */
+    public void teacherFrame() {
+        smallFen.setVisible(false);
+        teacherPanel.setLayout(new GridLayout(3, 1));
+
+        teacherFrame.setBounds(0, 0, 460, 400);
+        teacherFrame.setLocation(1000, 540);
+        teacherFrame.setContentPane(teacherPanel);
+
+        //premiere page
+        //-------------------------------------------
+        JButton viewPlaning = new JButton();
+        teacherPanel.add(viewPlaning);
+        viewPlaning.setText("view planning");
+
+        JButton viewSessionTable = new JButton();
+        teacherPanel.add(viewSessionTable);
+        viewSessionTable.setText("view table session");
+
+        JButton deconnexionTeacher = new JButton();
+        teacherPanel.add(deconnexionTeacher);
+        deconnexionTeacher.setText("Deconnexion");
+
+        //--------------------------------------------
+
+        teacherFrame.setVisible(true);
+        teacherPanel.setLayout(null);
+        teacherFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+
+        viewPlaning.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(teacherFrame);
+                viewPlanningTeacher();
+            }
+        });
+
+        viewSessionTable.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(teacherFrame);
+                viewSessionTeacherWeek();
+            }
+        });
+
+        deconnexionTeacher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherFrame.setVisible(false);
+                teacherPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(teacherPanel);
+
+                connexionUser();
+            }
+        });
+
+    }
+
+    /**
+     * fenetre principale pour le refernt pedagogique
+     */
+
+    public void referentFrame() {
+        smallFen.setVisible(false);
+
+        referentFrame.setBounds(0, 0, 500, 400);
+        referentFrame.setLocation(1000, 540);
+        referentFrame.setVisible(true);
+
+        referentFrame.setContentPane(referentPanel);
+        referentPanel.setLayout(new GridLayout(4, 2));
+
+        JButton buttonShowTeacher = new JButton("Show Teacher Planning");
+        JButton buttonShowStudent = new JButton("Show Student Planning");
+        JButton buttonAddSessionTeacher = new JButton("Add Session Teacher");
+        JButton buttonAddSessionStudent = new JButton("Add Session Student");
+        JButton buttonShowAllTeachers = new JButton("Show All Teachers");
+        JButton buttonShowAllStudents = new JButton("Show All Students");
+
+
+        JButton buttonDisconnect = new JButton("Disconnect");
+        JLabel labelReferentName = new JLabel("Connected as : " + user.getLast_name().toUpperCase() + " " + user.getFirst_name().toUpperCase());
+        labelReferentName.setFont(new Font(" Arial ", Font.BOLD, 15));
+
+        referentPanel.add(buttonShowTeacher);
+        referentPanel.add(buttonShowStudent);
+        referentPanel.add(buttonAddSessionTeacher);
+        referentPanel.add(buttonAddSessionStudent);
+        referentPanel.add(buttonShowAllTeachers);
+        referentPanel.add(buttonShowAllStudents);
+        referentPanel.add(buttonDisconnect);
+        referentPanel.add(labelReferentName);
+
+
+        referentFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        buttonShowTeacher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                referentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                showTableTeacher();
+            }
+        });
+        buttonShowAllStudents.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                referentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                showTableStudent();
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -690,57 +863,97 @@ public class SecondFrameView {
 
     }
 
-
-    /**
-     * Fenetre menu lorsque l'utilisateur est un enseignant
-     */
-    public void teacherFrame() {
-        smallFen.setVisible(false);
-        teacherPanel.setLayout(new GridLayout(2, 1));
-
-        teacherFrame.setBounds(0, 0, 460, 400);
-        teacherFrame.setLocation(1000, 540);
-        teacherFrame.setContentPane(teacherPanel);
-
-        //premiere page
-        //-------------------------------------------
-        JButton viewPlaning = new JButton();
-        teacherPanel.add(viewPlaning);
-        viewPlaning.setText("view planning");
-
-        JButton deconnexionTeacher = new JButton();
-        teacherPanel.add(deconnexionTeacher);
-        deconnexionTeacher.setText("Deconnexion");
-
-        //--------------------------------------------
-
-        teacherFrame.setVisible(true);
-        teacherPanel.setLayout(null);
-        teacherFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    public void viewSessionTableStudent() {
+        JButton buttonReturn = new JButton("Return");
 
 
-        viewPlaning.addActionListener(new ActionListener() {
+        JButton buttonSearch = new JButton("Search");
+        studentPanel.setLayout(new GridLayout(3, 1));
+
+        String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
+        int nb = 1;
+        for (int i = 0; i < tabWeek.length; i++) {
+            tabWeek[i] = valueOf(nb + i);
+        }
+        JComboBox comboBoxStudent = new JComboBox(tabWeek);
+        studentPanel.add(comboBoxStudent);
+
+        studentPanel.add(buttonSearch);
+        studentPanel.add(buttonReturn);
+
+        buttonSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                teacherPanel.removeAll();
-                SwingUtilities.updateComponentTreeUI(teacherFrame);
-                viewPlanningTeacher();
+
+                showTableStudentSession(comboBoxStudent.getSelectedItem().toString());
+
+            }
+        });
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                studentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(studentFrame);
+                studentFrame();
             }
         });
 
 
-        deconnexionTeacher.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                teacherFrame.setVisible(false);
-                teacherPanel.removeAll();
-                SwingUtilities.updateComponentTreeUI(teacherPanel);
 
-                connexionUser();
-            }
-        });
 
     }
+
+    public void showTableStudentSession(String item) {
+        JPanel panelTable = new JPanel();
+
+        studentFrame.setContentPane(panelTable);
+        panelTable.setLayout(new BorderLayout());
+
+        String[][] table = new String[mainFrameController.getSessionByWeekForStudent(user, item ).size()][8];
+
+        for (int i = 0; i < mainFrameController.getSessionByWeekForStudent(user, item ).size(); i++) {
+
+            table[i][0] = String.valueOf(mainFrameController.getSessionByWeekForStudent(user, item ).get(i).getID());
+            table[i][1] = String.valueOf(mainFrameController.getSessionByWeekForStudent(user, item ).get(i).getWeek());
+            table[i][2] = String.valueOf(mainFrameController.getSessionByWeekForStudent(user, item ).get(i).getStartTime());
+            table[i][3] = String.valueOf(mainFrameController.getSessionByWeekForStudent(user, item ).get(i).getEndTime());
+            table[i][4] = String.valueOf(mainFrameController.getSessionByWeekForStudent(user, item ).get(i).getState());
+            table[i][5] = String.valueOf(mainFrameController.getSessionByWeekForStudent(user, item ).get(i).getDate());
+            table[i][6] = String.valueOf(mainFrameController.getSessionByWeekForStudent(user, item ).get(i).getID_type());
+            table[i][7] = String.valueOf(mainFrameController.getSessionByWeekForStudent(user, item ).get(i).getID_course());
+
+        }
+
+        String[] entetes = {"ID", "Week", "Heure de début", "Heure de fin", "Etat","Date", "ID_Type", "ID_course"};
+
+
+        JButton buttonReturn = new JButton("Return");
+
+
+
+        JTable jTable = new JTable(table, entetes);
+
+        panelTable.add(jTable.getTableHeader(), BorderLayout.NORTH);
+        panelTable.add(jTable, BorderLayout.CENTER);
+        panelTable.add(buttonReturn, BorderLayout.SOUTH);
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                studentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                studentFrame();
+
+            }
+        });
+
+        studentFrame.pack();
+    }
+
+
+
+
 
 
     /**
@@ -782,6 +995,45 @@ public class SecondFrameView {
         });
 
     }
+
+
+
+
+    public void viewSessionTeacherWeek( ) {
+        JButton buttonSearch = new JButton("search");
+        JButton buttonReturn = new JButton("Return");
+
+        teacherPanel.setLayout(new GridLayout(3, 1));
+        String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
+        int nb = 1;
+        for (int i = 0; i < tabWeek.length; i++) {
+            tabWeek[i] = valueOf(nb + i);
+        }
+        JComboBox comboBoxTeacher;
+        comboBoxTeacher = new JComboBox(tabWeek);
+        teacherPanel.add(comboBoxTeacher);
+        teacherPanel.add(buttonSearch);
+        teacherPanel.add(buttonReturn);
+
+        buttonSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showTableTeacherSession(comboBoxTeacher.getSelectedItem().toString());
+            }
+        });
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(teacherFrame);
+                teacherFrame();
+            }
+        });
+
+    }
+
+
 
 
     /**
@@ -1337,78 +1589,78 @@ public class SecondFrameView {
         });
     }
 
-    /**
-     * fenetre principale pour le refernt pedagogique
-     */
-
-    public void referentFrame() {
-        smallFen.setVisible(false);
-
-        referentFrame.setBounds(0, 0, 500, 400);
-        referentFrame.setLocation(1000, 540);
-        referentFrame.setVisible(true);
-
-        referentFrame.setContentPane(referentPanel);
-        referentPanel.setLayout(new GridLayout(4, 2));
-
-        JButton buttonShowTeacher = new JButton("Show Teacher Planning");
-        JButton buttonShowStudent = new JButton("Show Student Planning");
-        JButton buttonAddSessionTeacher = new JButton("Add Session Teacher");
-        JButton buttonAddSessionStudent = new JButton("Add Session Student");
-        JButton buttonShowAllTeachers = new JButton("Show All Teachers");
-        JButton buttonShowAllStudents = new JButton("Show All Students");
 
 
-        JButton buttonDisconnect = new JButton("Disconnect");
-        JLabel labelReferentName = new JLabel("Connected as : " + user.getLast_name().toUpperCase() + " " + user.getFirst_name().toUpperCase());
-        labelReferentName.setFont(new Font(" Arial ", Font.BOLD, 15));
 
-        referentPanel.add(buttonShowTeacher);
-        referentPanel.add(buttonShowStudent);
-        referentPanel.add(buttonAddSessionTeacher);
-        referentPanel.add(buttonAddSessionStudent);
-        referentPanel.add(buttonShowAllTeachers);
-        referentPanel.add(buttonShowAllStudents);
-        referentPanel.add(buttonDisconnect);
-        referentPanel.add(labelReferentName);
-
-
-        referentFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        buttonShowTeacher.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                referentPanel.removeAll();
-                SwingUtilities.updateComponentTreeUI(referentFrame);
-                showTableTeacherSession();
-            }
-        });
-    }
-
-
-    public void showTableTeacherSession(){
+    public void showTableTeacher() {
         JPanel panelTable = new JPanel();
 
         referentFrame.setContentPane(panelTable);
         panelTable.setLayout(new BorderLayout());
 
-        String[][] table = new String[secondFrameController.getAllSession().size()][8];
+        String[][] table = new String[secondFrameController.getAllTeacher().size()][6];
 
-        for (int i = 0; i < secondFrameController.getAllSession().size(); i++) {
+        for (int i = 0; i < secondFrameController.getAllTeacher().size(); i++) {
 
-            table[i][0] = String.valueOf(secondFrameController.getAllSession().get(i).getID());
-            table[i][1] = String.valueOf(secondFrameController.getAllSession().get(i).getDate());
-            table[i][2] = String.valueOf(secondFrameController.getAllSession().get(i).getWeek());
-            table[i][3] = String.valueOf(secondFrameController.getAllSession().get(i).getStartTime());
-            table[i][4] = String.valueOf(secondFrameController.getAllSession().get(i).getEndTime());
-            table[i][5] = String.valueOf(secondFrameController.getAllSession().get(i).getID_course());
-            table[i][6] = String.valueOf(secondFrameController.getAllSession().get(i).getID_type());
-            table[i][7] = String.valueOf(secondFrameController.getAllSession().get(i).getState());
+            table[i][0] = String.valueOf(secondFrameController.getAllTeacher().get(i).getID());
+            table[i][1] = String.valueOf(secondFrameController.getAllTeacher().get(i).getEmail());
+            table[i][2] = String.valueOf(secondFrameController.getAllTeacher().get(i).getPassword());
+            table[i][3] = String.valueOf(secondFrameController.getAllTeacher().get(i).getFirst_name());
+            table[i][4] = String.valueOf(secondFrameController.getAllTeacher().get(i).getLast_name());
+
 
 
         }
 
-        String[] entetes = {"ID", "Date", "Semaine", "Heure de debut", "Heure de fin", "ID course", "ID type", "Etat"};
+        String[] entetes = {"ID", "Email", "Mot de passe", "Prenom", "Nom"};
+
+
+        JButton buttonReturn = new JButton("Return");
+
+
+        JTable jTable = new JTable(table, entetes);
+
+        panelTable.add(jTable.getTableHeader(), BorderLayout.NORTH);
+        panelTable.add(jTable, BorderLayout.CENTER);
+        panelTable.add(buttonReturn, BorderLayout.SOUTH);
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelTable.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                teacherFrame();
+
+            }
+        });
+
+        referentFrame.pack();
+    }
+
+    public void showTableStudent() {
+        JPanel panelTable = new JPanel();
+
+        referentFrame.setContentPane(panelTable);
+        panelTable.setLayout(new BorderLayout());
+
+        String[][] table = new String[secondFrameController.getAllStudent().size()][6];
+
+        for (int i = 0; i < secondFrameController.getAllStudent().size(); i++) {
+
+            table[i][0] = String.valueOf(secondFrameController.getAllStudent().get(i).getID());
+            table[i][1] = String.valueOf(secondFrameController.getAllStudent().get(i).getEmail());
+            table[i][2] = String.valueOf(secondFrameController.getAllStudent().get(i).getPassword());
+            table[i][3] = String.valueOf(secondFrameController.getAllStudent().get(i).getFirst_name());
+            table[i][4] = String.valueOf(secondFrameController.getAllStudent().get(i).getLast_name());
+
+
+
+        }
+
+        String[] entetes = {"ID", "Email", "Mot de passe", "Prenom", "Nom"};
+
+
+        JButton buttonReturn = new JButton("Return");
 
 
 
@@ -1416,12 +1668,68 @@ public class SecondFrameView {
 
         panelTable.add(jTable.getTableHeader(), BorderLayout.NORTH);
         panelTable.add(jTable, BorderLayout.CENTER);
+        panelTable.add(buttonReturn, BorderLayout.SOUTH);
 
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelTable.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                referentFrame();
 
+            }
+        });
 
         referentFrame.pack();
     }
 
+
+    public void showTableTeacherSession(String item) {
+        JPanel panelTable = new JPanel();
+
+        teacherFrame.setContentPane(panelTable);
+        panelTable.setLayout(new BorderLayout());
+
+        String[][] table = new String[mainFrameController.getSessionByWeekForTeacher(user, item ).size()][8];
+
+        for (int i = 0; i < mainFrameController.getSessionByWeekForTeacher(user, item ).size(); i++) {
+
+            table[i][0] = String.valueOf(mainFrameController.getSessionByWeekForTeacher(user, item ).get(i).getID());
+            table[i][1] = String.valueOf(mainFrameController.getSessionByWeekForTeacher(user, item ).get(i).getWeek());
+            table[i][2] = String.valueOf(mainFrameController.getSessionByWeekForTeacher(user, item ).get(i).getStartTime());
+            table[i][3] = String.valueOf(mainFrameController.getSessionByWeekForTeacher(user, item ).get(i).getEndTime());
+            table[i][4] = String.valueOf(mainFrameController.getSessionByWeekForTeacher(user, item ).get(i).getState());
+            table[i][5] = String.valueOf(mainFrameController.getSessionByWeekForTeacher(user, item ).get(i).getDate());
+            table[i][6] = String.valueOf(mainFrameController.getSessionByWeekForTeacher(user, item ).get(i).getID_type());
+            table[i][7] = String.valueOf(mainFrameController.getSessionByWeekForTeacher(user, item ).get(i).getID_course());
+
+        }
+
+        String[] entetes = {"ID", "Week", "Heure de début", "Heure de fin", "Etat","Date", "ID_Type", "ID_course"};
+
+
+        JButton buttonReturn = new JButton("Return");
+
+
+
+        JTable jTable = new JTable(table, entetes);
+
+        panelTable.add(jTable.getTableHeader(), BorderLayout.NORTH);
+        panelTable.add(jTable, BorderLayout.CENTER);
+        panelTable.add(buttonReturn, BorderLayout.SOUTH);
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(teacherFrame);
+                teacherFrame();
+
+            }
+        });
+
+        teacherFrame.pack();
+    }
 
     /**
      * fonction de la fentre admin qui permet de voir les differents JFreeCharts avec les infos sur les
@@ -1470,9 +1778,9 @@ public class SecondFrameView {
      * Fonction qui selon la session passee en parametre colorie les boutons de la list en parametre avec l'index associée, egalement passé en parametre
      * l'index sera dependra de l'heure de la session
      *
-     * @param list list de boutons
+     * @param list    list de boutons
      * @param session session de l'utilisateur
-     * @param index heure de la session
+     * @param index   heure de la session
      */
 
     public void getCouleurFromCourseType(List<JButton> list, Session session, int index) {
@@ -1639,7 +1947,6 @@ public class SecondFrameView {
 
     /**
      * fonction qui affiche les cours du user  de la classe secondframe view connecté en enseignant
-     *
      *
      * @param item Semaine choisir par l'utilisateur
      */
@@ -1984,10 +2291,10 @@ public class SecondFrameView {
 
 
     /**
-     *fonction qui affiche la matiere du cours sur le bouton
+     * fonction qui affiche la matiere du cours sur le bouton
      *
-     * @param list liste de boutons
-     * @param s session en cours a afficher
+     * @param list  liste de boutons
+     * @param s     session en cours a afficher
      * @param index index du boutons a modifier
      */
     public void switchCourse(List<JButton> list, Session s, int index) {
@@ -2004,10 +2311,10 @@ public class SecondFrameView {
     }
 
     /**
-     *fonction qui affiche le type de cours sur le bouton
+     * fonction qui affiche le type de cours sur le bouton
      *
-     * @param list liste de boutons
-     * @param s session en cours a afficher
+     * @param list  liste de boutons
+     * @param s     session en cours a afficher
      * @param index index du boutons a modifier
      */
 

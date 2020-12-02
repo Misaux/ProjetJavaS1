@@ -143,22 +143,9 @@ public class SecondFrameController extends Observable {
     }
 
 
-    public void showSessionPlanning() {
-
-        setChanged();
-        notifyObservers(this.session);
 
 
-    }
 
-    public void testMVC() {
-        setChanged();
-        notifyObservers(this);
-    }
-
-    public void testControlExtern() {
-
-    }
 
     public void addTeacher(String email, String password, String first_name, String last_name, String courseSelected) {
 
