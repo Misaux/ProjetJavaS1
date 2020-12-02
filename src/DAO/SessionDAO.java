@@ -88,12 +88,12 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             /*--------------------------------*/
 
             preparedStatement = connection.prepareStatement("SELECT id_session FROM group_session WHERE id_group = ?");
-            preparedStatement.setInt(1,gp );
+            preparedStatement.setInt(1, gp);
 
             resultSet = preparedStatement.executeQuery();
 
             List<Long> id_session = new ArrayList<>();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 id_session.add(resultSet.getLong("id_session"));
             }
 
@@ -101,27 +101,27 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             resultSet.close();
             preparedStatement.close();
             /*------------------------*/
-            for(int i = 0; i < id_session.size();i++){
-            preparedStatement = connection.prepareStatement("SELECT * FROM session WHERE id = ? AND week = ?");
-            preparedStatement.setLong(1, id_session.get(i));
-            preparedStatement.setString(2, weekSelected);
+            for (int i = 0; i < id_session.size(); i++) {
+                preparedStatement = connection.prepareStatement("SELECT * FROM session WHERE id = ? AND week = ?");
+                preparedStatement.setLong(1, id_session.get(i));
+                preparedStatement.setString(2, weekSelected);
 
-            resultSet = preparedStatement.executeQuery();
+                resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()){
-                Long Id = resultSet.getLong("id");
-                int week = resultSet.getInt("week");
-                String date = resultSet.getString("date");
-                String startTime = resultSet.getString("start_time");
-                String endTime = resultSet.getString("end_time");
-                String state = resultSet.getString("state");
-                Long idCourse = resultSet.getLong("id_course");
-                Long idType = resultSet.getLong("id_type");
-                list.add(new Session(Id, week, startTime, endTime, date, idCourse, idType, Session.State.valueOf(state)));
-            }
+                while (resultSet.next()) {
+                    Long Id = resultSet.getLong("id");
+                    int week = resultSet.getInt("week");
+                    String date = resultSet.getString("date");
+                    String startTime = resultSet.getString("start_time");
+                    String endTime = resultSet.getString("end_time");
+                    String state = resultSet.getString("state");
+                    Long idCourse = resultSet.getLong("id_course");
+                    Long idType = resultSet.getLong("id_type");
+                    list.add(new Session(Id, week, startTime, endTime, date, idCourse, idType, Session.State.valueOf(state)));
+                }
 
-            resultSet.close();
-            preparedStatement.close();
+                resultSet.close();
+                preparedStatement.close();
 
             }
             connection.close();
@@ -153,8 +153,8 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
             resultSet = preparedStatement.executeQuery();
             int gp = 0;
-            int idCourse =0;
-            while(resultSet.next()) {
+            int idCourse = 0;
+            while (resultSet.next()) {
 
                 idCourse = resultSet.getInt("id_course");
             }

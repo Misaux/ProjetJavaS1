@@ -1,9 +1,8 @@
 package view;
 
-import Models.Session;
+import Models.*;
 import controller.MainFrameController;
 import controller.SecondFrameController;
-import Models.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,39 +12,52 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.Objects;
 
 import static java.lang.String.valueOf;
 
-public class SecondFrameView implements Observer {
+public class SecondFrameView {
+
 
     /*
     VARIABLES POUR LA GRANDE FENETRE
      */
     public static final Color bleuClair = new Color(51, 153, 255);
-    public static final Color colorTotoBubuSamsam = new Color(50, 179, 190);
     public static final Color bleuPale = new Color(153, 204, 255);
 
-    private JFrame fenetre = new JFrame("fenetre");
+    /*
+    Couleurs pour les cours
+     */
+    public static final Color rougeClair = new Color(254, 76, 47);
+    public static final Color saumon = new Color(255, 181, 139);
+    public static final Color kaki = new Color(200, 156, 73);
+    public static final Color jaunePale = new Color(255, 242, 109);
+    public static final Color vertClair = new Color(194, 246, 17);
+    public static final Color violetPale = new Color(188, 132, 254);
+    public static final Color vertBleu = new Color(17, 246, 128);
+    public static final Color bleuCiel = new Color(132, 212, 254);
+    public static final Color vertPomme = new Color(65, 141, 43);
+
+
+    private final JFrame mainFrame = new JFrame("Emploi du temps");
 
 
     // Panneau global qui englobe tout
-    private JPanel pan = new JPanel();
+    private final JPanel mainFramePanel = new JPanel();
 
     //panneaux pour les jours de la semaines
 
-    private java.util.List<JPanel> panels = new ArrayList<>(8);
+    private final java.util.List<JPanel> listPanels = new ArrayList<>(8);
 
     //liste des colonnes avec les boutons pour interragir
-    private java.util.List<JButton> heures = new ArrayList<>();
-    private java.util.List<JButton> lundi = new ArrayList<>();
-    private java.util.List<JButton> mardi = new ArrayList<>();
-    private java.util.List<JButton> mercredi = new ArrayList<>();
-    private java.util.List<JButton> jeudi = new ArrayList<>();
-    private java.util.List<JButton> vendredi = new ArrayList<>();
-    private java.util.List<JButton> samedi = new ArrayList<>();
-    private JButton dimanche = new JButton();
+    private final java.util.List<JButton> heures = new ArrayList<>();
+    private final java.util.List<JButton> lundi = new ArrayList<>();
+    private final java.util.List<JButton> mardi = new ArrayList<>();
+    private final java.util.List<JButton> mercredi = new ArrayList<>();
+    private final java.util.List<JButton> jeudi = new ArrayList<>();
+    private final java.util.List<JButton> vendredi = new ArrayList<>();
+    private final java.util.List<JButton> samedi = new ArrayList<>();
+    private final JButton dimanche = new JButton();
 
     private java.util.List<Session> lundiSession = new ArrayList<>();
     private java.util.List<Session> mardiSession = new ArrayList<>();
@@ -58,7 +70,7 @@ public class SecondFrameView implements Observer {
     /*
     VARIABLES POUR LA FENTRE DE CONTROLLE
      */
-    public static final Color grisClair = new Color(192, 192, 192);
+
 
     JPasswordField textFieldPssword;
     JTextField textFieldConnexion;
@@ -69,19 +81,17 @@ public class SecondFrameView implements Observer {
     User user = new User();
 
 
-    private JFrame smallFen = new JFrame("Petite Fen");
+    private final JFrame smallFen = new JFrame("Petite Fen");
 
-    private JPanel panSmall = new JPanel();
-    JTextField jTextField = new JTextField();
+    private final JPanel panSmall = new JPanel();
 
-    private SecondFrameController secondFrameControllerExtern = new SecondFrameController();
-    private SecondFrameController secondFrameController = new SecondFrameController();
-    private MainFrameController mainFrameController;
+
+    private final SecondFrameController secondFrameController;
+    private final MainFrameController mainFrameController;
 
 
     /*-------------------------------------------------------------------------------------------*/
     JFrame adminFrame = new JFrame("Admin fenetre");
-
     JButton addTeacher = new JButton();
     JButton removeTeacher = new JButton();
     JButton addStudent = new JButton();
@@ -98,18 +108,23 @@ public class SecondFrameView implements Observer {
     JPanel teacherPanel = new JPanel();
     JPanel referentPanel = new JPanel();
 
-
+    /**
+     * Constructeur de la classe
+     * Prend en parametre les deux controleurs et affiche les deux fenetres à l'execution
+     * ajoute les listeners sur tous les boutons de l'emploi du temps
+     */
     public SecondFrameView(SecondFrameController secondFrameController, MainFrameController mainFrameController) {
 
         this.mainFrameController = mainFrameController;
         this.secondFrameController = secondFrameController;
-
         showMainFrame();
         connexionUser();
 
-
     }
 
+    /**
+     * Fenetre de connexion
+     */
     public void connexionUser() {
 
         smallFen.setBounds(300, 200, 600, 300);
@@ -161,6 +176,7 @@ public class SecondFrameView implements Observer {
         buttonSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                addColor();
                 user = secondFrameController.getUser(textFieldConnexion.getText(), textFieldPssword.getText());
                 try {
                     switch (user.getPermission()) {
@@ -182,8 +198,6 @@ public class SecondFrameView implements Observer {
                 } catch (Exception exception) {
                     JOptionPane.showMessageDialog(null, "Identification incorrecte, veuillez réessayer. ");
                 }
-
-
             }
         });
 
@@ -197,36 +211,39 @@ public class SecondFrameView implements Observer {
 
     }
 
+
+    /**
+     * Affichage de l'emploi du temps
+     * la fonction est appelee lors du lancement du programme
+     */
     public void showMainFrame() {
 
 
-        fenetre.setVisible(true);
+        mainFrame.setVisible(true);
 
 
         //Definition de la fenetre++
-        fenetre.setSize((800 * 16 / 9), 800);
-        fenetre.setContentPane(pan);
-        fenetre.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        fenetre.setLocationRelativeTo(null);
+        mainFrame.setSize((800 * 16 / 9), 800);
+        mainFrame.setContentPane(mainFramePanel);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setLocationRelativeTo(null);
 
         //Layout principal avec les 7 Jours de la semaine
-        pan.setLayout(new GridLayout(1, 8));
-
+        mainFramePanel.setLayout(new GridLayout(1, 8));
 
         //Ajout des panneaux dans la liste
         for (int i = 0; i < 8; i++) {
-            panels.add(i, new JPanel());
+            listPanels.add(i, new JPanel());
         }
-
 
         //Ajouts des panneaux au grand panneaux
-        for (int i = 0; i < panels.size(); i++) {
-            pan.add(panels.get(i));
-            panels.get(i).setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
-            panels.get(i).setBackground(Color.GRAY);
-            panels.get(i).setLayout(new GridLayout(11, 1));
+        for (JPanel panel : listPanels) {
+            mainFramePanel.add(panel);
+            panel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+            panel.setBackground(Color.GRAY);
+            panel.setLayout(new GridLayout(11, 1));
         }
-        panels.get(7).setLayout(new BorderLayout());
+        listPanels.get(7).setLayout(new BorderLayout());
 
         //Creation des boutons dans les jours de la semaine
         for (int i = 0; i < 11; i++) {
@@ -243,28 +260,28 @@ public class SecondFrameView implements Observer {
 
         //Ajout des boutons dans les colonnes
         for (int j = 0; j < 11; j++) {
-            panels.get(0).add(heures.get(j));
+            listPanels.get(0).add(heures.get(j));
             heures.get(j).setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
-            panels.get(1).add(lundi.get(j));
+            listPanels.get(1).add(lundi.get(j));
             lundi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
 
-            panels.get(2).add(mardi.get(j));
+            listPanels.get(2).add(mardi.get(j));
             mardi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
 
-            panels.get(3).add(mercredi.get(j));
+            listPanels.get(3).add(mercredi.get(j));
             mercredi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
 
-            panels.get(4).add(jeudi.get(j));
+            listPanels.get(4).add(jeudi.get(j));
             jeudi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
 
-            panels.get(5).add(vendredi.get(j));
+            listPanels.get(5).add(vendredi.get(j));
             vendredi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
 
-            panels.get(6).add(samedi.get(j));
+            listPanels.get(6).add(samedi.get(j));
             samedi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
 
-            panels.get(7).add(dimanche, BorderLayout.CENTER);
+            listPanels.get(7).add(dimanche, BorderLayout.CENTER);
             dimanche.setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
             dimanche.setBackground(bleuClair);
 
@@ -280,45 +297,42 @@ public class SecondFrameView implements Observer {
         heures.get(9).setText("17h45-19h15");
         heures.get(10).setText("19h15-20h45");
 
-        pan.setBackground(Color.white);
-        fenetre.setVisible(true);
+        mainFramePanel.setBackground(Color.white);
+        mainFrame.setVisible(true);
         addColor();
 
 
-
-
-
-       /* for (JButton button : lundi){
-
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    mainFrameController.getSessionContent(lundi.indexOf(button))
-                }
-            });
-        }*/
-
-
-        /*
-        NE PAS OUBLIER DE REMETTRE EN VISIBLE
-         */
-
-        fenetre.setVisible(true);
     }
 
-    public void display(String name) {
-        this.jTextField.setText(name);
-    }
+    /**
+     * permet de remettre le texte des boutons a 0 pour un nouvel affichage
+     */
+    public void resetButtons() {
 
-    @Override
-    public void update(Observable o, Object arg) {
-
-        //JOptionPane.showMessageDialog(null, id);
-
+        for (JButton b : lundi) {
+            b.setText("");
+        }
+        for (JButton b : mardi) {
+            b.setText("");
+        }
+        for (JButton b : mercredi) {
+            b.setText("");
+        }
+        for (JButton b : jeudi) {
+            b.setText("");
+        }
+        for (JButton b : vendredi) {
+            b.setText("");
+        }
+        for (JButton b : samedi) {
+            b.setText("");
+        }
 
     }
 
-
+    /**
+     * fonction qui change la couleur de tous les boutons de l'emploi du temps
+     */
     public void addColor() {
         //Ajout des couleurs sur la colonne des heures
         for (int i = 0; i < 11; i++) {
@@ -411,6 +425,10 @@ public class SecondFrameView implements Observer {
 
     }
 
+
+    /**
+     * Fenetre menu lorsque l'utilisateur est admin
+     */
     public void adminFrame() {
 
         smallFen.setVisible(false);
@@ -426,31 +444,31 @@ public class SecondFrameView implements Observer {
 
         adminPanel.add(addTeacher);
 
-        addTeacher.setText("Ajouter Enseignant");
+        addTeacher.setText("Add teacher");
 
         adminPanel.add(removeTeacher);
 
-        removeTeacher.setText("Retirer Enseignant");
+        removeTeacher.setText("Remove teacher");
 
         /*///////////////////////////////////////////////////////////*/
         adminPanel.add(addStudent);
 
-        addStudent.setText("Ajouter Eleve");
+        addStudent.setText("Add student ");
 
         adminPanel.add(removeStudent);
 
-        removeStudent.setText("Retirer Eleve");
+        removeStudent.setText("Remove student");
 
         /*///////////////////////////////////////////////////////////*/
 
         adminPanel.add(addSession);
 
-        addSession.setText("Ajouter Session");
+        addSession.setText("Add session");
 
 
         adminPanel.add(removeSession);
 
-        removeSession.setText("Retirer Session");
+        removeSession.setText("Remove session");
 
 
         /*/////////////////////////////////////////////////////*/
@@ -461,13 +479,13 @@ public class SecondFrameView implements Observer {
         /*///////////////////////////////////////////////////////////*/
 
         adminPanel.add(deconnexion);
-        deconnexion.setText("Deconnexion");
+        deconnexion.setText("Disconnect");
 
         /*///////////////////////////////////////////////////////////*/
 
         adminPanel.add(labelAdminInfo);
 
-        labelAdminInfo.setText("Session ouvert par : " + user.getLast_name() + " " + user.getFirst_name());
+        labelAdminInfo.setText("Session opened as : " + user.getLast_name() + " " + user.getFirst_name());
         labelAdminInfo.setFont(new Font(labelAdminInfo.getName(), Font.BOLD, 16));
 
 
@@ -541,6 +559,7 @@ public class SecondFrameView implements Observer {
         deconnexion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 adminFrame.setVisible(false);
                 adminPanel.removeAll();
                 SwingUtilities.updateComponentTreeUI(adminFrame);
@@ -560,6 +579,10 @@ public class SecondFrameView implements Observer {
 
     }
 
+
+    /**
+     * Fenetre menu lorsque l'utilisateur est un eleve
+     */
     public void studentFrame() {
         smallFen.setVisible(false);
         studentPanel.setLayout(new GridLayout(3, 1));
@@ -574,11 +597,17 @@ public class SecondFrameView implements Observer {
 
         JButton viewPlaning1 = new JButton();
         studentPanel.add(viewPlaning1);
-        viewPlaning1.setText("view planning");
+        viewPlaning1.setText("View planning");
+        viewPlaning1.setFont(new Font("Arial", Font.BOLD, 20));
 
         JButton deconnexionStudent = new JButton();
         studentPanel.add(deconnexionStudent);
         deconnexionStudent.setText("Deconnexion");
+        deconnexionStudent.setFont(new Font("Arial", Font.BOLD, 20));
+
+        JLabel labelStudentName = new JLabel("User : " + user.getLast_name() + " " + user.getFirst_name(), SwingConstants.CENTER);
+        studentPanel.add(labelStudentName);
+        labelStudentName.setFont(new Font("Arial", Font.BOLD, 25));
 
 
         //--------------------------------------------
@@ -613,11 +642,14 @@ public class SecondFrameView implements Observer {
     }
 
 
+    /**
+     * Fenetre de choix de semaine pour afficher le planning de l'eleve
+     */
     public void viewPlanningStudent() {
         JButton buttonReturn = new JButton("Return");
 
 
-        JButton buttonSearch = new JButton("search");
+        JButton buttonSearch = new JButton("Search");
         studentPanel.setLayout(new GridLayout(3, 1));
 
         String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
@@ -625,8 +657,7 @@ public class SecondFrameView implements Observer {
         for (int i = 0; i < tabWeek.length; i++) {
             tabWeek[i] = valueOf(nb + i);
         }
-        JComboBox comboBoxStudent;
-        comboBoxStudent = new JComboBox(tabWeek);
+        JComboBox comboBoxStudent = new JComboBox(tabWeek);
         studentPanel.add(comboBoxStudent);
 
         studentPanel.add(buttonSearch);
@@ -636,8 +667,10 @@ public class SecondFrameView implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-
-                showSession(comboBoxStudent.getSelectedItem().toString());
+                addColor();
+                resetButtons();
+                showSessionStudent(Objects.requireNonNull(comboBoxStudent.getSelectedItem()).toString());
+                showSessionsDetails();
             }
         });
 
@@ -654,6 +687,9 @@ public class SecondFrameView implements Observer {
     }
 
 
+    /**
+     * Fenetre menu lorsque l'utilisateur est un enseignant
+     */
     public void teacherFrame() {
         smallFen.setVisible(false);
         teacherPanel.setLayout(new GridLayout(2, 1));
@@ -702,10 +738,16 @@ public class SecondFrameView implements Observer {
 
     }
 
+
+    /**
+     * Fenetre de choix de l'afgfichage de l'emploi du temps en fonction
+     * de la semaine selectionnee dans la combobox
+     */
     public void viewPlanningTeacher() {
         JButton buttonSearch = new JButton("search");
+        JButton buttonReturn = new JButton("Return");
 
-        teacherPanel.setLayout(new GridLayout(2, 1));
+        teacherPanel.setLayout(new GridLayout(3, 1));
         String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
         int nb = 1;
         for (int i = 0; i < tabWeek.length; i++) {
@@ -715,19 +757,32 @@ public class SecondFrameView implements Observer {
         comboBoxTeacher = new JComboBox(tabWeek);
         teacherPanel.add(comboBoxTeacher);
         teacherPanel.add(buttonSearch);
+        teacherPanel.add(buttonReturn);
 
         buttonSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                addColor();
+                SwingUtilities.updateComponentTreeUI(teacherFrame);
+                showSessionTeacher(Objects.requireNonNull(comboBoxTeacher.getSelectedItem()).toString());
+            }
+        });
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 teacherPanel.removeAll();
                 SwingUtilities.updateComponentTreeUI(teacherFrame);
-                mainFrameController.getSessionByWeekForTeacher(user, comboBoxTeacher.getSelectedItem().toString());
+                teacherFrame();
             }
         });
 
     }
 
 
+    /**
+     * Fenetre pour l'ajout d'un admin a la BDD
+     */
     public void addTeacherAdmin() {
 
         String[] tab = new String[secondFrameController.getAllCourse().size()];
@@ -755,7 +810,7 @@ public class SecondFrameView implements Observer {
         JLabel jLabelPassword = new JLabel("Password :");
         JTextField addTeacherPassword = new JTextField();
 
-        JButton buttonAddTeacher = new JButton("Ajouter Enseigant");
+        JButton buttonAddTeacher = new JButton("Add teacher");
         JButton buttonReturn = new JButton("Return");
 
 
@@ -798,9 +853,11 @@ public class SecondFrameView implements Observer {
         buttonAddTeacher.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondFrameControllerExtern.addTeacher(addTeacherEmail.getText(), addTeacherPassword.getText(), addTeacherFirstName.getText(), addTeacherLastName.getText(), comboBox.getSelectedItem().toString());
-
-
+                secondFrameController.addTeacher(addTeacherEmail.getText(),
+                        addTeacherPassword.getText(),
+                        addTeacherFirstName.getText(),
+                        addTeacherLastName.getText(),
+                        Objects.requireNonNull(comboBox.getSelectedItem()).toString());
             }
         });
 
@@ -814,6 +871,10 @@ public class SecondFrameView implements Observer {
         });
     }
 
+
+    /**
+     * Fenetre pour la suppression d'un admin de la BDD
+     */
     public void removeTeacherAdmin() {
 
 
@@ -837,8 +898,8 @@ public class SecondFrameView implements Observer {
         adminFrame.setContentPane(adminPanel);
         adminPanel.add(comboBoxCourse);
 
-        JButton buttonRemove = new JButton("Retirer enseignant.");
-        JButton buttonreturn = new JButton("Retour.");
+        JButton buttonRemove = new JButton("Remove teacher");
+        JButton buttonreturn = new JButton("Return");
 
         adminPanel.add(buttonRemove);
         adminPanel.add(buttonreturn);
@@ -857,13 +918,17 @@ public class SecondFrameView implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                secondFrameControllerExtern.removeTeacher(comboBoxCourse.getSelectedItem().toString());
+                secondFrameController.removeTeacher(Objects.requireNonNull(comboBoxCourse.getSelectedItem()).toString());
 
             }
         });
 
     }
 
+
+    /**
+     * fonction de la fenetre admin qui permet d'ajouter un eleve a la BDD
+     */
     public void addStudentAdmin() {
 
         String[] tab = new String[secondFrameController.getAllGroupPromotion().size()];
@@ -943,7 +1008,12 @@ public class SecondFrameView implements Observer {
         buttonAddStudent.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondFrameControllerExtern.addStudent(addStudentEmail.getText(), addStudentPassword.getText(), addStudentFirstName.getText(), addStudentLastName.getText(), addStudentNumber.getText(), comboBox.getSelectedItem().toString());
+                secondFrameController.addStudent(addStudentEmail.getText(),
+                        addStudentPassword.getText(),
+                        addStudentFirstName.getText(),
+                        addStudentLastName.getText(),
+                        addStudentNumber.getText(),
+                        Objects.requireNonNull(comboBox.getSelectedItem()).toString());
 
 
             }
@@ -961,6 +1031,10 @@ public class SecondFrameView implements Observer {
 
     }
 
+    /**
+     * fonction de la fenetre
+     * admin qui permet de supprimer un eleve de la BDD
+     */
     public void removeStudentAdmin() {
 
 
@@ -970,8 +1044,7 @@ public class SecondFrameView implements Observer {
             tab[i] = secondFrameController.getAllStudent().get(i).getFirst_name() + "  " + secondFrameController.getAllStudent().get(i).getLast_name();
         }
 
-        JComboBox comboBoxStudent;
-        comboBoxStudent = new JComboBox(tab);
+        JComboBox comboBoxStudent = new JComboBox(tab);
         panSmall.add(comboBoxStudent);
         comboBoxStudent.setFont(new Font(" TimesRoman ", Font.BOLD, 30));
         comboBoxStudent.setBounds(0, 60, 200, 50);
@@ -980,8 +1053,8 @@ public class SecondFrameView implements Observer {
         adminFrame.setContentPane(adminPanel);
         adminPanel.add(comboBoxStudent);
 
-        JButton buttonRemove = new JButton("Remove student.");
-        JButton buttonreturn = new JButton("Return.");
+        JButton buttonRemove = new JButton("Remove student");
+        JButton buttonreturn = new JButton("Return");
 
         adminPanel.add(buttonRemove);
         adminPanel.add(buttonreturn);
@@ -1000,12 +1073,16 @@ public class SecondFrameView implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                secondFrameControllerExtern.removeStudent(comboBoxStudent.getSelectedItem().toString());
+                secondFrameController.removeStudent(Objects.requireNonNull(comboBoxStudent.getSelectedItem()).toString());
 
             }
         });
 
     }
+
+    /**
+     * fonction de la fenetre admin pour ajouter une session dans la bdd
+     */
 
     public void addSessionAdmin() {
 
@@ -1157,9 +1234,14 @@ public class SecondFrameView implements Observer {
         buttonAddSession.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondFrameControllerExtern.addSession(addSessionWeek.getText(), addSessionDate.getText(),
-                        addSessionStartTime.getText(), addSessionEndTime.getText(), comboBoxState.getSelectedItem().toString(),
-                        comboBox.getSelectedItem().toString(), comboBoxType.getSelectedItem().toString(), comboBoxTeacher.getSelectedItem().toString(),
+                secondFrameController.addSession(addSessionWeek.getText(),
+                        addSessionDate.getText(),
+                        addSessionStartTime.getText(),
+                        addSessionEndTime.getText(),
+                        comboBoxState.getSelectedItem().toString(),
+                        comboBox.getSelectedItem().toString(),
+                        comboBoxType.getSelectedItem().toString(),
+                        comboBoxTeacher.getSelectedItem().toString(),
                         comboBoxGroupPromo.getSelectedItem().toString());
 
 
@@ -1177,6 +1259,10 @@ public class SecondFrameView implements Observer {
 
 
     }
+
+    /**
+     * fonction de la fenetre admin qui permet d'de supprimer une session de la  BDD
+     */
 
     public void removeSessionAdmin() {
 
@@ -1240,11 +1326,16 @@ public class SecondFrameView implements Observer {
         buttonRemove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondFrameControllerExtern.removeSession(comboBoxDate.getSelectedItem().toString(), comboBoxStartTime.getSelectedItem().toString(),comboBoxCourse.getSelectedItem().toString());
+                secondFrameController.removeSession(Objects.requireNonNull(comboBoxDate.getSelectedItem()).toString(),
+                        Objects.requireNonNull(comboBoxStartTime.getSelectedItem()).toString(),
+                        Objects.requireNonNull(comboBoxCourse.getSelectedItem()).toString());
             }
         });
     }
 
+    /**
+     * fenetre principale pour le refernt pedagogique
+     */
 
     public void referentFrame() {
         smallFen.setVisible(false);
@@ -1289,6 +1380,11 @@ public class SecondFrameView implements Observer {
         });
     }
 
+    /**
+     * fonction de la fentre admin qui permet de voir les differents JFreeCharts avec les infos sur les
+     * sessions dans la BDD, sur les capacités de chaque site et le nombre de salles par site
+     */
+
     public void dataConsulting() {
 
         JPanel adminPanel = new JPanel(new GridLayout(6, 2));
@@ -1304,14 +1400,14 @@ public class SecondFrameView implements Observer {
         buttonSessionData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondFrameControllerExtern.getChartSession().setVisible(true);
+                secondFrameController.getChartSession().setVisible(true);
             }
         });
 
         buttonSiteData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondFrameControllerExtern.getChartSite().setVisible(true);
+                secondFrameController.getChartSite().setVisible(true);
             }
         });
 
@@ -1327,32 +1423,58 @@ public class SecondFrameView implements Observer {
     }
 
 
+    /**
+     * Fonction qui selon la session passee en parametre colorie les boutons de la list en parametre avec l'index associée, egalement passé en parametre
+     * l'index sera dependra de l'heure de la session
+     *
+     * @param list list de boutons
+     * @param session session de l'utilisateur
+     * @param index heure de la session
+     */
+
     public void getCouleurFromCourseType(List<JButton> list, Session session, int index) {
 
         switch (Math.toIntExact(session.getID_course())) {
             case 1:
-                list.get(index).setBackground(colorTotoBubuSamsam);
+                list.get(index).setBackground(rougeClair);
                 break;
             case 2:
-                list.get(index).setBackground(Color.ORANGE);
+                list.get(index).setBackground(saumon);
                 break;
             case 3:
-                list.get(index).setBackground(Color.red);
+                list.get(index).setBackground(kaki);
                 break;
             case 4:
-                list.get(index).setBackground(Color.green);
+                list.get(index).setBackground(jaunePale);
                 break;
             case 5:
-                list.get(index).setBackground(Color.magenta);
-
-
+                list.get(index).setBackground(vertClair);
                 break;
+            case 6:
+                list.get(index).setBackground(violetPale);
+                break;
+            case 7:
+                list.get(index).setBackground(vertBleu);
+                break;
+            case 8:
+                list.get(index).setBackground(bleuCiel);
+                break;
+            case 9:
+                list.get(index).setBackground(vertPomme);
+                break;
+
 
             default:
                 break;
         }
     }
 
+    /**
+     * renvoie un int qui depend de l'heure de la session
+     *
+     * @param session session du user
+     * @return selon l'heure de la session, int pour gerer la couleur des boutons
+     */
     public int getIntFromSessionHour(Session session) {
 
         LocalTime startTime;
@@ -1396,7 +1518,23 @@ public class SecondFrameView implements Observer {
         return i;
     }
 
-    public void showSession(String item) {
+    /**
+     * fonction qui affiche les cours du user  de la classe secondframe view connecté en eleve
+     * l'item en parametre correspond a la semaine choisie dans la comboBox de la fenetre student
+     *
+     * @param item semaine saisie en chiffre par l'utilisateur dans la comboBox
+     */
+    public void showSessionStudent(String item) {
+
+
+        lundiSession.clear();
+        mardiSession.clear();
+        mercrediSession.clear();
+        jeudiSession.clear();
+        vendrediSession.clear();
+        samediSession.clear();
+
+
         lundiSession = mainFrameController.getSessionLundi(user, item);
         mardiSession = mainFrameController.getSessionMardi(user, item);
         mercrediSession = mainFrameController.getSessionMercredi(user, item);
@@ -1456,6 +1594,392 @@ public class SecondFrameView implements Observer {
         }
     }
 
+    /**
+     * fonction qui affiche les cours du user  de la classe secondframe view connecté en enseignant
+     *
+     *
+     * @param item Semaine choisir par l'utilisateur
+     */
+
+    public void showSessionTeacher(String item) {
+
+
+        lundiSession.clear();
+        mardiSession.clear();
+        mercrediSession.clear();
+        jeudiSession.clear();
+        vendrediSession.clear();
+        samediSession.clear();
+
+
+        lundiSession = mainFrameController.getSessionLundiTeacher(user, item);
+        mardiSession = mainFrameController.getSessionMardiTeacher(user, item);
+        mercrediSession = mainFrameController.getSessionMercrediTeacher(user, item);
+        jeudiSession = mainFrameController.getSessionJeudiTeacher(user, item);
+        vendrediSession = mainFrameController.getSessionVendrediTeacher(user, item);
+        samediSession = mainFrameController.getSessionSamediTeacher(user, item);
+
+
+        for (Session s : lundiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(lundi, s, getIntFromSessionHour(s));
+
+
+        }
+        for (Session s : mardiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(mardi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : mercrediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(mercredi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : jeudiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(jeudi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : vendrediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(vendredi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : samediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(samedi, s, getIntFromSessionHour(s));
+
+        }
+    }
+
+
+    /**
+     * fonction qui affiche dans le text du bouton le contenu de la session
+     * affichage du cours, du type de cours
+     */
+    public void showSessionsDetails() {
+
+        for (int i = 0; i < lundi.size(); i++) {
+
+            for (Session s : lundiSession) {
+                LocalTime startTime;
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+                switch (startTime.getHour()) {
+                    case 8:
+                        switchCourse(lundi, s, 0);
+                        break;
+                    case 9:
+                        switchCourse(lundi, s, 1);
+                        break;
+                    case 11:
+                        switchCourse(lundi, s, 3);
+                        break;
+                    case 12:
+                        switchCourse(lundi, s, 4);
+                        break;
+                    case 14:
+                        switchCourse(lundi, s, 6);
+                        break;
+                    case 16:
+                        switchCourse(lundi, s, 7);
+                        break;
+                    case 17:
+                        switchCourse(lundi, s, 9);
+                        break;
+                    case 19:
+                        switchCourse(lundi, s, 10);
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+
+            }
+
+
+        }
+        for (int i = 0; i < mardi.size(); i++) {
+
+            for (Session s : mardiSession) {
+                LocalTime startTime;
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+                switch (startTime.getHour()) {
+                    case 8:
+                        switchCourse(mardi, s, 0);
+                        break;
+                    case 9:
+                        switchCourse(mardi, s, 1);
+                        break;
+                    case 11:
+                        switchCourse(mardi, s, 3);
+                        break;
+                    case 12:
+                        switchCourse(mardi, s, 4);
+                        break;
+                    case 14:
+                        switchCourse(mardi, s, 6);
+                        break;
+                    case 16:
+                        switchCourse(mardi, s, 7);
+                        break;
+                    case 17:
+                        switchCourse(mardi, s, 9);
+                        break;
+                    case 19:
+                        switchCourse(mardi, s, 10);
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+
+            }
+
+
+        }
+        for (int i = 0; i < mercredi.size(); i++) {
+
+            for (Session s : mercrediSession) {
+                LocalTime startTime;
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+                switch (startTime.getHour()) {
+                    case 8:
+                        switchCourse(mercredi, s, 0);
+                        break;
+                    case 9:
+                        switchCourse(mercredi, s, 1);
+                        break;
+                    case 11:
+                        switchCourse(mercredi, s, 3);
+                        break;
+                    case 12:
+                        switchCourse(mercredi, s, 4);
+                        break;
+                    case 14:
+                        switchCourse(mercredi, s, 6);
+                        break;
+                    case 16:
+                        switchCourse(mercredi, s, 7);
+                        break;
+                    case 17:
+                        switchCourse(mercredi, s, 9);
+                        break;
+                    case 19:
+                        switchCourse(mercredi, s, 10);
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+
+            }
+
+
+        }
+        for (int i = 0; i < jeudi.size(); i++) {
+
+            for (Session s : jeudiSession) {
+                LocalTime startTime;
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+                switch (startTime.getHour()) {
+                    case 8:
+                        switchCourse(jeudi, s, 0);
+                        break;
+                    case 9:
+                        switchCourse(jeudi, s, 1);
+                        break;
+                    case 11:
+                        switchCourse(jeudi, s, 3);
+                        break;
+                    case 12:
+                        switchCourse(jeudi, s, 4);
+                        break;
+                    case 14:
+                        switchCourse(jeudi, s, 6);
+                        break;
+                    case 16:
+                        switchCourse(jeudi, s, 7);
+                        break;
+                    case 17:
+                        switchCourse(jeudi, s, 9);
+                        break;
+                    case 19:
+                        switchCourse(jeudi, s, 10);
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+
+            }
+
+
+        }
+        for (int i = 0; i < vendredi.size(); i++) {
+
+            for (Session s : vendrediSession) {
+                LocalTime startTime;
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+                switch (startTime.getHour()) {
+                    case 8:
+                        switchCourse(vendredi, s, 0);
+                        break;
+                    case 9:
+                        switchCourse(vendredi, s, 1);
+                        break;
+                    case 11:
+                        switchCourse(vendredi, s, 3);
+                        break;
+                    case 12:
+                        switchCourse(vendredi, s, 4);
+                        break;
+                    case 14:
+                        switchCourse(vendredi, s, 6);
+                        break;
+                    case 16:
+                        switchCourse(vendredi, s, 7);
+                        break;
+                    case 17:
+                        switchCourse(vendredi, s, 9);
+                        break;
+                    case 19:
+                        switchCourse(vendredi, s, 10);
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+
+            }
+
+
+        }
+        for (int i = 0; i < samedi.size(); i++) {
+
+            for (Session s : samediSession) {
+                LocalTime startTime;
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+                switch (startTime.getHour()) {
+                    case 8:
+                        switchCourse(samedi, s, 0);
+                        break;
+                    case 9:
+                        switchCourse(samedi, s, 1);
+                        break;
+                    case 11:
+                        switchCourse(samedi, s, 3);
+                        break;
+                    case 12:
+                        switchCourse(samedi, s, 4);
+                        break;
+                    case 14:
+                        switchCourse(samedi, s, 6);
+                        break;
+                    case 16:
+                        switchCourse(samedi, s, 7);
+                        break;
+                    case 17:
+                        switchCourse(samedi, s, 9);
+                        break;
+                    case 19:
+                        switchCourse(samedi, s, 10);
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+
+            }
+
+
+        }
+
+    }
+
+
+    /**
+     *fonction qui affiche la matiere du cours sur le bouton
+     *
+     * @param list liste de boutons
+     * @param s session en cours a afficher
+     * @param index index du boutons a modifier
+     */
+    public void switchCourse(List<JButton> list, Session s, int index) {
+        switch (Math.toIntExact(s.getID_course())) {
+            case 1 -> list.get(index).setText(mainFrameController.getTeacherNameFromIdSession(s.getID()) + "\nCours info");//
+            case 2 -> list.get(index).setText("Cours mathématiques");
+            case 3 -> list.get(index).setText("Cours electronique");
+            case 4 -> list.get(index).setText("Cours anglais");
+            case 5 -> list.get(index).setText("Cours physique");
+            default -> list.get(index).setText("Cours inconnu");
+        }
+
+
+    }
+
+    /**
+     *fonction qui affiche le type de cours sur le bouton
+     *
+     * @param list liste de boutons
+     * @param s session en cours a afficher
+     * @param index index du boutons a modifier
+     */
+
+    public void switchTypeCourse(List<JButton> list, Session s, int index) {
+        switch (Math.toIntExact(s.getID_type())) {
+            case 1 -> list.get(index).setText("Cours interactif");
+            case 2 -> list.get(index).setText("Cours magistral");
+            case 3 -> list.get(index).setText("Cours TD");
+            case 4 -> list.get(index).setText("Cours TP");
+            case 5 -> list.get(index).setText("Projet");
+            case 6 -> list.get(index).setText("Soutien");
+        }
+
+
+    }
 }
 
 

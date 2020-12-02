@@ -31,14 +31,14 @@ public class TeacherSessionDAO implements TeacherSessionDao {
     public List<TeacherSession> getAllTeacherSession() {
         List<TeacherSession> list = new ArrayList<>();
         try {
-            this.connection= DriverManager.getConnection(this.url,this.username,this.password);
+            this.connection = DriverManager.getConnection(this.url, this.username, this.password);
             this.preparedStatement = this.connection.prepareStatement("SELECT * from teacher_session");
             this.resultSet = this.preparedStatement.executeQuery();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 Long idSession = resultSet.getLong("id_session");
                 Long idTeacher = resultSet.getLong("id_teacher");
-                list.add(new TeacherSession(idSession,idTeacher));
+                list.add(new TeacherSession(idSession, idTeacher));
             }
             resultSet.close();
             preparedStatement.close();
@@ -62,7 +62,7 @@ public class TeacherSessionDAO implements TeacherSessionDao {
                     ("insert into teacher_session (id_teacher,id_session) values (?,?)");
 
             this.preparedStatement.setLong(2, teacherSession.getIdSession());
-            this.preparedStatement.setLong(1,teacherSession.getIdTeacher());
+            this.preparedStatement.setLong(1, teacherSession.getIdTeacher());
             this.preparedStatement.execute();
             System.out.println(" saved into the database");
 
@@ -83,11 +83,11 @@ public class TeacherSessionDAO implements TeacherSessionDao {
             this.preparedStatement = this.connection.prepareStatement
                     ("select * from teacher_session where id_session = ? AND id_teacher = ? ");
             this.preparedStatement.setLong(1, idSession);
-            this.preparedStatement.setLong(2,idTeacher);
+            this.preparedStatement.setLong(2, idTeacher);
 
             this.resultSet = this.preparedStatement.executeQuery();
 
-           TeacherSession teacherSession = new TeacherSession();
+            TeacherSession teacherSession = new TeacherSession();
 
             while (this.resultSet.next()) {
                 teacherSession.setIdSession(this.resultSet.getLong("id_session"));
@@ -113,14 +113,14 @@ public class TeacherSessionDAO implements TeacherSessionDao {
                 this.preparedStatement = this.connection.prepareStatement(
                         "update teacher_session set id_session= ? set id_teacher= ? ");
                 this.preparedStatement.setLong(1, teacherSession.getIdSession());
-                this.preparedStatement.setLong(2,teacherSession.getIdTeacher());
+                this.preparedStatement.setLong(2, teacherSession.getIdTeacher());
                 this.preparedStatement.execute();
 
             } else {
                 this.preparedStatement = this.connection.prepareStatement
                         ("insert into teacher_session (id_session,id_teacher) values (?,?)  ;");
                 this.preparedStatement.setLong(1, teacherSession.getIdSession());
-                this.preparedStatement.setLong(2,teacherSession.getIdTeacher());
+                this.preparedStatement.setLong(2, teacherSession.getIdTeacher());
                 this.preparedStatement.execute();
             }
             System.out.println(" saved into the database");
@@ -129,7 +129,6 @@ public class TeacherSessionDAO implements TeacherSessionDao {
             e.printStackTrace();
             System.out.println("unable to save the site");
         }
-
 
 
     }
@@ -157,4 +156,52 @@ public class TeacherSessionDAO implements TeacherSessionDao {
 
 
     }
+
+
+    public String getIdTeacherFromIdSession(Long idSession) {
+        int id_teacher = 0;
+        String last_name, first_name, fullName = null;
+        try {
+            connection = DriverManager.getConnection(url, username, password);
+
+            preparedStatement = connection.prepareStatement("SELECT * FROM teacher_session WHERE id_session = ?");
+            preparedStatement.setLong(1, idSession);
+
+
+            this.resultSet = this.preparedStatement.executeQuery();
+
+            resultSet.next();
+
+            id_teacher = this.resultSet.getInt("id_teacher");
+
+
+            resultSet.close();
+            preparedStatement.close();
+
+/*
+//////////////////////////////////////////////////////////
+ */
+            preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE id = ?");
+            preparedStatement.setLong(1, id_teacher);
+
+
+            this.resultSet = this.preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                last_name = this.resultSet.getString("last_name");
+                first_name = this.resultSet.getString("first_name");
+                fullName = last_name + "  " + first_name;
+            }
+
+            connection.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return fullName;
+    }
+
+
 }
