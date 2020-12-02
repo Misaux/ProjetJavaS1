@@ -85,6 +85,9 @@ public class SecondFrameView {
 
     private final JPanel panSmall = new JPanel();
 
+   private final JFrame referentFrame = new JFrame("Referent Frame");
+
+
 
     private final SecondFrameController secondFrameController;
     private final MainFrameController mainFrameController;
@@ -177,6 +180,7 @@ public class SecondFrameView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addColor();
+                resetButtons();
                 user = secondFrameController.getUser(textFieldConnexion.getText(), textFieldPssword.getText());
                 try {
                     switch (user.getPermission()) {
@@ -1340,7 +1344,6 @@ public class SecondFrameView {
     public void referentFrame() {
         smallFen.setVisible(false);
 
-        JFrame referentFrame = new JFrame("Referent Frame");
         referentFrame.setBounds(0, 0, 500, 400);
         referentFrame.setLocation(1000, 540);
         referentFrame.setVisible(true);
@@ -1375,10 +1378,50 @@ public class SecondFrameView {
         buttonShowTeacher.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //showSession();
+                referentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                showTableTeacherSession();
             }
         });
     }
+
+
+    public void showTableTeacherSession(){
+        JPanel panelTable = new JPanel();
+
+        referentFrame.setContentPane(panelTable);
+        panelTable.setLayout(new BorderLayout());
+
+        String[][] table = new String[secondFrameController.getAllSession().size()][8];
+
+        for (int i = 0; i < secondFrameController.getAllSession().size(); i++) {
+
+            table[i][0] = String.valueOf(secondFrameController.getAllSession().get(i).getID());
+            table[i][1] = String.valueOf(secondFrameController.getAllSession().get(i).getDate());
+            table[i][2] = String.valueOf(secondFrameController.getAllSession().get(i).getWeek());
+            table[i][3] = String.valueOf(secondFrameController.getAllSession().get(i).getStartTime());
+            table[i][4] = String.valueOf(secondFrameController.getAllSession().get(i).getEndTime());
+            table[i][5] = String.valueOf(secondFrameController.getAllSession().get(i).getID_course());
+            table[i][6] = String.valueOf(secondFrameController.getAllSession().get(i).getID_type());
+            table[i][7] = String.valueOf(secondFrameController.getAllSession().get(i).getState());
+
+
+        }
+
+        String[] entetes = {"ID", "Date", "Semaine", "Heure de debut", "Heure de fin", "ID course", "ID type", "Etat"};
+
+
+
+        JTable jTable = new JTable(table, entetes);
+
+        panelTable.add(jTable.getTableHeader(), BorderLayout.NORTH);
+        panelTable.add(jTable, BorderLayout.CENTER);
+
+
+
+        referentFrame.pack();
+    }
+
 
     /**
      * fonction de la fentre admin qui permet de voir les differents JFreeCharts avec les infos sur les
