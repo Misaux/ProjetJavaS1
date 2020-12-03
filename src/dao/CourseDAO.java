@@ -31,7 +31,6 @@ public class CourseDAO implements CoursDao {
 
     }
 
-
     /**
      * fonction permettant d'obtenir une liste de tous les cours de la base de donnee
      *
@@ -62,7 +61,6 @@ public class CourseDAO implements CoursDao {
             return null;
         }
     }
-
 
     /**
      * fonction permettant d'obtenir un cours venant de la base de donnee grace a son nom
