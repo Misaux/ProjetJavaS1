@@ -1,7 +1,6 @@
 package InterfaceDao;
 
-import Models.Course;
-import Models.CourseType;
+import models.Course;
 
 import java.util.List;
 

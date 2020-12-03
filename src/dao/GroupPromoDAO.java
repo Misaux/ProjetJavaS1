@@ -1,7 +1,6 @@
-package DAO;
+package dao;
 
-import Models.GroupPromo;
-import Models.Room;
+import models.GroupPromo;
 
 import java.sql.*;
 import java.util.ArrayList;

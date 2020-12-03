@@ -1,7 +1,6 @@
 package InterfaceDao;
 
-import Models.Room;
-import Models.RoomSession;
+import models.RoomSession;
 
 import java.util.List;
 
@@ -12,4 +11,5 @@ public interface RoomSessionDao {
     RoomSession readRoomSession(Long idSession , Long idRoom);
     void updateRoom(RoomSession roomSession);
     void deleteRoom(RoomSession roomSession);
+    boolean checkIfAlreadyAssociated(String startTime, Long idRoom, String date);
 }

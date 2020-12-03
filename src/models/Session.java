@@ -1,14 +1,14 @@
-package Models;
+package models;
 
 
 
 
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 import java.util.Observable;
 
 public class Session extends Observable {
@@ -61,8 +61,9 @@ public class Session extends Observable {
         return week;
     }
 
-    public void setWeek(int week) {
-        this.week = week;
+    public void setWeek(){
+    TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear();
+    this.week = this.date.get(woy);
     }
 
         public String getStartTime() {

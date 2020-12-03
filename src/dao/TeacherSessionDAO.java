@@ -1,9 +1,9 @@
-package DAO;
+package dao;
 
 import InterfaceDao.TeacherSessionDao;
-import Models.RoomSession;
-import Models.TeacherSession;
+import models.TeacherSession;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -203,5 +203,50 @@ public class TeacherSessionDAO implements TeacherSessionDao {
         return fullName;
     }
 
+
+    @Override
+    public boolean checkIfAlreadyAssociated(String startTime, Long idTeacher, String date){
+
+        List<TeacherSession> teacherSessions = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(url, username, password);
+            this.preparedStatement = this.connection.prepareStatement
+                    ("SELECT * FROM session INNER JOIN teacher_session ON session.id = teacher_session.id_session and teacher_session.id_teacher= ? and session.date =?  and session.start_time =? ");
+
+            this.preparedStatement.setLong(1, idTeacher);
+            this.preparedStatement.setString(3, startTime);
+            this.preparedStatement.setString(2, date);
+
+            this.resultSet =preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                teacherSessions.add(new TeacherSession());
+            }
+
+            System.out.println(teacherSessions.size());
+
+            if(teacherSessions.size() != 0 )
+            {
+                JOptionPane.showMessageDialog(null, "This teacher already have a session at this hour ");
+                teacherSessions.clear();
+                return true;
+
+            }
+
+            this.preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("unable to find the product");
+
+
+        }
+
+
+        return false;
+
+
+    }
 
 }

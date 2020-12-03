@@ -1,7 +1,6 @@
-package DAO;
+package dao;
 
-import Models.Room;
-import Models.Site;
+import models.Room;
 import org.jfree.data.jdbc.JDBCPieDataset;
 
 import java.sql.*;

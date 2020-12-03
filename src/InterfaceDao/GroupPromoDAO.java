@@ -1,7 +1,6 @@
 package InterfaceDao;
 
-import Models.CourseType;
-import Models.GroupPromo;
+import models.GroupPromo;
 
 import java.util.List;
 

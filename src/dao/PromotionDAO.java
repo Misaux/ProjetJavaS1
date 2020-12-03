@@ -1,11 +1,8 @@
-package DAO;
+package dao;
 
 import InterfaceDao.PromotionDao;
-import Models.Course;
-import Models.Promotion;
-import Models.Site;
+import models.Promotion;
 
-import javax.management.relation.RelationSupportMBean;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,9 @@
-package DAO;
+package dao;
 
 import InterfaceDao.SiteDao;
-import Models.*;
+import models.*;
 //import com.mysql.cj.protocol.a.BinaryResultsetReader;
 
-import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

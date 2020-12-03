@@ -1,9 +1,7 @@
-package DAO;
+package dao;
 
-import Models.Room;
-import Models.Student;
-import Models.Teacher;
-import Models.User;
+import models.Student;
+import models.User;
 
 import javax.swing.*;
 import java.sql.*;
@@ -138,15 +136,15 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
     }
 
     @Override
-    public User findStudentByLastName(String name) {
+    public Student findStudentByLastName(String lastName) {
         try {
             this.connection= DriverManager.getConnection(this.url,this.username,this.password);
             this.preparedStatement= this.connection.prepareStatement
-                    ("SELECT * FROM user e NATURAL JOIN student s WHERE e.last_name = ? ");
-            this.preparedStatement.setString(1,name);
+                    ("SELECT * FROM user e NATURAL JOIN student s WHERE s.id_user=e.id and e.last_name = ? ");
+            this.preparedStatement.setString(1,lastName);
             this.resultSet = this.preparedStatement.executeQuery();
 
-            Student student= new Student();
+            Student student = new Student();
 
             while(this.resultSet.next())
             {
@@ -157,7 +155,7 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
                 student.setLast_name(this.resultSet.getString("last_name"));
                 student.setPermission(this.resultSet.getString("permission"));
                 student.setIdUser(this.resultSet.getLong("id_user"));
-                student.setNumber((this.resultSet.getInt("number")));
+                student.setNumber(this.resultSet.getInt("number"));
                 student.setIdGroupPromotion(this.resultSet.getLong("id_group_promotion"));
             }
             this.resultSet.close();
@@ -233,5 +231,50 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
     @Override
     public String getStudentFirstName(String connexion, String passwordEmail) {
         return null;
+    }
+
+    @Override
+    public boolean checkIfAlreadyCreated(String lastName, String firstName,  int number){
+
+        List<Student> student = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(url, username, password);
+            this.preparedStatement = this.connection.prepareStatement
+                    ("SELECT * FROM user e NATURAL JOIN student s WHERE e.last_name = ? and e.first_name =? and s.number= ?  ");
+
+            this.preparedStatement.setString(1, lastName);
+            this.preparedStatement.setString(2, firstName);
+            this.preparedStatement.setInt(3,number);
+
+            this.resultSet =preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                student.add(new Student());
+            }
+
+            System.out.println(student.size());
+
+            if(student.size() != 0 )
+            {
+                JOptionPane.showMessageDialog(null, "This student already exist ");
+                student.clear();
+                return true;
+
+            }
+
+            this.preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("unable to find the product");
+
+
+        }
+
+        JOptionPane.showMessageDialog(null, "This student has been added ");
+        return false;
+
+
     }
 }

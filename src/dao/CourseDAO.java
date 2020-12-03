@@ -1,7 +1,6 @@
-package DAO;
+package dao;
 import InterfaceDao.CoursDao;
-import Models.Course;
-import Models.CourseType;
+import models.Course;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,16 +1,17 @@
-package Models;
+package models;
 
 import java.util.Observable;
 
-public class GroupPromo extends Observable {
+public class Site extends Observable {
     private Long ID;
     private String name;
-    private Long promotion;
 
-    public GroupPromo(Long ID, String name, Long idPromotion) {
+    public Site(Long ID, String name) {
         this.ID = ID;
         this.name = name;
-        this.promotion = idPromotion;
+    }
+
+    public Site() {
     }
 
     public Long getID() {
@@ -29,23 +30,11 @@ public class GroupPromo extends Observable {
         this.name = name;
     }
 
-    public Long getPromotion() {
-        return promotion;
-    }
-
-    public void setPromotion(Long promotion) {
-        this.promotion = promotion;
-    }
-
-    public GroupPromo() {
-    }
-
     @Override
     public String toString() {
-        return "GroupPromo{" +
+        return "Site{" +
                 "ID=" + ID +
                 ", name='" + name + '\'' +
-                ", promotion=" + promotion +
                 '}';
     }
 }

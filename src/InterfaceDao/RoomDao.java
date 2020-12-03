@@ -1,7 +1,6 @@
 package InterfaceDao;
 
-import Models.Promotion;
-import Models.Room;
+import models.Room;
 import org.jfree.data.jdbc.JDBCPieDataset;
 
 import java.util.List;

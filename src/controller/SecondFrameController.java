@@ -29,6 +29,7 @@ public class SecondFrameController extends Observable {
     private CourseDAO courseDAO = new CourseDAO(url, username, password);
     private CourseTypeDAO courseTypeDAO = new CourseTypeDAO(url, username, password);
     private GroupSessionDAO groupSessionDAO = new GroupSessionDAO(url,username,password);
+    private RoomSessionDAO roomSessionDAO = new RoomSessionDAO(url,username,password);
 
 
     private User user = new User();
@@ -122,6 +123,8 @@ public class SecondFrameController extends Observable {
      *fonction pour obtenir la liste de tous les etats possibles de cours de la BDD
      * @return List<String></String>
      */
+    public List<Room> getAllRoom(){ return roomDAO.getAllRoom(); }
+
     public List<String> getAllSessionState() {
         return sessionDAO.getAllSessionState();
     }
@@ -206,25 +209,29 @@ public class SecondFrameController extends Observable {
      *Ajoute un enseignant a la base de donnees
      * @param email string, email de l'enseignant
      * @param password string, mot de passe pour se connecter
-     * @param first_name string, prenom de l'enseignant
-     * @param last_name string, nom de l'enseignant
+     * @param firstName string, prenom de l'enseignant
+     * @param lastName string, nom de l'enseignant
      * @param courseSelected string, matiere de l'enseignant
      */
-    public void addTeacher(String email, String password, String first_name, String last_name, String courseSelected) {
+    public void addTeacher(String email, String password, String firstName, String lastName, String courseSelected) {
 
         Teacher teacher = new Teacher();
-        teacher.setFirst_name(first_name);
-        teacher.setLast_name(last_name);
+        teacher.setFirst_name(firstName);
+        teacher.setLast_name(lastName);
         teacher.setEmail(email);
         teacher.setPassword(password);
         teacher.setPermission("ENSEIGNANT");
 
-        userDao.createUser(teacher);
 
-        teacher.setIdUser(userDao.findUserByLastName(teacher.getLast_name()).getID());
-        teacher.setIdCourse(courseDAO.readCourseByName(courseSelected).getID());
+        if(teacherDAO.checkIfAlreadyCreated(lastName,firstName) == false)
+        {
+            userDao.createUser(teacher);
+            teacher.setIdUser(userDao.findUserByLastName(teacher.getLast_name()).getID());
+            teacher.setIdCourse(courseDAO.readCourseByName(courseSelected).getID());
 
-        teacherDAO.createTeacher(teacher);
+            teacherDAO.createTeacher(teacher);
+
+        }
 
 
     }
@@ -247,31 +254,34 @@ public class SecondFrameController extends Observable {
      *
      * @param email string, email de l'eleve
      * @param password string, mot de passe de l'eleve
-     * @param first_name string, prenom de l'eleve
-     * @param last_name string, nom de l'eleve
+     * @param firstName string, prenom de l'eleve
+     * @param lastName string, nom de l'eleve
      * @param numberStudentType string, numero de l'eleve
      * @param groupSelected string, group de l'eleve
      */
-    public void addStudent(String email, String password, String first_name, String last_name, String numberStudentType, String groupSelected) {
+    public void addStudent(String email, String password, String firstName, String lastName, String numberStudentType, String groupSelected) {
 
         Student student = new Student();
-        student.setFirst_name(first_name);
-        student.setLast_name(last_name);
+        student.setFirst_name(firstName);
+        student.setLast_name(lastName);
         student.setEmail(email);
         student.setPassword(password);
         student.setPermission("ELEVE");
 
         int numberStudent = Integer.parseInt(numberStudentType);
 
-        userDao.createUser(student);
+        if (studentDAO.checkIfAlreadyCreated(lastName, firstName, numberStudent) == false) {
 
-        student.setIdUser(userDao.findUserByLastName(student.getLast_name()).getID());
-        student.setIdGroupPromotion(groupPromoDAO.readGroupPromoByName(groupSelected).getID());
-        student.setNumber(numberStudent);
+            userDao.createUser(student);
 
-        studentDAO.createStudent(student);
+            student.setIdUser(userDao.findUserByLastName(student.getLast_name()).getID());
+            student.setIdGroupPromotion(groupPromoDAO.readGroupPromoByName(groupSelected).getID());
+            student.setNumber(numberStudent);
+
+            studentDAO.createStudent(student);
 
 
+        }
     }
 
     /**
@@ -293,30 +303,29 @@ public class SecondFrameController extends Observable {
 
     }
 
-    /**
-     * Ajoute une session a la base de donnee
-     * @param weekSession string, semaine de la session
-     * @param date string, date de la session
-     * @param startTime string, heure de debut de la session
-     * @param endTime string, heure de fin de la session
-     * @param state string, etat de la session
-     * @param courseSelected string, cours de la session
-     * @param typeSelected string, type de la session
-     * @param teacherSelected string, enseignant de la session
-     * @param groupSelected string, group de la session
-     */
-    public void addSession(String weekSession, String date, String startTime, String endTime, String state, String courseSelected, String typeSelected, String teacherSelected, String groupSelected) {
+        /**
+         * Ajoute une session a la base de donnee
+         * @param date string, date de la session
+         * @param startTime string, heure de debut de la session
+         * @param endTime string, heure de fin de la session
+         * @param state string, etat de la session
+         * @param courseSelected string, cours de la session
+         * @param typeSelected string, type de la session
+         * @param teacherSelected string, enseignant de la session
+         * @param groupSelected string, group de la session
+         */
+
+    public void addSession(String date, String startTime, String endTime, String state, String courseSelected, String typeSelected, String teacherSelected, String groupSelected, String roomSelected) {
 
 
         String output[] = teacherSelected.split("\\s+");
         String firstName = output[0];
         String lastName = output[1];
         Session session = new Session();
-        int week = Integer.parseInt(weekSession);
-        session.setWeek(week);
         session.setDate(date);
         session.setStartTime(startTime);
         session.setEndTime(endTime);
+        session.setWeek();
         session.setID_course(courseDAO.readCourseByName(courseSelected).getID());
         session.setID_type(courseTypeDAO.readCourseTypeByName(typeSelected).getID());
         session.setState(state);
@@ -325,14 +334,26 @@ public class SecondFrameController extends Observable {
         TeacherSession teacherSession = new TeacherSession();
         teacherSession.setIdSession(sessionDAO.readSession(session.getWeek(),session.getDate(),session.getStartTime(),session.getID_course()).getID());
         teacherSession.setIdTeacher(userDao.findUserByLastName(lastName).getID());
+        teacherSessionDAO.checkIfAlreadyAssociated(session.getStartTime(),
+                teacherDAO.findTeacherByName(lastName).getID(),
+                session.getDate());
         teacherSessionDAO.createTeacherSession(teacherSession);
 
         GroupSession groupSession = new GroupSession();
         groupSession.setIdGroup(groupPromoDAO.readGroupPromoByName(groupSelected).getID());
         groupSession.setIdSession(sessionDAO.readSession(session.getWeek(),session.getDate(),session.getStartTime(),session.getID_course()).getID());
+        groupSessionDAO.checkIfAlreadyAssociated(session.getStartTime(),
+                groupPromoDAO.readGroupPromoByName(groupSelected).getID(),
+                session.getDate());
         groupSessionDAO.createGroupSession(groupSession);
 
-
+        RoomSession roomSession = new RoomSession();
+        roomSession.setIdRoom(roomDAO.readRoomByName(roomSelected).getID());
+        roomSession.setIdSession(sessionDAO.readSession(session.getWeek(),session.getDate(),session.getStartTime(),session.getID_course()).getID());
+        roomSessionDAO.checkIfAlreadyAssociated(session.getStartTime(),
+                roomDAO.readRoomByName(roomSelected).getID(),
+                session.getDate());
+        roomSessionDAO.createRoomSession(roomSession);
 
     }
 
@@ -342,7 +363,7 @@ public class SecondFrameController extends Observable {
      * @param startTimeSelected string, heure de debut de la session
      * @param courseSelected string, cours de la session
      */
-    public void removeSession(String dateselected , String startTimeSelected , String courseSelected) {
+    public void removeSession(String dateselected, String startTimeSelected , String courseSelected) {
 
 
         Session session = new Session();
@@ -353,7 +374,6 @@ public class SecondFrameController extends Observable {
 
 
     }
-
 
 
 

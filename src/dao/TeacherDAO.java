@@ -1,10 +1,7 @@
-package DAO;
+package dao;
 
 import InterfaceDao.TeacherDao;
-import Models.Session;
-import Models.Student;
-import Models.Teacher;
-import Models.User;
+import models.*;
 
 import javax.swing.*;
 import java.sql.*;
@@ -171,9 +168,6 @@ public class TeacherDAO implements TeacherDao {
 
     }
 
-
-
-
     @Override
     public User findTeacherByID(Long id) {
         try {
@@ -237,4 +231,50 @@ public class TeacherDAO implements TeacherDao {
     public String getTeacherFirstName(String connexion, String passwordEmail) {
         return null;
     }
+
+    @Override
+    public boolean checkIfAlreadyCreated(String lastName, String firstName){
+
+        List<Teacher> teacher = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(url, username, password);
+            this.preparedStatement = this.connection.prepareStatement
+                    ("SELECT * FROM user e NATURAL JOIN teacher t WHERE e.last_name = ? and e.first_name =? ");
+
+            this.preparedStatement.setString(1, lastName);
+            this.preparedStatement.setString(2, firstName);
+
+            this.resultSet =preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                teacher.add(new Teacher());
+            }
+
+            System.out.println(teacher.size());
+
+            if(teacher.size() != 0 )
+            {
+                JOptionPane.showMessageDialog(null, "This teacher already exist ");
+                teacher.clear();
+                return true;
+
+            }
+
+            this.preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("unable to find the product");
+
+
+        }
+
+        JOptionPane.showMessageDialog(null, "This teacher has been added ");
+        return false;
+
+
+    }
+
+
 }

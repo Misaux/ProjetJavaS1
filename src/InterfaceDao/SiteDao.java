@@ -1,7 +1,7 @@
 package InterfaceDao;
 
 
-import Models.Site;
+import models.Site;
 
 import java.util.List;
 

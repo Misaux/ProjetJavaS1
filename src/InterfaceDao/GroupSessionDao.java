@@ -1,7 +1,6 @@
 package InterfaceDao;
 
-import Models.GroupSession;
-import Models.RoomSession;
+import models.GroupSession;
 
 import java.util.List;
 
@@ -13,5 +12,5 @@ public interface GroupSessionDao {
     void updateGroupSessionIdGroup(GroupSession groupSession);
     void updateGroupSessionIdSession(GroupSession groupSession);
     void deleteGroupSession(GroupSession groupSession);
-
+    boolean checkIfAlreadyAssociated(String startTime, Long idRoom, String date);
 }

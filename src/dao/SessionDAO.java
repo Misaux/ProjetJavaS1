@@ -1,18 +1,11 @@
-package DAO;
+package dao;
 
-import Models.CourseType;
-import Models.Session;
-import Models.User;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
+import models.*;
 import org.jfree.data.jdbc.JDBCPieDataset;
-import org.w3c.dom.css.Counter;
 
 import javax.swing.*;
-import java.lang.Object;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,8 +155,9 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             preparedStatement.close();
             /*--------------------------------*/
 
-            preparedStatement = connection.prepareStatement("SELECT * FROM session WHERE id_course = ?");
+            preparedStatement = connection.prepareStatement("SELECT * FROM session WHERE id_course = ? and week = ? ");
             preparedStatement.setInt(1, idCourse);
+            preparedStatement.setString(2, weekSelected);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -193,6 +187,59 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         }
     }
 
+
+    public List<Session> getWeekSessionRoom(Room room, String weekSelected) {
+
+        List<Session> list = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(this.url, this.username, this.password);
+            preparedStatement = connection.prepareStatement("SELECT id_session FROM room_session WHERE id_room = ?");
+            preparedStatement.setLong(1, room.getID());
+
+            resultSet = preparedStatement.executeQuery();
+            List<Long> id_session = new ArrayList<>();
+
+            while (resultSet.next()) {
+                id_session.add(resultSet.getLong("id_session"));
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            /*------------------------*/
+            for (int i = 0; i < id_session.size(); i++) {
+                preparedStatement = connection.prepareStatement("SELECT * FROM session WHERE id = ? AND week = ?");
+                preparedStatement.setLong(1, id_session.get(i));
+                preparedStatement.setString(2, weekSelected);
+
+                resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    Long Id = resultSet.getLong("id");
+                    int week = resultSet.getInt("week");
+                    String date = resultSet.getString("date");
+                    String startTime = resultSet.getString("start_time");
+                    String endTime = resultSet.getString("end_time");
+                    String state = resultSet.getString("state");
+                    Long idCourse = resultSet.getLong("id_course");
+                    Long idType = resultSet.getLong("id_type");
+                    list.add(new Session(Id, week, startTime, endTime, date, idCourse, idType, Session.State.valueOf(state)));
+                }
+
+                resultSet.close();
+                preparedStatement.close();
+
+            }
+            connection.close();
+
+            return list;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
     @Override
     public List<String> getAllSessionState() {
@@ -326,10 +373,6 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         try {
             this.connection = DriverManager.getConnection(url, username, password);
 
-            if (session.getID() != null) {
-                System.out.println("This course already exists.");
-
-            } else {
                 this.preparedStatement = this.connection.prepareStatement
                         ("insert into session (week,date,start_time,end_time,state,id_course,id_type) values (?,?,?,?,?,?,?)");
                 this.preparedStatement.setInt(1, session.getWeek());
@@ -340,11 +383,11 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
                 this.preparedStatement.setLong(6, session.getID_course());
                 this.preparedStatement.setLong(7, session.getID_type());
                 this.preparedStatement.execute();
-            }
+
+                System.out.println(" Session saved into the database");
+                JOptionPane.showMessageDialog(null, "Session Successfully added in the user database");
 
 
-            System.out.println(" Session saved into the database");
-            JOptionPane.showMessageDialog(null, "Session Successfully added in the user database");
             this.preparedStatement.close();
             this.connection.close();
         } catch (SQLException e) {
@@ -355,14 +398,14 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
     }
 
     @Override
-    public Session readSession(int week, String date, String time, Long idcourse) {
+    public Session readSession(int week, String date, String startTime, Long idcourse) {
         try {
             this.connection = DriverManager.getConnection(this.url, this.username, this.password);
             this.preparedStatement = this.connection.prepareStatement
                     ("select * from session where week = ? AND date = ? AND start_time = ? and id_course = ? ");
             this.preparedStatement.setInt(1, week);
             this.preparedStatement.setString(2, date);
-            this.preparedStatement.setString(3, time);
+            this.preparedStatement.setString(3, startTime);
             this.preparedStatement.setLong(4, idcourse);
             this.resultSet = this.preparedStatement.executeQuery();
 
@@ -371,13 +414,13 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             while (this.resultSet.next()) {
 
                 session.setID(this.resultSet.getLong("id"));
-                session.setWeek(this.resultSet.getInt("week"));
                 session.setDate(this.resultSet.getString("date"));
                 session.setStartTime(this.resultSet.getString("start_time"));
                 session.setEndTime(this.resultSet.getString("end_time"));
                 session.setState(this.resultSet.getString("state"));
                 session.setID_course(this.resultSet.getLong("id_course"));
                 session.setID_type(this.resultSet.getLong("id_type"));
+                session.setWeek();
 
             }
 
@@ -437,6 +480,7 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
     }
 
+
     @Override
     public void deleteSession(Session session) {
         try {
@@ -448,7 +492,7 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             preparedStatement.setLong(3, session.getID_course());
 
             this.preparedStatement.execute();
-            System.out.println("La session a bien été supprimée.");
+            JOptionPane.showMessageDialog(null, "This session is successfully deleted ");
 
             preparedStatement.close();
             connection.close();

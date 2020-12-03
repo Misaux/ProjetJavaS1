@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 //STUDENT(#ID_USER, NUMBER, #ID_GROUP …)
 public class Student extends User  {
