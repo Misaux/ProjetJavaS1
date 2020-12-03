@@ -191,6 +191,7 @@ public class PromotionDAO implements PromotionDao {
      * @param id id de la promo pour rechercher
      * @return la promo selon l'id saisi
      */
+    @Override
     public Promotion getPromotionByID(Long id) {
         try {
             connection = DriverManager.getConnection(url, username, password);

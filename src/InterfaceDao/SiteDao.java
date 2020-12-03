@@ -12,6 +12,8 @@ public interface SiteDao {
     Site findSiteByName(String name);
     Site findSiteByID(Long id);
     void deleteSite(Site site);
+    void saveSite(Site site);
+    Site getSiteByID(Long id);
 
 
 }

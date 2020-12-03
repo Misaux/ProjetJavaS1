@@ -65,7 +65,7 @@ public class CourseTypeDAO implements CourseTypeDao {
      * @param courseType Objet de classe CourseType
      */
     @Override
-    public void createCoursDao(CourseType courseType) {
+    public void createCoursTypeDao(CourseType courseType) {
         try {
             connection = DriverManager.getConnection(url, username, password);
 

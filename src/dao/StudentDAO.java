@@ -18,7 +18,12 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
-
+    /**
+     * Constructeur de la classe StudentDAO
+     * @param url url permettant d'acceder a PhpMyAdmin
+     * @param username identifiant pour acceder PhpMyAdmin
+     * @param password mot de passe pour acceder a PhpMyAdmin
+     */
     public StudentDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
@@ -28,6 +33,10 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
     public StudentDAO() {
     }
 
+    /**
+     * Fonction permettant d'obtenir une liste de tous les etudiants presents dans la base de donnee
+     * @return List<Student></Student>
+     */
     @Override
     public List<Student> getAllStudent() {
 
@@ -64,6 +73,10 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
 
     }
 
+    /**
+     * Fonction permettant d'ajouter un Student a la base de donnee
+     * @param student Object Student qu'on veut ajouter
+     */
     @Override
     public void createStudent(Student student) {
 
@@ -93,6 +106,10 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
 
     }
 
+    /**
+     * Fonction permettant de mettre a jour l'id_user d'un Student
+     * @param student Object Student dans lequel on veut mettre a jour l'id_user
+     */
     @Override
     public void updateStudentIdUser(Student student) {
 
@@ -114,6 +131,10 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
 
     }
 
+    /**
+     * Fonction permettant de mettre a jour l'id_group_promotion d'un Student
+     * @param student Object Student dans lequel on veut mettre a jour l'id_group_promotion
+     */
     @Override
     public void updateStudentIdGroupPromotion(Student student) {
         try {
@@ -132,19 +153,23 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
             System.out.println("unable to save the site");
         }
 
-
     }
 
+    /**
+     * Fonction permettant de rechercher dans la base de donnee un Student selon son nom de famille
+     * @param lastName nom de famille du Student qu'on recherche
+     * @return Student
+     */
     @Override
-    public User findStudentByLastName(String name) {
+    public Student findStudentByLastName(String lastName) {
         try {
             this.connection= DriverManager.getConnection(this.url,this.username,this.password);
             this.preparedStatement= this.connection.prepareStatement
-                    ("SELECT * FROM user e NATURAL JOIN student s WHERE e.last_name = ? ");
-            this.preparedStatement.setString(1,name);
+                    ("SELECT * FROM user e NATURAL JOIN student s WHERE s.id_user=e.id and e.last_name = ? ");
+            this.preparedStatement.setString(1,lastName);
             this.resultSet = this.preparedStatement.executeQuery();
 
-            Student student= new Student();
+            Student student = new Student();
 
             while(this.resultSet.next())
             {
@@ -155,7 +180,7 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
                 student.setLast_name(this.resultSet.getString("last_name"));
                 student.setPermission(this.resultSet.getString("permission"));
                 student.setIdUser(this.resultSet.getLong("id_user"));
-                student.setNumber((this.resultSet.getInt("number")));
+                student.setNumber(this.resultSet.getInt("number"));
                 student.setIdGroupPromotion(this.resultSet.getLong("id_group_promotion"));
             }
             this.resultSet.close();
@@ -170,6 +195,11 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
 
     }
 
+    /**
+     * Fonction permettant de rechercher dans la base de donnee un Student selon son id
+     * @param id Id du Student qu'on recherche
+     * @return Student
+     */
     @Override
     public User findStudentByID(Long id) {
         try {
@@ -204,6 +234,10 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
         }
     }
 
+    /**
+     * Fonction permettant de supprimer un Student de la base de donnee
+     * @param student Object Student qu'on veut supprimer
+     */
     @Override
     public void deleteStudent(Student student) {
         try{
@@ -231,5 +265,57 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
     @Override
     public String getStudentFirstName(String connexion, String passwordEmail) {
         return null;
+    }
+
+    /**
+     * Fonction permettant de verifier si un Student existe deja dans la base de donnee
+     * @param lastName Nom de famille du Student
+     * @param firstName Prenom du Student
+     * @param number Numero du Student
+     * @return
+     */
+    @Override
+    public boolean checkIfAlreadyCreated(String lastName, String firstName,  int number){
+
+        List<Student> student = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(url, username, password);
+            this.preparedStatement = this.connection.prepareStatement
+                    ("SELECT * FROM user e NATURAL JOIN student s WHERE e.last_name = ? and e.first_name =? and s.number= ?  ");
+
+            this.preparedStatement.setString(1, lastName);
+            this.preparedStatement.setString(2, firstName);
+            this.preparedStatement.setInt(3,number);
+
+            this.resultSet =preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                student.add(new Student());
+            }
+
+            System.out.println(student.size());
+
+            if(student.size() != 0 )
+            {
+                JOptionPane.showMessageDialog(null, "This student already exist ");
+                student.clear();
+                return true;
+
+            }
+
+            this.preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("unable to find the product");
+
+
+        }
+
+        JOptionPane.showMessageDialog(null, "This student has been added ");
+        return false;
+
+
     }
 }

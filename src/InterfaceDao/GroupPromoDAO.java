@@ -10,6 +10,6 @@ public interface GroupPromoDAO {
     void createGroupPromoDao(GroupPromo groupPromo);
     GroupPromo readGroupPromoByName(String name);
     GroupPromo readGroupPromoById(Long Id);
-    void updateGrouPromoDao(GroupPromo groupPromo);
+    void updateGroupPromoDao(GroupPromo groupPromo);
     void deleteGroupPromoDao(GroupPromo groupPromo);
 }

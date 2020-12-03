@@ -269,20 +269,26 @@ public class SecondFrameView {
             listPanels.get(1).add(lundi.get(j));
             lundi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
 
+
             listPanels.get(2).add(mardi.get(j));
             mardi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
+
 
             listPanels.get(3).add(mercredi.get(j));
             mercredi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
 
+
             listPanels.get(4).add(jeudi.get(j));
             jeudi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
+
 
             listPanels.get(5).add(vendredi.get(j));
             vendredi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
 
+
             listPanels.get(6).add(samedi.get(j));
             samedi.get(j).setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
+
 
             listPanels.get(7).add(dimanche, BorderLayout.CENTER);
             dimanche.setBorder(BorderFactory.createLineBorder(Color.darkGray, 2));
@@ -443,14 +449,6 @@ public class SecondFrameView {
 
 
     }
-
-
-
-
-
-
-
-
 
 
 
@@ -757,17 +755,17 @@ public class SecondFrameView {
 
         referentFrame.setBounds(0, 0, 500, 400);
         referentFrame.setLocation(1000, 540);
-        referentFrame.setVisible(true);
+
 
         referentFrame.setContentPane(referentPanel);
         referentPanel.setLayout(new GridLayout(4, 2));
 
         JButton buttonShowTeacher = new JButton("Show Teacher Planning");
         JButton buttonShowStudent = new JButton("Show Student Planning");
-        JButton buttonAddSessionTeacher = new JButton("Add Session Teacher");
-        JButton buttonAddSessionStudent = new JButton("Add Session Student");
-        JButton buttonShowAllTeachers = new JButton("Show All Teachers");
-        JButton buttonShowAllStudents = new JButton("Show All Students");
+        JButton buttonShowRoom = new JButton("Show Room Planning");
+        JButton buttonTableRoom = new JButton("Show All Rooms");
+        JButton buttonTableTeachers = new JButton("Show All Teachers");
+        JButton buttonTableStudents = new JButton("Show All Students");
 
 
         JButton buttonDisconnect = new JButton("Disconnect");
@@ -775,18 +773,18 @@ public class SecondFrameView {
         labelReferentName.setFont(new Font(" Arial ", Font.BOLD, 15));
 
         referentPanel.add(buttonShowTeacher);
+        referentPanel.add(buttonTableTeachers);
         referentPanel.add(buttonShowStudent);
-        referentPanel.add(buttonAddSessionTeacher);
-        referentPanel.add(buttonAddSessionStudent);
-        referentPanel.add(buttonShowAllTeachers);
-        referentPanel.add(buttonShowAllStudents);
+        referentPanel.add(buttonTableStudents);
+        referentPanel.add(buttonShowRoom);
+        referentPanel.add(buttonTableRoom);
         referentPanel.add(buttonDisconnect);
         referentPanel.add(labelReferentName);
 
-
+        referentFrame.setVisible(true);
         referentFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        buttonShowTeacher.addActionListener(new ActionListener() {
+        buttonTableTeachers.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 referentPanel.removeAll();
@@ -794,7 +792,8 @@ public class SecondFrameView {
                 showTableTeacher();
             }
         });
-        buttonShowAllStudents.addActionListener(new ActionListener() {
+
+        buttonTableStudents.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 referentPanel.removeAll();
@@ -802,6 +801,61 @@ public class SecondFrameView {
                 showTableStudent();
             }
         });
+
+        buttonTableRoom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                referentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                showTableRoom();
+
+            }
+        });
+
+        buttonShowTeacher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                referentFrame.setVisible(false);
+                referentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                viewPlanningTeacherReferent();
+
+            }
+        });
+
+        buttonShowStudent.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                referentFrame.setVisible(false);
+                referentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                viewPlanningStudentReferent();
+
+            }
+        });
+
+        buttonShowRoom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                referentFrame.setVisible(false);
+                referentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                viewPlanningRoomReferent();
+
+            }
+        });
+
+        buttonDisconnect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                referentFrame.setVisible(false);
+                referentPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                connexionUser();
+            }
+        });
+
+
     }
 
 
@@ -834,11 +888,13 @@ public class SecondFrameView {
         for (int i = 0; i < tabWeek.length; i++) {
             tabWeek[i] = valueOf(nb + i);
         }
-        JComboBox comboBoxStudent = new JComboBox(tabWeek);
-        studentPanel.add(comboBoxStudent);
+        JComboBox comboBoxWeek = new JComboBox(tabWeek);
+        studentPanel.add(comboBoxWeek);
 
         studentPanel.add(buttonSearch);
         studentPanel.add(buttonReturn);
+
+
 
         buttonSearch.addActionListener(new ActionListener() {
             @Override
@@ -846,7 +902,7 @@ public class SecondFrameView {
 
                 addColor();
                 resetButtons();
-                showSessionStudent(Objects.requireNonNull(comboBoxStudent.getSelectedItem()).toString());
+                showSessionStudent(Objects.requireNonNull(comboBoxWeek.getSelectedItem()).toString());
                 showSessionsDetails();
             }
         });
@@ -859,6 +915,90 @@ public class SecondFrameView {
                 studentFrame();
             }
         });
+
+
+    }
+
+    public void viewPlanningStudentReferent(){
+
+        JPanel viewPlanningStudent = new JPanel(new GridLayout(3, 3));
+
+        referentFrame.setContentPane(viewPlanningStudent);
+
+        //////////////
+
+        String[] tab = new String[secondFrameController.getAllStudent().size()];
+
+        for (int i = 0; i < tab.length; i++) {
+            tab[i] = secondFrameController.getAllStudent().get(i).getFirst_name() + "  " + secondFrameController.getAllStudent().get(i).getLast_name();
+        }
+
+        JLabel jLabelStudent = new JLabel("Student :");
+        JComboBox comboBoxStudent = new JComboBox(tab);
+
+        //////////////
+
+        String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
+        int nb = 1;
+        for (int i = 0; i < tabWeek.length; i++) {
+            tabWeek[i] = valueOf(nb + i);
+        }
+        JLabel jLabelWeek = new JLabel("Week :");
+        JComboBox comboBoxWeek;
+        comboBoxWeek = new JComboBox(tabWeek);
+
+        //////////////
+
+        JButton buttonSearch = new JButton("Search");
+        JButton buttonReturn = new JButton("Return");
+
+
+        jLabelStudent.setFont(new Font(" Arial ", Font.ITALIC, 20));
+        panSmall.add(comboBoxStudent);
+        comboBoxStudent.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBoxStudent.setBounds(0, 60, 200, 50);
+
+        jLabelWeek.setFont(new Font(" Arial ", Font.ITALIC, 20));
+        panSmall.add(comboBoxWeek);
+        comboBoxWeek.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBoxWeek.setBounds(0, 60, 200, 50);
+
+
+
+        viewPlanningStudent.add(jLabelStudent);
+        viewPlanningStudent.add(comboBoxStudent);
+
+        viewPlanningStudent.add(jLabelWeek);
+        viewPlanningStudent.add(comboBoxWeek);
+
+        viewPlanningStudent.add(buttonSearch);
+        viewPlanningStudent.add(buttonReturn);
+
+        referentFrame.setVisible(true);
+
+        buttonSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addColor();
+                resetButtons();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                showSessionStudentReferent(Objects.requireNonNull(comboBoxWeek.getSelectedItem()).toString(),
+                        mainFrameController.getStudentByName(comboBoxStudent.getSelectedItem().toString()));
+                showSessionsDetails();
+
+            }
+        });
+
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewPlanningStudent.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                referentFrame();
+            }
+        });
+
 
 
     }
@@ -903,6 +1043,176 @@ public class SecondFrameView {
 
 
     }
+
+
+    /**
+     * Fenetre de choix de l'affichage de l'emploi du temps en fonction
+     * de la semaine selectionnee dans la combobox
+     */
+    public void viewPlanningTeacher() {
+
+        JButton buttonReturn = new JButton("Return");
+        JButton buttonSearch = new JButton("Search");
+
+        teacherPanel.setLayout(new GridLayout(3, 1));
+        teacherFrame.setContentPane(teacherPanel);
+
+        String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
+        int nb = 1;
+        for (int i = 0; i < tabWeek.length; i++) {
+            tabWeek[i] = valueOf(nb + i);
+        }
+        JComboBox comboBoxWeek = new JComboBox(tabWeek);
+        teacherPanel.add(comboBoxWeek);
+
+        teacherPanel.add(buttonSearch);
+        teacherPanel.add(buttonReturn);
+
+        buttonSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                addColor();
+                resetButtons();
+                showSessionTeacher(comboBoxWeek.getSelectedItem().toString());
+                showSessionsDetails();
+
+            }
+        });
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(teacherFrame);
+                teacherFrame();
+            }
+        });
+    }
+
+    public void viewPlanningTeacherReferent(){
+
+        JPanel viewPlanningTeacher = new JPanel(new GridLayout(3, 3));
+
+        referentFrame.setContentPane(viewPlanningTeacher);
+
+        //////////////
+
+        String[] tab = new String[secondFrameController.getAllTeacher().size()];
+
+        for (int i = 0; i < tab.length; i++) {
+            tab[i] = secondFrameController.getAllTeacher().get(i).getFirst_name() + "  " + secondFrameController.getAllTeacher().get(i).getLast_name();
+        }
+
+        JLabel jLabelTeacher = new JLabel("Teacher :");
+        JComboBox comboBoxTeacher = new JComboBox(tab);
+
+        //////////////
+
+        String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
+        int nb = 1;
+        for (int i = 0; i < tabWeek.length; i++) {
+            tabWeek[i] = valueOf(nb + i);
+        }
+        JLabel jLabelWeek = new JLabel("Week :");
+        JComboBox comboBoxWeek;
+        comboBoxWeek = new JComboBox(tabWeek);
+
+        //////////////
+
+        JButton buttonSearch = new JButton("Search");
+        JButton buttonReturn = new JButton("Return");
+
+
+        jLabelTeacher.setFont(new Font(" Arial ", Font.ITALIC, 20));
+        panSmall.add(comboBoxTeacher);
+        comboBoxTeacher.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBoxTeacher.setBounds(0, 60, 200, 50);
+
+        jLabelWeek.setFont(new Font(" Arial ", Font.ITALIC, 20));
+        panSmall.add(comboBoxWeek);
+        comboBoxWeek.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBoxWeek.setBounds(0, 60, 200, 50);
+
+
+
+        viewPlanningTeacher.add(jLabelTeacher);
+        viewPlanningTeacher.add(comboBoxTeacher);
+
+        viewPlanningTeacher.add(jLabelWeek);
+        viewPlanningTeacher.add(comboBoxWeek);
+
+        viewPlanningTeacher.add(buttonSearch);
+        viewPlanningTeacher.add(buttonReturn);
+
+        referentFrame.setVisible(true);
+
+        buttonSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addColor();
+                resetButtons();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                showSessionTeacherReferent(Objects.requireNonNull(comboBoxWeek.getSelectedItem()).toString(),
+                        mainFrameController.getTeacherByName(comboBoxTeacher.getSelectedItem().toString()));
+                showSessionsDetails();
+
+
+            }
+        });
+
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewPlanningTeacher.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                referentFrame();
+            }
+        });
+
+
+
+    }
+
+    public void viewSessionTeacherWeek( ) {
+        JButton buttonSearch = new JButton("search");
+        JButton buttonReturn = new JButton("Return");
+
+        teacherPanel.setLayout(new GridLayout(3, 1));
+        String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
+        int nb = 1;
+        for (int i = 0; i < tabWeek.length; i++) {
+            tabWeek[i] = valueOf(nb + i);
+        }
+        JComboBox comboBoxTeacher;
+        comboBoxTeacher = new JComboBox(tabWeek);
+        teacherPanel.add(comboBoxTeacher);
+        teacherPanel.add(buttonSearch);
+        teacherPanel.add(buttonReturn);
+
+        buttonSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showTableTeacherSession(comboBoxTeacher.getSelectedItem().toString());
+            }
+        });
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.removeAll();
+                SwingUtilities.updateComponentTreeUI(teacherFrame);
+                teacherFrame();
+            }
+        });
+
+    }
+
+
+
+
+
 
     public void showTableStudentSession(String item) {
         JPanel panelTable = new JPanel();
@@ -951,87 +1261,91 @@ public class SecondFrameView {
         studentFrame.pack();
     }
 
+    public void viewPlanningRoomReferent(){
 
+        JPanel viewPlanningTeacher = new JPanel(new GridLayout(3, 3));
 
+        referentFrame.setContentPane(viewPlanningTeacher);
 
+        //////////////
 
+        String[] tab = new String[secondFrameController.getAllRoom().size()];
 
-    /**
-     * Fenetre de choix de l'afgfichage de l'emploi du temps en fonction
-     * de la semaine selectionnee dans la combobox
-     */
-    public void viewPlanningTeacher() {
-        JButton buttonSearch = new JButton("search");
-        JButton buttonReturn = new JButton("Return");
+        for (int i = 0; i < tab.length; i++) {
+            tab[i] = secondFrameController.getAllRoom().get(i).getName() ;
+        }
 
-        teacherPanel.setLayout(new GridLayout(3, 1));
+        JLabel jLabelRoom= new JLabel("Room:");
+        JComboBox comboBoxRoom= new JComboBox(tab);
+
+        //////////////
+
         String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
         int nb = 1;
         for (int i = 0; i < tabWeek.length; i++) {
             tabWeek[i] = valueOf(nb + i);
         }
-        JComboBox comboBoxTeacher;
-        comboBoxTeacher = new JComboBox(tabWeek);
-        teacherPanel.add(comboBoxTeacher);
-        teacherPanel.add(buttonSearch);
-        teacherPanel.add(buttonReturn);
+        JLabel jLabelWeek = new JLabel("Week :");
+        JComboBox comboBoxWeek;
+        comboBoxWeek = new JComboBox(tabWeek);
+
+        //////////////
+
+        JButton buttonSearch = new JButton("Search");
+        JButton buttonReturn = new JButton("Return");
+
+
+        jLabelRoom.setFont(new Font(" Arial ", Font.ITALIC, 20));
+        panSmall.add(comboBoxRoom);
+        comboBoxRoom.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBoxRoom.setBounds(0, 60, 200, 50);
+
+        jLabelWeek.setFont(new Font(" Arial ", Font.ITALIC, 20));
+        panSmall.add(comboBoxWeek);
+        comboBoxWeek.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBoxWeek.setBounds(0, 60, 200, 50);
+
+
+
+        viewPlanningTeacher.add(jLabelRoom);
+        viewPlanningTeacher.add(comboBoxRoom);
+
+        viewPlanningTeacher.add(jLabelWeek);
+        viewPlanningTeacher.add(comboBoxWeek);
+
+        viewPlanningTeacher.add(buttonSearch);
+        viewPlanningTeacher.add(buttonReturn);
+
+        referentFrame.setVisible(true);
 
         buttonSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addColor();
-                SwingUtilities.updateComponentTreeUI(teacherFrame);
-                showSessionTeacher(Objects.requireNonNull(comboBoxTeacher.getSelectedItem()).toString());
+                resetButtons();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                showSessionRoomReferent(Objects.requireNonNull(comboBoxWeek.getSelectedItem()).toString(),
+                        mainFrameController.getRoomByName(comboBoxRoom.getSelectedItem().toString()));
+                showSessionsDetails();
+
+
             }
         });
+
 
         buttonReturn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                teacherPanel.removeAll();
-                SwingUtilities.updateComponentTreeUI(teacherFrame);
-                teacherFrame();
+                viewPlanningTeacher.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                referentFrame();
             }
         });
+
+
 
     }
 
-
-
-
-    public void viewSessionTeacherWeek( ) {
-        JButton buttonSearch = new JButton("search");
-        JButton buttonReturn = new JButton("Return");
-
-        teacherPanel.setLayout(new GridLayout(3, 1));
-        String[] tabWeek = new String[52]; // on recupere le nombre de semaines dispo dans edt (semaines dans une année)
-        int nb = 1;
-        for (int i = 0; i < tabWeek.length; i++) {
-            tabWeek[i] = valueOf(nb + i);
-        }
-        JComboBox comboBoxTeacher;
-        comboBoxTeacher = new JComboBox(tabWeek);
-        teacherPanel.add(comboBoxTeacher);
-        teacherPanel.add(buttonSearch);
-        teacherPanel.add(buttonReturn);
-
-        buttonSearch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showTableTeacherSession(comboBoxTeacher.getSelectedItem().toString());
-            }
-        });
-
-        buttonReturn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                teacherPanel.removeAll();
-                SwingUtilities.updateComponentTreeUI(teacherFrame);
-                teacherFrame();
-            }
-        });
-
-    }
 
 
 
@@ -1399,6 +1713,15 @@ public class SecondFrameView {
 
         ///////////////
 
+        String[] tab5 = new String[secondFrameController.getAllRoom().size()];
+        for (int i = 0; i < tab5.length; i++) {
+            tab5[i] = secondFrameController.getAllRoom().get(i).getName();
+        }
+        JLabel jLabelRoom = new JLabel("Room :");
+        JComboBox comboBoxRoom = new JComboBox(tab5);
+
+        ///////////////
+
         JPanel addSessionAdmin = new JPanel(new GridLayout(10, 2));
 
         adminFrame.setContentPane(addSessionAdmin);
@@ -1411,9 +1734,6 @@ public class SecondFrameView {
 
         JLabel jLabelEndTime = new JLabel("End Time (HH:mm:ss) :");
         JTextField addSessionEndTime = new JTextField();
-
-        JLabel jLabelWeek = new JLabel("Week :");
-        JTextField addSessionWeek = new JTextField();
 
         JButton buttonAddSession = new JButton("Add Session");
         JButton buttonReturn = new JButton("Return");
@@ -1428,8 +1748,6 @@ public class SecondFrameView {
         jLabelEndTime.setFont(new Font(" Arial ", Font.BOLD, 20));
         addSessionEndTime.setFont(new Font(" Arial ", Font.BOLD, 20));
 
-        jLabelWeek.setFont(new Font(" Arial ", Font.BOLD, 20));
-        addSessionWeek.setFont(new Font(" Arial ", Font.BOLD, 20));
 
         jLabelCourse.setFont(new Font(" Arial ", Font.BOLD, 20));
         panSmall.add(comboBox);
@@ -1456,6 +1774,11 @@ public class SecondFrameView {
         comboBoxGroupPromo.setFont(new Font(" Arial", Font.BOLD, 20));
         comboBoxGroupPromo.setBounds(0, 60, 200, 50);
 
+        jLabelRoom.setFont(new Font(" Arial ", Font.BOLD, 20));
+        panSmall.add(comboBoxRoom);
+        comboBoxRoom.setFont(new Font(" Arial", Font.BOLD, 20));
+        comboBoxRoom.setBounds(0, 60, 200, 50);
+
 
         addSessionAdmin.add((jLabelDate));
         addSessionAdmin.add(addSessionDate);
@@ -1466,8 +1789,6 @@ public class SecondFrameView {
         addSessionAdmin.add((jLabelEndTime));
         addSessionAdmin.add(addSessionEndTime);
 
-        addSessionAdmin.add(jLabelWeek);
-        addSessionAdmin.add(addSessionWeek);
 
         addSessionAdmin.add(jLabelCourse);
         addSessionAdmin.add(comboBox);
@@ -1484,13 +1805,16 @@ public class SecondFrameView {
         addSessionAdmin.add(jLabelGroupPromo);
         addSessionAdmin.add(comboBoxGroupPromo);
 
+        addSessionAdmin.add(jLabelRoom);
+        addSessionAdmin.add(comboBoxRoom);
+
         addSessionAdmin.add(buttonAddSession);
         addSessionAdmin.add(buttonReturn);
 
         buttonAddSession.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                secondFrameController.addSession(addSessionWeek.getText(),
+                secondFrameController.addSession(
                         addSessionDate.getText(),
                         addSessionStartTime.getText(),
                         addSessionEndTime.getText(),
@@ -1498,7 +1822,8 @@ public class SecondFrameView {
                         comboBox.getSelectedItem().toString(),
                         comboBoxType.getSelectedItem().toString(),
                         comboBoxTeacher.getSelectedItem().toString(),
-                        comboBoxGroupPromo.getSelectedItem().toString());
+                        comboBoxGroupPromo.getSelectedItem().toString(),
+                        comboBoxRoom.getSelectedItem().toString());
 
 
             }
@@ -1629,7 +1954,7 @@ public class SecondFrameView {
             public void actionPerformed(ActionEvent e) {
                 panelTable.removeAll();
                 SwingUtilities.updateComponentTreeUI(referentFrame);
-                teacherFrame();
+                referentFrame();
 
             }
         });
@@ -1683,6 +2008,50 @@ public class SecondFrameView {
         referentFrame.pack();
     }
 
+    public void showTableRoom(){
+
+        JPanel panelTable = new JPanel();
+
+        referentFrame.setContentPane(panelTable);
+        panelTable.setLayout(new BorderLayout());
+
+        String[][] table = new String[secondFrameController.getAllRoom().size()][4];
+
+            for (int i = 0; i < secondFrameController.getAllRoom().size(); i++) {
+
+            table[i][0] = String.valueOf(secondFrameController.getAllRoom().get(i).getID());
+            table[i][1] = String.valueOf(secondFrameController.getAllRoom().get(i).getName());
+            table[i][2] = String.valueOf(secondFrameController.getAllRoom().get(i).getCapacity());
+            table[i][3] = String.valueOf(secondFrameController.getAllRoom().get(i).getId_site());
+
+
+        }
+
+        String[] entetes = {"ID", "Name", "Capacity", "Site"};
+
+
+        JButton buttonReturn = new JButton("Return");
+
+
+
+        JTable jTable = new JTable(table, entetes);
+
+        panelTable.add(jTable.getTableHeader(), BorderLayout.NORTH);
+        panelTable.add(jTable, BorderLayout.CENTER);
+        panelTable.add(buttonReturn, BorderLayout.SOUTH);
+
+        buttonReturn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelTable.removeAll();
+                SwingUtilities.updateComponentTreeUI(referentFrame);
+                referentFrame();
+
+            }
+        });
+
+        referentFrame.pack();
+    }
 
     public void showTableTeacherSession(String item) {
         JPanel panelTable = new JPanel();
@@ -1898,6 +2267,71 @@ public class SecondFrameView {
             LocalTime startTime;
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
             startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+            getCouleurFromCourseType(lundi, s, getIntFromSessionHour(s));
+
+
+        }
+        for (Session s : mardiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+            getCouleurFromCourseType(mardi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : mercrediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+            getCouleurFromCourseType(mercredi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : jeudiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+            getCouleurFromCourseType(jeudi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : vendrediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(vendredi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : samediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(samedi, s, getIntFromSessionHour(s));
+
+        }
+    }
+
+    public void showSessionStudentReferent(String item, Student student) {
+
+        lundiSession.clear();
+        mardiSession.clear();
+        mercrediSession.clear();
+        jeudiSession.clear();
+        vendrediSession.clear();
+        samediSession.clear();
+
+
+        lundiSession = mainFrameController.getSessionLundi(student, item);
+        mardiSession = mainFrameController.getSessionMardi(student, item);
+        mercrediSession = mainFrameController.getSessionMercredi(student, item);
+        jeudiSession = mainFrameController.getSessionJeudi(student, item);
+        vendrediSession = mainFrameController.getSessionVendredi(student, item);
+        samediSession = mainFrameController.getSessionSamedi(student, item);
+
+
+        for (Session s : lundiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
 
             getCouleurFromCourseType(lundi, s, getIntFromSessionHour(s));
 
@@ -1974,6 +2408,75 @@ public class SecondFrameView {
             LocalTime startTime;
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
             startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+            getCouleurFromCourseType(lundi, s, getIntFromSessionHour(s));
+
+
+        }
+        for (Session s : mardiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(mardi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : mercrediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(mercredi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : jeudiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(jeudi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : vendrediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(vendredi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : samediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(samedi, s, getIntFromSessionHour(s));
+
+        }
+    }
+
+    public void showSessionTeacherReferent(String item, Teacher teacher) {
+
+
+        lundiSession.clear();
+        mardiSession.clear();
+        mercrediSession.clear();
+        jeudiSession.clear();
+        vendrediSession.clear();
+        samediSession.clear();
+
+
+        lundiSession = mainFrameController.getSessionLundiTeacher(teacher, item);
+        mardiSession = mainFrameController.getSessionMardiTeacher(teacher, item);
+        mercrediSession = mainFrameController.getSessionMercrediTeacher(teacher, item);
+        jeudiSession = mainFrameController.getSessionJeudiTeacher(teacher, item);
+        vendrediSession = mainFrameController.getSessionVendrediTeacher(teacher, item);
+        samediSession = mainFrameController.getSessionSamediTeacher(teacher, item);
+
+
+        for (Session s : lundiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
 
             getCouleurFromCourseType(lundi, s, getIntFromSessionHour(s));
 
@@ -2022,6 +2525,82 @@ public class SecondFrameView {
     }
 
 
+
+
+
+
+
+    public void showSessionRoomReferent(String item, Room room) {
+
+
+        lundiSession.clear();
+        mardiSession.clear();
+        mercrediSession.clear();
+        jeudiSession.clear();
+        vendrediSession.clear();
+        samediSession.clear();
+
+
+        lundiSession = mainFrameController.getSessionLundiRoom(room, item);
+        mardiSession = mainFrameController.getSessionMardiRoom(room, item);
+        mercrediSession = mainFrameController.getSessionMercrediRoom(room, item);
+        jeudiSession = mainFrameController.getSessionJeudiRoom(room, item);
+        vendrediSession = mainFrameController.getSessionVendrediRoom(room, item);
+        samediSession = mainFrameController.getSessionSamediRoom(room, item);
+
+
+        for (Session s : lundiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(lundi, s, getIntFromSessionHour(s));
+
+
+        }
+        for (Session s : mardiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+            getCouleurFromCourseType(mardi, s, getIntFromSessionHour(s));
+        }
+        for (Session s : mercrediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(mercredi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : jeudiSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(jeudi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : vendrediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+
+            getCouleurFromCourseType(vendredi, s, getIntFromSessionHour(s));
+
+        }
+        for (Session s : samediSession) {
+            LocalTime startTime;
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            startTime = LocalTime.parse(s.getStartTime(), timeFormatter);
+            getCouleurFromCourseType(samedi, s, getIntFromSessionHour(s));
+        }
+    }
+
+
+
+
+
+
     /**
      * fonction qui affiche dans le text du bouton le contenu de la session
      * affichage du cours, du type de cours
@@ -2037,7 +2616,7 @@ public class SecondFrameView {
 
                 switch (startTime.getHour()) {
                     case 8:
-                        switchCourse(lundi, s, 0);
+                        switchCourse(lundi, s, 0) ;
                         break;
                     case 9:
                         switchCourse(lundi, s, 1);
@@ -2299,12 +2878,12 @@ public class SecondFrameView {
      */
     public void switchCourse(List<JButton> list, Session s, int index) {
         switch (Math.toIntExact(s.getID_course())) {
-            case 1 -> list.get(index).setText(mainFrameController.getTeacherNameFromIdSession(s.getID()) + "\nCours info");//
-            case 2 -> list.get(index).setText("Cours mathématiques");
-            case 3 -> list.get(index).setText("Cours electronique");
-            case 4 -> list.get(index).setText("Cours anglais");
-            case 5 -> list.get(index).setText("Cours physique");
-            default -> list.get(index).setText("Cours inconnu");
+            case 1 -> list.get(index).setText(mainFrameController.getInformation(s));
+            case 2 -> list.get(index).setText(mainFrameController.getInformation(s));
+            case 3 -> list.get(index).setText(mainFrameController.getInformation(s));
+            case 4 -> list.get(index).setText(mainFrameController.getInformation(s));
+            case 5 -> list.get(index).setText(mainFrameController.getInformation(s));
+            default -> list.get(index).setText(mainFrameController.getInformation(s));
         }
 
 
@@ -2330,6 +2909,10 @@ public class SecondFrameView {
 
 
     }
+
+
+
+
 }
 
 
