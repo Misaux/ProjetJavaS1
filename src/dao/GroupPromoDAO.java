@@ -164,7 +164,7 @@ public class GroupPromoDAO implements InterfaceDao.GroupPromoDAO {
      * @param groupPromo Groupe qu'on veut mettre a jour
      */
     @Override
-    public void updateGrouPromoDao(GroupPromo groupPromo) {
+    public void updateGroupPromoDao(GroupPromo groupPromo) {
         try {
             this.connection = DriverManager.getConnection(url, username, password);
 

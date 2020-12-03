@@ -133,7 +133,6 @@ public class TeacherSessionDAO implements TeacherSessionDao {
 
     }
 
-
     @Override
     public void deleteTeacherSession(TeacherSession teacherSession) {
 
@@ -157,7 +156,7 @@ public class TeacherSessionDAO implements TeacherSessionDao {
 
     }
 
-
+    @Override
     public String getIdTeacherFromIdSession(Long idSession) {
         int id_teacher = 0;
         String last_name, first_name, fullName = null;
@@ -202,7 +201,6 @@ public class TeacherSessionDAO implements TeacherSessionDao {
 
         return fullName;
     }
-
 
     @Override
     public boolean checkIfAlreadyAssociated(String startTime, Long idTeacher, String date){

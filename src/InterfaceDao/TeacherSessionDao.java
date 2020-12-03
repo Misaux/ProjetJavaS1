@@ -13,5 +13,6 @@ public interface TeacherSessionDao {
     void updateTeacherSession(TeacherSession teacherSession);
     boolean checkIfAlreadyAssociated(String startTime, Long idTeacher, String date);
     void deleteTeacherSession(TeacherSession teacherSession);
+    String getIdTeacherFromIdSession(Long idSession);
 
 }

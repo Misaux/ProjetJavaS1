@@ -76,7 +76,6 @@ public class RoomSessionDAO implements RoomSessionDao {
 
     }
 
-
     @Override
     public RoomSession readRoomSession(Long idSession, Long idRoom) {
         try {

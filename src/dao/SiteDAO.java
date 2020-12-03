@@ -25,6 +25,7 @@ public class SiteDAO implements SiteDao {
         this.password = password;
     }
 
+    @Override
     public void saveSite(Site site) {
 
         try {
@@ -56,6 +57,8 @@ public class SiteDAO implements SiteDao {
             System.out.println("unable to save the product");
         }
     }
+
+    @Override
     public Site getSiteByID(Long id){
         try{
             this.connection = DriverManager.getConnection(url,username,password);

@@ -64,8 +64,6 @@ public class TeacherDAO implements TeacherDao {
 
     }
 
-
-
     @Override
     public void createTeacher(Teacher teacher) {
         try {
@@ -275,6 +273,5 @@ public class TeacherDAO implements TeacherDao {
 
 
     }
-
 
 }

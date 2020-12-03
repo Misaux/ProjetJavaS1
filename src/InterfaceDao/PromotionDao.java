@@ -5,8 +5,8 @@ import models.Promotion;
 import java.util.List;
 
 public interface PromotionDao {
-    List<Promotion> getAllPromotion();
 
+    List<Promotion> getAllPromotion();
     void createPromotion(Promotion promotion);
     Promotion findPromotionByName(String promotion);
     Promotion getPromotionByID(Long id);

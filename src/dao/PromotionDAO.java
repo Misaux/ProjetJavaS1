@@ -24,6 +24,7 @@ public class PromotionDAO implements PromotionDao {
     }
 
 
+    @Override
     public void updatePromotion(Promotion promotion) {
 
         try {
@@ -159,6 +160,7 @@ public class PromotionDAO implements PromotionDao {
 
     }
 
+    @Override
     public Promotion getPromotionByID(Long id) {
         try {
             connection = DriverManager.getConnection(url, username, password);

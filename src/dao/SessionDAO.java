@@ -61,6 +61,7 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         }
     }
 
+    @Override
     public List<Session> getWeekSessionStudent(User user, String weekSelected) {
 
         List<Session> list = new ArrayList<>();
@@ -128,6 +129,7 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
     }
 
+    @Override
     public List<Session> getWeekSessionTeacher(User user, String weekSelected) {
 
         /*pour la version teacher
@@ -187,7 +189,7 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         }
     }
 
-
+    @Override
     public List<Session> getWeekSessionRoom(Room room, String weekSelected) {
 
         List<Session> list = new ArrayList<>();
@@ -317,7 +319,6 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
     }
 
     @Override
-
     public List<Session> getInfomatiqueSession() {
 
         List<Session> sessionInformatique = new ArrayList<>();
@@ -334,7 +335,6 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
     }
 
     @Override
-
     public List<Session> getMathematiqueSession() {
 
         List<Session> sessionMaths = new ArrayList<>();
@@ -349,7 +349,6 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
         return sessionMaths;
     }
-
 
     @Override
     public List<Session> getAnglaisSession() {
@@ -366,7 +365,6 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
         return sessionAnglais;
     }
-
 
     @Override
     public void createSession(Session session) {
@@ -438,7 +436,6 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
     }
 
-
     @Override
     public void updateSession(Session session) {
         try {
@@ -479,7 +476,6 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         }
 
     }
-
 
     @Override
     public void deleteSession(Session session) {
