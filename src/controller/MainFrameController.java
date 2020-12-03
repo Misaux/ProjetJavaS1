@@ -1,14 +1,11 @@
 package controller;
 
 
-import DAO.*;
-import InterfaceDao.PromotionDao;
-import InterfaceDao.UserDao;
-import Models.Promotion;
-import Models.Session;
-import Models.User;
+import dao.*;
+import models.Promotion;
+import models.Session;
+import models.User;
 
-import javax.swing.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

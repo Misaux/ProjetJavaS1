@@ -1,6 +1,6 @@
 package view;
 
-import Models.*;
+import models.*;
 import controller.MainFrameController;
 import controller.SecondFrameController;
 

@@ -1,9 +1,7 @@
 package controller;
 
-import DAO.*;
-import InterfaceDao.UserDao;
-import Models.*;
-import com.mysql.cj.util.StringUtils;
+import dao.*;
+import models.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
@@ -32,6 +30,7 @@ public class SecondFrameController extends Observable {
     private CourseTypeDAO courseTypeDAO = new CourseTypeDAO(url, username, password);
     private GroupSessionDAO groupSessionDAO = new GroupSessionDAO(url,username,password);
 
+
     private User user = new User();
     private Session session = new Session();
     private Promotion promotion = new Promotion();
@@ -39,15 +38,22 @@ public class SecondFrameController extends Observable {
     private Room room = new Room();
 
 
-
-    public SecondFrameController() {
-    }
-
+    /**
+     * Constructeur de la classe qui instancie la session et le user
+     * @param session session de base
+     * @param user user de base
+     */
     public SecondFrameController(Session session, User user) {
         this.session = session;
         this.user = user;
     }
 
+    /**
+     *retourne un user qui aura comme attributs ceux revoyes par la BDD
+     * @param connexion adresse email
+     * @param password  mot de passe
+     * @return user de la BDD
+     */
     public User getUser(String connexion, String password) {
         this.user = userDao.getUserConnection(connexion, password);
         setChanged();
@@ -55,10 +61,19 @@ public class SecondFrameController extends Observable {
         return this.user;
     }
 
+    /**
+     *fonction qui retourne une promotion que l'on aura selectionne par son id
+     * @param id id de la promo que l'on souhaite obtenir
+     */
     public void getPromotion(Long id) {
         this.promotion.setName(promotionDao.getPromotionByID(id).getName());
     }
 
+    /**
+     *  Fonction pour afficher la repartition des sessions sur l'ensemble de la BDD
+     *  et l'affiche en camembert
+     * @return fenetre JfreeChart
+     */
     public JFrame getChartSession() {
 
         JFrame frame = new JFrame();
@@ -79,42 +94,86 @@ public class SecondFrameController extends Observable {
 
     }
 
+    /**
+     *fonction pour obtenir la liste de tous les enseignants de la BDD
+     * @return list<Teacher></Teacher>
+     */
     public List<Teacher> getAllTeacher() {
         return teacherDAO.getAllTeacher();
     }
 
+    /**
+     *fonction pour obtenir la liste de tous les cours de la BDD
+     * @return List<Course></Course>
+     */
     public List<Course> getAllCourse() {
         return courseDAO.getAllCourse();
     }
 
+    /**
+     *fonction pour obtenir la liste de tous les types de cours de la BDD
+     * @return List<CourseType></CourseType>
+     */
     public List<CourseType> getAllCourseType() {
         return courseTypeDAO.getAllCourseType();
     }
 
+    /**
+     *fonction pour obtenir la liste de tous les etats possibles de cours de la BDD
+     * @return List<String></String>
+     */
     public List<String> getAllSessionState() {
         return sessionDAO.getAllSessionState();
     }
 
+    /**
+     *fonction pour obtenir la liste de toutes les sessions de la BDD
+     * @return List <Session></Session>
+     */
     public List<Session> getAllSession() {
         return sessionDAO.getAllSession();
     }
 
+    /**
+     * fonction pour obtenir la liste de toutes les heures de debuts de cours de la BDD
+     * @return List<String></String>
+     */
     public List<String> getAllSessionStartTime() {
         return sessionDAO.getAllSessionStartTime();
     }
 
+    /**
+     * fonction pour obtenir la liste de toutes les dates de sessions de la BDD
+     * @return List<String></String>
+     */
     public List<String> getAllSessionDate() {
         return sessionDAO.getAllSessionDate();
     }
 
+    /**
+     * fonction pour obtenir la liste de tous les groupes de la BDD
+
+     * @return List<GroupPromo></GroupPromo>
+     */
     public List<GroupPromo> getAllGroupPromotion() {
         return groupPromoDAO.getAllGroupPromo();
     }
 
+    /**
+     * fonction pour obtenir la liste de tous les eleves de la BDD
+     * @return List<Student></Student>
+     */
     public List<Student> getAllStudent() {
         return studentDAO.getAllStudent();
     }
 
+    /**
+     *Fonction pour afficher les informations des sites
+     * (repartition des salles selon les campus, et la taille des salles)
+     * sur l'ensemble de la BDD
+     * et l'affiche en camembert
+     * @return JFrame en camembert
+     */
     public JFrame getChartSite() {
 
 
@@ -143,10 +202,14 @@ public class SecondFrameController extends Observable {
     }
 
 
-
-
-
-
+    /**
+     *Ajoute un enseignant a la base de donnees
+     * @param email string, email de l'enseignant
+     * @param password string, mot de passe pour se connecter
+     * @param first_name string, prenom de l'enseignant
+     * @param last_name string, nom de l'enseignant
+     * @param courseSelected string, matiere de l'enseignant
+     */
     public void addTeacher(String email, String password, String first_name, String last_name, String courseSelected) {
 
         Teacher teacher = new Teacher();
@@ -166,6 +229,10 @@ public class SecondFrameController extends Observable {
 
     }
 
+    /**
+     * retire un enseignant de la BDD
+     * @param teacherSelected string, nom et prenom de l'enseignant
+     */
     public void removeTeacher(String teacherSelected) {
         String output[] = teacherSelected.split("\\s+");
         String firstName = output[0];
@@ -176,6 +243,15 @@ public class SecondFrameController extends Observable {
         userDao.deleteUser(teacher);
     }
 
+    /**
+     *
+     * @param email string, email de l'eleve
+     * @param password string, mot de passe de l'eleve
+     * @param first_name string, prenom de l'eleve
+     * @param last_name string, nom de l'eleve
+     * @param numberStudentType string, numero de l'eleve
+     * @param groupSelected string, group de l'eleve
+     */
     public void addStudent(String email, String password, String first_name, String last_name, String numberStudentType, String groupSelected) {
 
         Student student = new Student();
@@ -198,6 +274,10 @@ public class SecondFrameController extends Observable {
 
     }
 
+    /**
+     *  retire un eleve
+     * @param studentSelected string, nom et prenom de l'eleve
+     */
     public void removeStudent(String studentSelected) {
 
         String output[] = studentSelected.split("\\s+");
@@ -213,6 +293,18 @@ public class SecondFrameController extends Observable {
 
     }
 
+    /**
+     * Ajoute une session a la base de donnee
+     * @param weekSession string, semaine de la session
+     * @param date string, date de la session
+     * @param startTime string, heure de debut de la session
+     * @param endTime string, heure de fin de la session
+     * @param state string, etat de la session
+     * @param courseSelected string, cours de la session
+     * @param typeSelected string, type de la session
+     * @param teacherSelected string, enseignant de la session
+     * @param groupSelected string, group de la session
+     */
     public void addSession(String weekSession, String date, String startTime, String endTime, String state, String courseSelected, String typeSelected, String teacherSelected, String groupSelected) {
 
 
@@ -244,6 +336,12 @@ public class SecondFrameController extends Observable {
 
     }
 
+    /**
+     * retire une session de la BDD
+     * @param dateselected string, date de la session
+     * @param startTimeSelected string, heure de debut de la session
+     * @param courseSelected string, cours de la session
+     */
     public void removeSession(String dateselected , String startTimeSelected , String courseSelected) {
 
 
@@ -255,6 +353,7 @@ public class SecondFrameController extends Observable {
 
 
     }
+
 
 
 
