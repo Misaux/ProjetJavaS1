@@ -305,7 +305,6 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
      * @return List<Session></Session>
      */
     @Override
-
     public List<Session> getInfomatiqueSession() {
 
         List<Session> sessionInformatique = new ArrayList<>();
@@ -523,7 +522,7 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
      * fonction qui retourne une liste de sessions en ft de la semaine donnee
      * @param room salle choisie
      * @param  weekSelected semaine chosie
-     * @return
+     * @return List<Sessions></Sessions>
      */
     @Override
     public List<Session> getWeekSessionRoom(Room room, String weekSelected) {

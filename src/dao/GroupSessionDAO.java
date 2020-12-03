@@ -204,7 +204,13 @@ public class GroupSessionDAO implements GroupSessionDao {
 
     }
 
-
+    /**
+     * verifie si le group n'a pas cours a l'heure et a la date donnee
+     * @param startTime heure de debut de cours
+     * @param idGroup group pour le cours
+     * @param date date pour la session
+     * @return true si  associe / false sinon
+     */
     @Override
     public boolean checkIfAlreadyAssociated(String startTime, Long idGroup, String date){
 

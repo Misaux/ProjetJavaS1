@@ -30,6 +30,9 @@ public class TeacherDAO implements TeacherDao {
         this.password = password;
     }
 
+    /**
+     * constructeur par defaut
+     */
     public TeacherDAO() {
     }
 

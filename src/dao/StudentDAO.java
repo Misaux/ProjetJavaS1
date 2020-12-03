@@ -257,11 +257,23 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
 
     }
 
+    /**
+     *
+     * @param connexion
+     * @param passwordEmail
+     * @return
+     */
     @Override
     public String getStudentName(String connexion, String passwordEmail) {
         return null;
     }
 
+    /**
+     *
+     * @param connexion
+     * @param passwordEmail
+     * @return
+     */
     @Override
     public String getStudentFirstName(String connexion, String passwordEmail) {
         return null;
@@ -272,7 +284,7 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
      * @param lastName Nom de famille du Student
      * @param firstName Prenom du Student
      * @param number Numero du Student
-     * @return
+     * @return true si le student existe / false sinon
      */
     @Override
     public boolean checkIfAlreadyCreated(String lastName, String firstName,  int number){

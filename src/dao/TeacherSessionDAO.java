@@ -29,6 +29,9 @@ public class TeacherSessionDAO implements TeacherSessionDao {
         this.password = password;
     }
 
+    /**
+     * constructeur par defaut
+     */
     public TeacherSessionDAO() {
     }
 

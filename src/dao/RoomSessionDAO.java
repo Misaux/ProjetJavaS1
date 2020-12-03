@@ -127,7 +127,13 @@ public class RoomSessionDAO implements RoomSessionDao {
         }
     }
 
-
+    /**
+     * verifie si la room est libre pour le  cours a l'heure et a la date donnee
+     * @param startTime heure de debut de cours
+     * @param idRoom room pour le cours
+     * @param date date pour la session
+     * @return true si  associe / false sinon
+     */
     @Override
     public boolean checkIfAlreadyAssociated(String startTime, Long idRoom, String date){
 

@@ -167,7 +167,7 @@ public class CourseTypeDAO implements CourseTypeDao {
      * Fonction qui permet de mettre a jour un type de cours
      * s'il existe il est mis a jour dans la base de donnee
      * sinon il est cree dans la base de donnee
-     * @param courseType
+     * @param courseType type de cours a mettre a jour
      */
     @Override
     public void updateCourseTypeDao(CourseType courseType) {

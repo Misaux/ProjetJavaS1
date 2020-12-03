@@ -919,6 +919,9 @@ public class SecondFrameView {
 
     }
 
+    /**
+     * affiche un planning en fonction de l'eleve choisi dans la combobox
+     */
     public void viewPlanningStudentReferent(){
 
         JPanel viewPlanningStudent = new JPanel(new GridLayout(3, 3));
@@ -1003,6 +1006,9 @@ public class SecondFrameView {
 
     }
 
+    /**
+     * affiche un tableau avec tous les students
+     */
     public void viewSessionTableStudent() {
         JButton buttonReturn = new JButton("Return");
 
@@ -1090,6 +1096,9 @@ public class SecondFrameView {
         });
     }
 
+    /**
+     * affiche un planning en fonction de l'enseignant choisi dans la combobox
+     */
     public void viewPlanningTeacherReferent(){
 
         JPanel viewPlanningTeacher = new JPanel(new GridLayout(3, 3));
@@ -1175,6 +1184,9 @@ public class SecondFrameView {
 
     }
 
+    /**
+     * affiche un planning en fonction de la semaine choisi dans la combobox et l'enseignant
+     */
     public void viewSessionTeacherWeek( ) {
         JButton buttonSearch = new JButton("search");
         JButton buttonReturn = new JButton("Return");
@@ -1210,10 +1222,10 @@ public class SecondFrameView {
     }
 
 
-
-
-
-
+    /**
+     * affiche un planning en fonction de l'eleve choisi dans la combobox
+     * @param item semaine choisie
+     */
     public void showTableStudentSession(String item) {
         JPanel panelTable = new JPanel();
 
@@ -1261,6 +1273,9 @@ public class SecondFrameView {
         studentFrame.pack();
     }
 
+    /**
+     * affiche le planning des sessions dans une salle choisie et avec une semaine choisie
+     */
     public void viewPlanningRoomReferent(){
 
         JPanel viewPlanningTeacher = new JPanel(new GridLayout(3, 3));
@@ -1915,8 +1930,9 @@ public class SecondFrameView {
     }
 
 
-
-
+    /**
+     * montre un tableau de tous les teacher
+     */
     public void showTableTeacher() {
         JPanel panelTable = new JPanel();
 
@@ -1961,7 +1977,9 @@ public class SecondFrameView {
 
         referentFrame.pack();
     }
-
+    /**
+     * montre un tableau de tous les eleves
+     */
     public void showTableStudent() {
         JPanel panelTable = new JPanel();
 
@@ -2007,7 +2025,9 @@ public class SecondFrameView {
 
         referentFrame.pack();
     }
-
+    /**
+     * montre un tableau de toutes les salles
+     */
     public void showTableRoom(){
 
         JPanel panelTable = new JPanel();
@@ -2310,6 +2330,11 @@ public class SecondFrameView {
         }
     }
 
+    /**
+     * montre les sessions d'un student selectionne
+     * @param item semaine choisie
+     * @param student student choisi
+     */
     public void showSessionStudentReferent(String item, Student student) {
 
         lundiSession.clear();
@@ -2454,6 +2479,11 @@ public class SecondFrameView {
         }
     }
 
+    /**
+     * montre les sessions d'un teacher selectionne
+     * @param item semaine choisie
+     * @param teacher enseignant choisi
+     */
     public void showSessionTeacherReferent(String item, Teacher teacher) {
 
 
@@ -2525,11 +2555,11 @@ public class SecondFrameView {
     }
 
 
-
-
-
-
-
+    /**
+     * montre les session dans une room sur une semaine donnee
+     * @param item semaine donnee
+     * @param room salle choisie
+     */
     public void showSessionRoomReferent(String item, Room room) {
 
 
@@ -2884,27 +2914,6 @@ public class SecondFrameView {
             case 4 -> list.get(index).setText(mainFrameController.getInformation(s));
             case 5 -> list.get(index).setText(mainFrameController.getInformation(s));
             default -> list.get(index).setText(mainFrameController.getInformation(s));
-        }
-
-
-    }
-
-    /**
-     * fonction qui affiche le type de cours sur le bouton
-     *
-     * @param list  liste de boutons
-     * @param s     session en cours a afficher
-     * @param index index du boutons a modifier
-     */
-
-    public void switchTypeCourse(List<JButton> list, Session s, int index) {
-        switch (Math.toIntExact(s.getID_type())) {
-            case 1 -> list.get(index).setText("Cours interactif");
-            case 2 -> list.get(index).setText("Cours magistral");
-            case 3 -> list.get(index).setText("Cours TD");
-            case 4 -> list.get(index).setText("Cours TP");
-            case 5 -> list.get(index).setText("Projet");
-            case 6 -> list.get(index).setText("Soutien");
         }
 
 

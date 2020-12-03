@@ -33,7 +33,7 @@ public class GroupSession extends Observable {
 
     /**
      * set l'id session
-     * @param idSession
+     * @param idSession id de la session
      */
     public void setIdSession(Long idSession) {
         this.idSession = idSession;
@@ -49,7 +49,7 @@ public class GroupSession extends Observable {
 
     /**
      * set l'id du groupe
-     * @param idGroup
+     * @param idGroup id group
      */
     public void setIdGroup(Long idGroup) {
         this.idGroup = idGroup;

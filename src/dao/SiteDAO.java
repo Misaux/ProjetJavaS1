@@ -122,7 +122,7 @@ public class SiteDAO implements SiteDao {
     }
 
     /**
-     * c
+     * cree un site
      */
     @Override
     public void createSite() {
