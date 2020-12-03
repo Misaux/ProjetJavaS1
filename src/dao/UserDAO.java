@@ -20,7 +20,12 @@ public class UserDAO implements UserDao  {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
-
+    /**
+     * Constructeur de la classe UserDAO
+     * @param url url permettant d'acceder a PhpMyAdmin
+     * @param username identifiant pour acceder PhpMyAdmin
+     * @param password mot de passe pour acceder a PhpMyAdmin
+     */
     public UserDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
@@ -28,6 +33,13 @@ public class UserDAO implements UserDao  {
     }
 
 
+    /**
+     * Fonction qui permet de savoir quel utilisateur est connecte
+     * La fonction recherche un utilisateur selon son email et son mot de passe dans la base de donnee
+     * @param email email de l'utilisateur qu'on recherche
+     * @param psswrd mot de passe de l'utilisateur qu'on recherche
+     * @return User
+     */
     @Override
     public User getUserConnection(String email, String psswrd) {
         try {
@@ -68,6 +80,10 @@ public class UserDAO implements UserDao  {
 
     }
 
+    /**
+     * Fonction qui permet d'obtenir une liste de tous les utilisateurs presents dans la base de donnee
+     * @return List<User></User>
+     */
     @Override
     public List<User> getAllUser() {
         List<User> list = new ArrayList<>();
@@ -98,6 +114,10 @@ public class UserDAO implements UserDao  {
 
     }
 
+    /**
+     * Fonction qui permet d'ajouter un utilisateur(object User) passe en parametre a la base de donnee
+     * @param user Object User qu'on veut supprimer
+     */
     @Override
     public void createUser(User user) {
         try {
@@ -129,6 +149,12 @@ public class UserDAO implements UserDao  {
 
     }
 
+    /**
+     * Fonction permettant de mettre a jour un object User dans la base de donnee
+     * Si l'object existe deja on le met a jour
+     * sinon on l'ajoute a la base de donnee
+     * @param user Object User a mettre a jour
+     */
     @Override
     public void updateUser(User user) {
         try {
@@ -164,6 +190,11 @@ public class UserDAO implements UserDao  {
         }
     }
 
+    /**
+     * Fonction permettant de rechercher un utilisateur dans la base de donnee en utilisant son prenom
+     * @param firstName Prenom de l'utilisateur qu'on recherche
+     * @return User
+     */
     @Override
     public User findUserByFirstName(String firstName){
         try {
@@ -197,6 +228,11 @@ public class UserDAO implements UserDao  {
         }
     }
 
+    /**
+     * Fonction permettant de rechercher un utilisateur dans la base de donnee en utilisant son nom de famille
+     * @param lastName Nom de famille de l'utilisateur qu'on recherche
+     * @return User
+     */
     @Override
     public User findUserByLastName(String lastName) {
         try {
@@ -230,6 +266,11 @@ public class UserDAO implements UserDao  {
         }
     }
 
+    /**
+     * Fonction permettant de rechercher un utilisateur grace a son id dans la base de donnee
+     * @param id Id de l'utilisateur qu'on recherche
+     * @return User
+     */
     @Override
     public User findUserByID(Long id) {
         try{
@@ -268,6 +309,10 @@ public class UserDAO implements UserDao  {
 
     }
 
+    /**
+     * Fonction permettant de supprimer un utilisateur de la base de donnee
+     * @param user Object User a supprimer
+     */
     @Override
     public void deleteUser(User user) {
         try{
@@ -289,6 +334,13 @@ public class UserDAO implements UserDao  {
         }
     }
 
+    /**
+     * Fonction permettant de rechercher le nom de famille d'un utilisateur dans la base de donnee
+     * grace a son adresse email et son mot de passe
+     * @param connexion identifiant de connection qui correspond ici a l'adresse email de l'utilisateur
+     * @param passwordEmail mot de passe de l'utilisateur
+     * @return String
+     */
     @Override
     public String getUserName(String connexion, String passwordEmail) {
         try {
@@ -319,6 +371,13 @@ public class UserDAO implements UserDao  {
         return this.user.getLast_name();
     }
 
+    /**
+     * Fonction permettant de rechercher le prenom d'un utilisateur dans la base de donnee
+     * grace a son adresse email et son mot de passe
+     * @param connexion identifiant de connection qui correspond ici a l'adresse email de l'utilisateur
+     * @param passwordEmail mot de passe de l'utilisateur
+     * @return String
+     */
     @Override
     public String getUserFirstName(String connexion, String passwordEmail) {
         try {

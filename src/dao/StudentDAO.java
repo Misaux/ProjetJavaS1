@@ -18,7 +18,12 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
-
+    /**
+     * Constructeur de la classe StudentDAO
+     * @param url url permettant d'acceder a PhpMyAdmin
+     * @param username identifiant pour acceder PhpMyAdmin
+     * @param password mot de passe pour acceder a PhpMyAdmin
+     */
     public StudentDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
@@ -28,6 +33,10 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
     public StudentDAO() {
     }
 
+    /**
+     * Fonction permettant d'obtenir une liste de tous les etudiants presents dans la base de donnee
+     * @return List<Student></Student>
+     */
     @Override
     public List<Student> getAllStudent() {
 
@@ -64,6 +73,10 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
 
     }
 
+    /**
+     * Fonction permettant d'ajouter un Student a la base de donnee
+     * @param student Object Student qu'on veut ajouter
+     */
     @Override
     public void createStudent(Student student) {
 
@@ -93,6 +106,10 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
 
     }
 
+    /**
+     * Fonction permettant de mettre a jour l'id_user d'un Student
+     * @param student Object Student dans lequel on veut mettre a jour l'id_user
+     */
     @Override
     public void updateStudentIdUser(Student student) {
 
@@ -114,6 +131,10 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
 
     }
 
+    /**
+     * Fonction permettant de mettre a jour l'id_group_promotion d'un Student
+     * @param student Object Student dans lequel on veut mettre a jour l'id_group_promotion
+     */
     @Override
     public void updateStudentIdGroupPromotion(Student student) {
         try {
@@ -132,9 +153,13 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
             System.out.println("unable to save the site");
         }
 
-
     }
 
+    /**
+     * Fonction permettant de rechercher dans la base de donnee un Student selon son nom de famille
+     * @param lastName nom de famille du Student qu'on recherche
+     * @return Student
+     */
     @Override
     public Student findStudentByLastName(String lastName) {
         try {
@@ -170,6 +195,11 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
 
     }
 
+    /**
+     * Fonction permettant de rechercher dans la base de donnee un Student selon son id
+     * @param id Id du Student qu'on recherche
+     * @return Student
+     */
     @Override
     public User findStudentByID(Long id) {
         try {
@@ -204,6 +234,10 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
         }
     }
 
+    /**
+     * Fonction permettant de supprimer un Student de la base de donnee
+     * @param student Object Student qu'on veut supprimer
+     */
     @Override
     public void deleteStudent(Student student) {
         try{
@@ -233,6 +267,13 @@ public class StudentDAO implements InterfaceDao.StudentDAO {
         return null;
     }
 
+    /**
+     * Fonction permettant de verifier si un Student existe deja dans la base de donnee
+     * @param lastName Nom de famille du Student
+     * @param firstName Prenom du Student
+     * @param number Numero du Student
+     * @return
+     */
     @Override
     public boolean checkIfAlreadyCreated(String lastName, String firstName,  int number){
 

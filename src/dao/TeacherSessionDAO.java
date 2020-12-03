@@ -17,7 +17,12 @@ public class TeacherSessionDAO implements TeacherSessionDao {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
-
+    /**
+     * Constructeur de la classe TeacherSessionDAO
+     * @param url url permettant d'acceder a PhpMyAdmin
+     * @param username identifiant pour acceder PhpMyAdmin
+     * @param password mot de passe pour acceder a PhpMyAdmin
+     */
     public TeacherSessionDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
@@ -27,6 +32,10 @@ public class TeacherSessionDAO implements TeacherSessionDao {
     public TeacherSessionDAO() {
     }
 
+    /**
+     * Fonction permettant d'obtenir une liste de toutes les teacherSession presentes dans la base de donnee
+     * @return List<TeacherSession></TeacherSession>
+     */
     @Override
     public List<TeacherSession> getAllTeacherSession() {
         List<TeacherSession> list = new ArrayList<>();
@@ -51,6 +60,10 @@ public class TeacherSessionDAO implements TeacherSessionDao {
         }
     }
 
+    /**
+     * Fonction permettant d'ajouter une teacherSession a la base de donnee
+     * @param teacherSession Object teacherSession a inserer dans la base de donnee
+     */
     @Override
     public void createTeacherSession(TeacherSession teacherSession) {
 
@@ -76,6 +89,12 @@ public class TeacherSessionDAO implements TeacherSessionDao {
 
     }
 
+    /**
+     * Fonction permettant de rechercher une teacherSession dans la base de donnee selon un id_session et un id_teacher
+     * @param idSession id de la table session
+     * @param idTeacher id de la table teacher
+     * @return TeacherSession
+     */
     @Override
     public TeacherSession readTeacherSession(Long idSession, Long idTeacher) {
         try {
@@ -104,6 +123,11 @@ public class TeacherSessionDAO implements TeacherSessionDao {
         }
     }
 
+    /**
+     * Fonction permettant de mettre a jour une teacherSession passe en parametre dans la base de donee
+     * si elle existe deja on la met a jour sinon on l'ajoute a la base de donnee
+     * @param teacherSession Object TeacherSession qu'on veut mettre a jour
+     */
     @Override
     public void updateTeacherSession(TeacherSession teacherSession) {
         try {
@@ -133,6 +157,10 @@ public class TeacherSessionDAO implements TeacherSessionDao {
 
     }
 
+    /**
+     * Fonction permettant de supprimer une TeacherSession de la base de donnee
+     * @param teacherSession Object TeacherSession a supprimer
+     */
     @Override
     public void deleteTeacherSession(TeacherSession teacherSession) {
 
@@ -156,6 +184,11 @@ public class TeacherSessionDAO implements TeacherSessionDao {
 
     }
 
+    /**
+     * Fonction qui permet de trouver le nom et le prenom d'un professeur dans la base de donnee selon l'id de sa session
+     * @param idSession Id de la session du professeur qu'on recherche
+     * @return String
+     */
     @Override
     public String getIdTeacherFromIdSession(Long idSession) {
         int id_teacher = 0;
@@ -202,6 +235,13 @@ public class TeacherSessionDAO implements TeacherSessionDao {
         return fullName;
     }
 
+    /**
+     * Fonction permettant de verifier dans la base de donnee si un cours affecte a un proffesseur existe deja
+     * @param startTime Heure de depart d'une session
+     * @param idTeacher id du professeur
+     * @param date Date de la session
+     * @return boolean
+     */
     @Override
     public boolean checkIfAlreadyAssociated(String startTime, Long idTeacher, String date){
 
