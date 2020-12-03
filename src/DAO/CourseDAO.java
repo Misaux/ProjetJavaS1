@@ -26,6 +26,10 @@ public class CourseDAO implements CoursDao {
     }
 
 
+    /**
+     * fonction permettant d'obtenir une liste de tous les cours de la base de donnee
+     * @return List<Course></Course>
+     */
     @Override
     public List<Course> getAllCourse() {
         List<Course> list = new ArrayList<>();
@@ -53,6 +57,12 @@ public class CourseDAO implements CoursDao {
         }
     }
 
+
+    /**
+     * fonction permettant d'obtenir un cours venant de la base de donnee grace a son nom
+     * @param name, nom du cours qu'on cherche
+     * @return Course
+     */
     @Override
     public Course readCourseByName(String name) {
         try {
@@ -84,6 +94,10 @@ public class CourseDAO implements CoursDao {
 
     }
 
+    /**
+     * fonction permettant de mettre a jour un cours dans la base de donnee s'il existe et sinon d'inserer ce cours dans la base de donnee
+     * @param course, cours envoye pour etre mis a jour ou bien insere dans la bdd
+     */
     public void saveCourse(Course course){
         try{
             this.connection= DriverManager.getConnection(url,username,password);
@@ -111,6 +125,11 @@ public class CourseDAO implements CoursDao {
 
     }
 
+    /**
+     * fonction permettant de chercher un cours dans la base de donnée en fonction de son son id
+     * @param id, id du cours que l'on recherche
+     * @return Course
+     */
     public Course getCourseById(Long id){
         try{
             this.connection= DriverManager.getConnection(url,username,password);

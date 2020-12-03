@@ -17,6 +17,12 @@ public class CourseTypeDAO implements CourseTypeDao {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
+    /**
+     * Constructeur de la classe
+     * @param url url permettant d'acceder a PhpMyAdmin
+     * @param username identifiant pour acceder PhpMyAdmin
+     * @param password mot de passe pour acceder a PhpMyAdmin
+     */
     public CourseTypeDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
@@ -24,7 +30,10 @@ public class CourseTypeDAO implements CourseTypeDao {
 
     }
 
-
+    /**
+     * Fonction permettant d'obtenir une liste de tous les types de cours
+     * @return List<CourseType></CourseType>
+     */
     @Override
     public List<CourseType> getAllCourseType() {
         List<CourseType> list = new ArrayList<>();
@@ -52,6 +61,10 @@ public class CourseTypeDAO implements CourseTypeDao {
         }
     }
 
+    /**
+     * Fonction permettant de creer un type de cours dans la base de donnee
+     * @param courseType Objet de classe CourseType
+     */
     @Override
     public void createCoursDao(CourseType courseType) {
         try {
@@ -82,6 +95,11 @@ public class CourseTypeDAO implements CourseTypeDao {
 
     }
 
+    /**
+     * Fonction qui cherche un type de cours selon son nom dans la base de donnee
+     * @param name nom du type de cours que l'on recherche
+     * @return CourseType
+     */
     @Override
     public CourseType readCourseTypeByName(String name) {
         try {
@@ -114,6 +132,11 @@ public class CourseTypeDAO implements CourseTypeDao {
 
     }
 
+    /**
+     * Fonction qui cherche un type de cours dans la base de donnee selon un id rentre en parametre
+     * @param Id Id du type de cours qu'on recherche
+     * @return CourseType
+     */
     @Override
     public CourseType readCourseTypeById(Long Id) {
         try {
@@ -141,6 +164,12 @@ public class CourseTypeDAO implements CourseTypeDao {
         }
     }
 
+    /**
+     * Fonction qui permet de mettre a jour un type de cours
+     * s'il existe il est mis a jour dans la base de donnee
+     * sinon il est cree dans la base de donnee
+     * @param courseType
+     */
     @Override
     public void updateCourseTypeDao(CourseType courseType) {
         try {
@@ -171,6 +200,11 @@ public class CourseTypeDAO implements CourseTypeDao {
 
     }
 
+    /**
+     * Fonction qui permet de supprimer un type de cours de la base de donnee
+     * selon le nom entre en parametre de la fonction
+     * @param courseType type de cours que l'on veut supprimer
+     */
     @Override
     public void deleteCourseTypeDao(CourseType courseType) {
         try {

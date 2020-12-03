@@ -16,6 +16,12 @@ public class GroupPromoDAO implements InterfaceDao.GroupPromoDAO {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
+    /**
+     * Constructeur de la classe GroupPromoDAO
+     * @param url url permettant d'acceder a PhpMyAdmin
+     * @param username identifiant pour acceder PhpMyAdmin
+     * @param password mot de passe pour acceder a PhpMyAdmin
+     */
     public GroupPromoDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
@@ -23,6 +29,10 @@ public class GroupPromoDAO implements InterfaceDao.GroupPromoDAO {
 
     }
 
+    /**
+     * Fonction permettant de retourner une liste de tous les groupes de promotion present dans la base de donnee
+     * @return List<GroupPromo></GroupPromo>
+     */
     @Override
     public List<GroupPromo> getAllGroupPromo() {
         List<GroupPromo> list = new ArrayList<>();
@@ -48,6 +58,10 @@ public class GroupPromoDAO implements InterfaceDao.GroupPromoDAO {
         }
     }
 
+    /**
+     * Fonction permettant d'ajouter un groupe de promotion a la base de donnee
+     * @param groupPromo groupePromo qu'on veut ajouter
+     */
     @Override
     public void createGroupPromoDao(GroupPromo groupPromo) {
         try {
@@ -76,6 +90,11 @@ public class GroupPromoDAO implements InterfaceDao.GroupPromoDAO {
 
     }
 
+    /**
+     * Fonction permettant de rechercher un groupe de promotion dans la base de donnee
+     * @param name Nom du groupe qu'on recherche
+     * @return GroupPromo
+     */
     @Override
     public GroupPromo readGroupPromoByName(String name) {
         try {
@@ -106,6 +125,11 @@ public class GroupPromoDAO implements InterfaceDao.GroupPromoDAO {
         }
     }
 
+    /**
+     * Fonction permettant de rechercher un groupe de promotion dans la base de donnee selon son id
+     * @param Id Id du groupe qu'on recherche
+     * @return GroupPromo
+     */
     @Override
     public GroupPromo readGroupPromoById(Long Id) {
         try {
@@ -134,6 +158,12 @@ public class GroupPromoDAO implements InterfaceDao.GroupPromoDAO {
         }
     }
 
+    /**
+     * Fonction qui permet de mettre a jour un groupe de promotion
+     * si le groupe entre en parametre existe on le met a jour dans la base de donnee
+     * sinon on l'ajoute a notre base de donnee
+     * @param groupPromo Groupe qu'on veut mettre a jour
+     */
     @Override
     public void updateGrouPromoDao(GroupPromo groupPromo) {
         try {
@@ -164,6 +194,10 @@ public class GroupPromoDAO implements InterfaceDao.GroupPromoDAO {
 
     }
 
+    /**
+     * Fonction permettant de supprimer un groupe de promotion de la base de donnee
+     * @param groupPromo Groupe qu'on veut supprimer
+     */
     @Override
     public void deleteGroupPromoDao(GroupPromo groupPromo) {
         try {
