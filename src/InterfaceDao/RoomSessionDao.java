@@ -11,4 +11,5 @@ public interface RoomSessionDao {
     RoomSession readRoomSession(Long idSession , Long idRoom);
     void updateRoomSession(RoomSession roomSession);
     void deleteRoomSession(RoomSession roomSession);
+    boolean checkIfAlreadyAssociated(String startTime, Long idRoom, String date);
 }

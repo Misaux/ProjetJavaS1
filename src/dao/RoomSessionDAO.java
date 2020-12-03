@@ -3,6 +3,7 @@ package dao;
 import InterfaceDao.RoomSessionDao;
 import models.RoomSession;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +128,50 @@ public class RoomSessionDAO implements RoomSessionDao {
     }
 
 
+    @Override
+    public boolean checkIfAlreadyAssociated(String startTime, Long idRoom, String date){
 
+        List<RoomSession> roomSession = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(url, username, password);
+            this.preparedStatement = this.connection.prepareStatement
+                    ("SELECT * FROM session INNER JOIN room_session ON session.id = room_session.id_session and room_session.id_room = ? and session.date =?  and session.start_time =? ");
+
+            this.preparedStatement.setLong(1, idRoom);
+            this.preparedStatement.setString(3, startTime);
+            this.preparedStatement.setString(2, date);
+
+            this.resultSet =preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                roomSession.add(new RoomSession());
+            }
+
+            System.out.println(roomSession.size());
+
+            if(roomSession.size() != 0 )
+            {
+                JOptionPane.showMessageDialog(null, "This room is already assigned");
+                roomSession.clear();
+                return true;
+
+            }
+
+            this.preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("unable to save the product");
+
+
+        }
+
+
+        return false;
+
+
+    }
 
 
 

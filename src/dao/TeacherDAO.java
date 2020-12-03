@@ -1,8 +1,7 @@
 package dao;
 
 import InterfaceDao.TeacherDao;
-import models.Teacher;
-import models.User;
+import models.*;
 
 import javax.swing.*;
 import java.sql.*;
@@ -19,6 +18,12 @@ public class TeacherDAO implements TeacherDao {
     private ResultSet resultSet;
 
 
+    /**
+     * Constructeur de la classe TeacherDAO
+     * @param url url permettant d'acceder a PhpMyAdmin
+     * @param username identifiant pour acceder PhpMyAdmin
+     * @param password mot de passe pour acceder a PhpMyAdmin
+     */
     public TeacherDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
@@ -28,7 +33,10 @@ public class TeacherDAO implements TeacherDao {
     public TeacherDAO() {
     }
 
-
+    /**
+     * Fonction permettant d'obtenir tous les professeurs presents dans la base de donnee
+     * @return List<Teacher></Teacher>
+     */
     @Override
     public List<Teacher> getAllTeacher() {
 
@@ -65,18 +73,20 @@ public class TeacherDAO implements TeacherDao {
 
     }
 
-
-
+    /**
+     * Fonction permettant d'ajouter un Teacher dans la base de donnee
+     * @param teacher Object Teacher qu'on veut ajouter
+     */
     @Override
     public void createTeacher(Teacher teacher) {
         try {
             this.connection = DriverManager.getConnection(url, username, password);
 
-                this.preparedStatement = this.connection.prepareStatement
-                        ("insert into teacher (id_user, id_course) values (?,?)");
-                this.preparedStatement.setLong(1, teacher.getIdUser());
-                this.preparedStatement.setLong(2, teacher.getIdCourse());
-                this.preparedStatement.execute();
+            this.preparedStatement = this.connection.prepareStatement
+                    ("insert into teacher (id_user, id_course) values (?,?)");
+            this.preparedStatement.setLong(1, teacher.getIdUser());
+            this.preparedStatement.setLong(2, teacher.getIdCourse());
+            this.preparedStatement.execute();
 
             System.out.println(" user saved into the database");
             JOptionPane.showMessageDialog(null, "Teacher Successfully added in the teacher database");
@@ -90,6 +100,10 @@ public class TeacherDAO implements TeacherDao {
 
     }
 
+    /**
+     * Fonction qui permet de mettre a jour dans la base de donnee la valeur de l'id_user d'un Teacher
+     * @param teacher Object Teacher dans lequel on va aller chercher l'id_user a mettre a jour
+     */
     @Override
     public void updateTeacherIdUser(Teacher teacher) {
         try {
@@ -112,6 +126,10 @@ public class TeacherDAO implements TeacherDao {
         }
     }
 
+    /**
+     * Fonction qui permet de mettre a jour dans la base de donnee la valeur de l'id_course d'un Teacher
+     * @param teacher Object Teacher dans lequel on va aller chercher l'id_course a mettre a jour
+     */
     @Override
     public void updateTeacherIdCourse(Teacher teacher){
 
@@ -134,6 +152,11 @@ public class TeacherDAO implements TeacherDao {
 
     }
 
+    /**
+     * Fonction permettant de rechercher un Teacher selon son nom de famille dans la base de donnee
+     * @param name Nom de famille du Teacher qu'on cherche
+     * @return Teacher
+     */
     @Override
     public Teacher findTeacherByName(String name) {
 
@@ -169,9 +192,11 @@ public class TeacherDAO implements TeacherDao {
 
     }
 
-
-
-
+    /**
+     * Fonction permettant de rechercher un Teacher selon son id dans la base de donnee
+     * @param id Id du Teacher qu'on cherche
+     * @return User
+     */
     @Override
     public User findTeacherByID(Long id) {
         try {
@@ -206,6 +231,10 @@ public class TeacherDAO implements TeacherDao {
 
     }
 
+    /**
+     * Fonction permettant de supprimer un Teacher de la base de donnee
+     * @param teacher Object Teacher qu'on veut supprimer
+     */
     @Override
     public void deleteTeacher(Teacher teacher) {
         try{
@@ -235,4 +264,55 @@ public class TeacherDAO implements TeacherDao {
     public String getTeacherFirstName(String connexion, String passwordEmail) {
         return null;
     }
+
+    /**
+     * Fonction permettant de savoir si un professeur existe deja dans la base de donnee
+     * @param lastName nom de famille du Teacher
+     * @param firstName prenom du teacher
+     * @return boolean
+     */
+    @Override
+    public boolean checkIfAlreadyCreated(String lastName, String firstName){
+
+        List<Teacher> teacher = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(url, username, password);
+            this.preparedStatement = this.connection.prepareStatement
+                    ("SELECT * FROM user e NATURAL JOIN teacher t WHERE e.last_name = ? and e.first_name =? ");
+
+            this.preparedStatement.setString(1, lastName);
+            this.preparedStatement.setString(2, firstName);
+
+            this.resultSet =preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                teacher.add(new Teacher());
+            }
+
+            System.out.println(teacher.size());
+
+            if(teacher.size() != 0 )
+            {
+                JOptionPane.showMessageDialog(null, "This teacher already exist ");
+                teacher.clear();
+                return true;
+
+            }
+
+            this.preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("unable to find the product");
+
+
+        }
+
+        JOptionPane.showMessageDialog(null, "This teacher has been added ");
+        return false;
+
+
+    }
+
 }

@@ -1,6 +1,7 @@
 package InterfaceDao;
 
 
+import models.Room;
 import models.Session;
 import models.User;
 import org.jfree.data.general.DefaultPieDataset;
@@ -26,5 +27,6 @@ public interface SessionDAO {
     List<String> getAllSessionState();
     List<Session> getWeekSessionTeacher(User user, String weekSelected);
     List<Session> getWeekSessionStudent(User user, String weekSelected);
+    List<Session> getWeekSessionRoom(Room room, String weekSelected);
 
 }

@@ -3,11 +3,10 @@ package dao;
 import InterfaceDao.TeacherSessionDao;
 import models.TeacherSession;
 
-
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class TeacherSessionDAO implements TeacherSessionDao {
 
@@ -18,7 +17,12 @@ public class TeacherSessionDAO implements TeacherSessionDao {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
-
+    /**
+     * Constructeur de la classe TeacherSessionDAO
+     * @param url url permettant d'acceder a PhpMyAdmin
+     * @param username identifiant pour acceder PhpMyAdmin
+     * @param password mot de passe pour acceder a PhpMyAdmin
+     */
     public TeacherSessionDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
@@ -28,6 +32,10 @@ public class TeacherSessionDAO implements TeacherSessionDao {
     public TeacherSessionDAO() {
     }
 
+    /**
+     * Fonction permettant d'obtenir une liste de toutes les teacherSession presentes dans la base de donnee
+     * @return List<TeacherSession></TeacherSession>
+     */
     @Override
     public List<TeacherSession> getAllTeacherSession() {
         List<TeacherSession> list = new ArrayList<>();
@@ -52,7 +60,10 @@ public class TeacherSessionDAO implements TeacherSessionDao {
         }
     }
 
-
+    /**
+     * Fonction permettant d'ajouter une teacherSession a la base de donnee
+     * @param teacherSession Object teacherSession a inserer dans la base de donnee
+     */
     @Override
     public void createTeacherSession(TeacherSession teacherSession) {
 
@@ -78,6 +89,12 @@ public class TeacherSessionDAO implements TeacherSessionDao {
 
     }
 
+    /**
+     * Fonction permettant de rechercher une teacherSession dans la base de donnee selon un id_session et un id_teacher
+     * @param idSession id de la table session
+     * @param idTeacher id de la table teacher
+     * @return TeacherSession
+     */
     @Override
     public TeacherSession readTeacherSession(Long idSession, Long idTeacher) {
         try {
@@ -106,6 +123,11 @@ public class TeacherSessionDAO implements TeacherSessionDao {
         }
     }
 
+    /**
+     * Fonction permettant de mettre a jour une teacherSession passe en parametre dans la base de donee
+     * si elle existe deja on la met a jour sinon on l'ajoute a la base de donnee
+     * @param teacherSession Object TeacherSession qu'on veut mettre a jour
+     */
     @Override
     public void updateTeacherSession(TeacherSession teacherSession) {
         try {
@@ -135,7 +157,10 @@ public class TeacherSessionDAO implements TeacherSessionDao {
 
     }
 
-
+    /**
+     * Fonction permettant de supprimer une TeacherSession de la base de donnee
+     * @param teacherSession Object TeacherSession a supprimer
+     */
     @Override
     public void deleteTeacherSession(TeacherSession teacherSession) {
 
@@ -159,7 +184,12 @@ public class TeacherSessionDAO implements TeacherSessionDao {
 
     }
 
-
+    /**
+     * Fonction qui permet de trouver le nom et le prenom d'un professeur dans la base de donnee selon l'id de sa session
+     * @param idSession Id de la session du professeur qu'on recherche
+     * @return String
+     */
+    @Override
     public String getIdTeacherFromIdSession(Long idSession) {
         int id_teacher = 0;
         String last_name, first_name, fullName = null;
@@ -205,5 +235,56 @@ public class TeacherSessionDAO implements TeacherSessionDao {
         return fullName;
     }
 
+    /**
+     * Fonction permettant de verifier dans la base de donnee si un cours affecte a un proffesseur existe deja
+     * @param startTime Heure de depart d'une session
+     * @param idTeacher id du professeur
+     * @param date Date de la session
+     * @return boolean
+     */
+    @Override
+    public boolean checkIfAlreadyAssociated(String startTime, Long idTeacher, String date){
+
+        List<TeacherSession> teacherSessions = new ArrayList<>();
+
+        try {
+            this.connection = DriverManager.getConnection(url, username, password);
+            this.preparedStatement = this.connection.prepareStatement
+                    ("SELECT * FROM session INNER JOIN teacher_session ON session.id = teacher_session.id_session and teacher_session.id_teacher= ? and session.date =?  and session.start_time =? ");
+
+            this.preparedStatement.setLong(1, idTeacher);
+            this.preparedStatement.setString(3, startTime);
+            this.preparedStatement.setString(2, date);
+
+            this.resultSet =preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                teacherSessions.add(new TeacherSession());
+            }
+
+            System.out.println(teacherSessions.size());
+
+            if(teacherSessions.size() != 0 )
+            {
+                JOptionPane.showMessageDialog(null, "This teacher already have a session at this hour ");
+                teacherSessions.clear();
+                return true;
+
+            }
+
+            this.preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("unable to find the product");
+
+
+        }
+
+
+        return false;
+
+
+    }
 
 }

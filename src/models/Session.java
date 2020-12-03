@@ -8,7 +8,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Observable;
 
 public class Session extends Observable {
@@ -79,10 +82,11 @@ public class Session extends Observable {
 
     /**
      * set la week pour la session
-     * @param week
+     *
      */
-    public void setWeek(int week) {
-        this.week = week;
+    public void setWeek(){
+        TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear();
+        this.week = this.date.get(woy);
     }
 
     /**
