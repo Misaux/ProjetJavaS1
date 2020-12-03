@@ -1,10 +1,8 @@
-package DAO;
+package dao;
 
 import InterfaceDao.TeacherDao;
-import Models.Session;
-import Models.Student;
-import Models.Teacher;
-import Models.User;
+import models.Teacher;
+import models.User;
 
 import javax.swing.*;
 import java.sql.*;

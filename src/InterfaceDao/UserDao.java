@@ -1,6 +1,6 @@
 package InterfaceDao;
 
-import Models.User;
+import models.User;
 
 import java.util.List;
 

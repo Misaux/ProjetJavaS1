@@ -1,6 +1,6 @@
 package InterfaceDao;
 
-import Models.Promotion;
+import models.Promotion;
 
 import java.util.List;
 

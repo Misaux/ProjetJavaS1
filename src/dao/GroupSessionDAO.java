@@ -1,8 +1,7 @@
-package DAO;
+package dao;
 
 import InterfaceDao.GroupSessionDao;
-import Models.GroupSession;
-import Models.RoomSession;
+import models.GroupSession;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,17 +16,29 @@ public class GroupSessionDAO implements GroupSessionDao {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
+    /**
+     *  constructeur de la classe avec parametres
+     * @param url url permettant d'acceder a PhpMyAdmin
+     * @param username nom utilisateur
+     * @param password mot de passe utlisateur
+     */
     public GroupSessionDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
     }
 
+    /**
+     * constructeur par defaut
+     */
     public GroupSessionDAO() {
     }
 
 
-
+    /**
+     * permet d'obtenir toutes les sessions avec les groupes
+     * @return  List<GroupSession></GroupSession>
+     */
     @Override
     public List<GroupSession> getAllGroupSession() {
 
@@ -53,6 +64,10 @@ public class GroupSessionDAO implements GroupSessionDao {
         }
     }
 
+    /**
+     * cree une session pour un groupe donne
+     * @param groupSession objet de Groupsession pour obtenir l'id de la session et l'id du group
+     */
     @Override
     public void createGroupSession(GroupSession groupSession) {
         try {
@@ -75,7 +90,13 @@ public class GroupSessionDAO implements GroupSessionDao {
 
     }
 
-    @Override
+    /**
+     * renvoie une group session avec les bons parametres
+     * @param idSession session associee au group
+     * @param idGroup group pour attribuer la session
+     * @return groupsession selon les parametres
+     */
+        @Override
     public GroupSession readGroupSession(Long idSession, Long idGroup) {
         try {
             this.connection = DriverManager.getConnection(url, username, password);
@@ -103,6 +124,10 @@ public class GroupSessionDAO implements GroupSessionDao {
         }
     }
 
+    /**
+     * met a jour une groupsession si des changements se produisent
+     * @param groupSession groupsession qui remplace
+     */
     @Override
     public void updateGroupSessionIdGroup(GroupSession groupSession) {
         try {
@@ -126,6 +151,11 @@ public class GroupSessionDAO implements GroupSessionDao {
 
     }
 
+    /**
+     * met a jour une groupsession si des changements se produisent
+     * @param groupSession groupsession qui possede un id session qui est utilise pour les modifs
+     */
+
     @Override
     public void updateGroupSessionIdSession(GroupSession groupSession) {
         try {
@@ -147,6 +177,10 @@ public class GroupSessionDAO implements GroupSessionDao {
 
     }
 
+    /**
+     * supprime la groupsession passee en parametre
+     * @param groupSession groupsession a supprimer
+     */
     @Override
     public void deleteGroupSession(GroupSession groupSession) {
 

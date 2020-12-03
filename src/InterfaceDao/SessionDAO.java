@@ -1,8 +1,8 @@
 package InterfaceDao;
 
 
-import Models.Session;
-import Models.User;
+import models.Session;
+import models.User;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.data.jdbc.JDBCPieDataset;

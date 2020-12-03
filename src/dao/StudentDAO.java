@@ -1,9 +1,7 @@
-package DAO;
+package dao;
 
-import Models.Room;
-import Models.Student;
-import Models.Teacher;
-import Models.User;
+import models.Student;
+import models.User;
 
 import javax.swing.*;
 import java.sql.*;

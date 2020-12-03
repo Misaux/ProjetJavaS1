@@ -1,7 +1,6 @@
-package DAO;
+package dao;
 
-import Models.Room;
-import Models.Site;
+import models.Room;
 import org.jfree.data.jdbc.JDBCPieDataset;
 
 import java.sql.*;
@@ -17,6 +16,12 @@ public class RoomDAO implements InterfaceDao.RoomDao {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
+    /**
+     * constructeur
+     * @param url adresse connexion serveur sql
+     * @param username nom de l'utilisateur
+     * @param password mot de passe
+     */
     public RoomDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
@@ -24,6 +29,10 @@ public class RoomDAO implements InterfaceDao.RoomDao {
     }
 
 
+    /**
+     * fonction pour obternir toutes les salles de la BDD
+     * @return List <Room></Room>
+     */
     @Override
     public List<Room> getAllRoom() {
         List<Room> list = new ArrayList<>();
@@ -51,6 +60,10 @@ public class RoomDAO implements InterfaceDao.RoomDao {
 
     }
 
+    /**
+     * ajoute une salle a la BDD
+     * @param room room a ajouter avec nom et id
+     */
     @Override
     public void createRoom(Room room) {
         try {
@@ -80,6 +93,11 @@ public class RoomDAO implements InterfaceDao.RoomDao {
 
     }
 
+    /**
+     * affiche la salle selon son nom
+     * @param name nom de la salle dans la BDD
+     * @return room  selon la string saisie
+     */
     @Override
     public Room readRoomByName(String name) {
         try {
@@ -111,6 +129,11 @@ public class RoomDAO implements InterfaceDao.RoomDao {
         }
     }
 
+    /**
+     * affiche la salle selon son id
+     * @param id id de la salle que l'on cherche
+     * @return room selon l'id
+     */
     @Override
     public Room readRoomByID(Long id) {
         try {
@@ -140,6 +163,10 @@ public class RoomDAO implements InterfaceDao.RoomDao {
         }
     }
 
+    /**
+     * met a jour une salle dans la BDD
+     * @param room room a mettre a jour
+     */
     @Override
     public void updateRoom(Room room) {
         try {
@@ -172,6 +199,10 @@ public class RoomDAO implements InterfaceDao.RoomDao {
 
     }
 
+    /**
+     * supprime une salle de la BDD
+     * @param room salle a supprimer
+     */
     @Override
     public void deleteRoom(Room room) {
         try {
@@ -192,6 +223,10 @@ public class RoomDAO implements InterfaceDao.RoomDao {
 
     }
 
+    /**
+     * affiche une camembert de la repartition des salles selon le site
+     * @return JDBCPieDataset
+     */
     @Override
     public JDBCPieDataset readDataNumberPerSite() {
         JDBCPieDataset data = null;
@@ -215,7 +250,10 @@ public class RoomDAO implements InterfaceDao.RoomDao {
 
         return data;
     }
-
+    /**
+     * affiche une camembert de la capacite des salles selon le site
+     * @return JDBCPieDataset
+     */
     @Override
     public JDBCPieDataset readDataCapacityPerSite() {
         JDBCPieDataset data = null;

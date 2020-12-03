@@ -1,8 +1,7 @@
-package DAO;
+package dao;
 
 import InterfaceDao.RoomSessionDao;
-import Models.Room;
-import Models.RoomSession;
+import models.RoomSession;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,15 +16,28 @@ public class RoomSessionDAO implements RoomSessionDao {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
+    /**
+     * constructeur
+     * @param url adresse connexion serveur sql
+     * @param username nom de l'utilisateur
+     * @param password mot de passe
+     */
     public RoomSessionDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
     }
 
+    /**
+     * constructeur par defaut
+     */
     public RoomSessionDAO() {
     }
 
+    /**
+     * fonction pour obterni la liste de toutes les roomsessions
+     * @return List<RoomSession></RoomSession>
+     */
     @Override
     public List<RoomSession> getAllRoomSession() {
         List<RoomSession> list = new ArrayList<>();
@@ -50,6 +62,10 @@ public class RoomSessionDAO implements RoomSessionDao {
         }
     }
 
+    /**
+     * ajoute une room session a la  bdd
+     * @param roomSession roomsession a ajouter
+     */
     @Override
     public void createRoomSession(RoomSession roomSession) {
         try {
@@ -76,7 +92,12 @@ public class RoomSessionDAO implements RoomSessionDao {
 
     }
 
-
+    /**
+     * trouver une room session selon l'id de la room et de la session
+     * @param idSession id session
+     * @param idRoom id room
+     * @return la room session trouvee
+     */
     @Override
     public RoomSession readRoomSession(Long idSession, Long idRoom) {
         try {
@@ -105,8 +126,17 @@ public class RoomSessionDAO implements RoomSessionDao {
         }
     }
 
+
+
+
+
+
+    /**
+     * met a jour une room session precise
+     * @param roomSession room session a mettre a jour
+     */
     @Override
-    public void updateRoom(RoomSession roomSession) {
+    public void updateRoomSession(RoomSession roomSession) {
         try {
             this.connection = DriverManager.getConnection(url, username, password);
 
@@ -134,8 +164,12 @@ public class RoomSessionDAO implements RoomSessionDao {
 
     }
 
+    /**
+     * supprime une room session de la BDD
+     * @param roomSession la room session a supprimer
+     */
     @Override
-    public void deleteRoom(RoomSession roomSession) {
+    public void deleteRoomSession(RoomSession roomSession) {
         try {
             connection = DriverManager.getConnection(url, username, password);
 

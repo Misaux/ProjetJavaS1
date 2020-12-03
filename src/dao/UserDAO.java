@@ -1,14 +1,12 @@
-package DAO;
+package dao;
 
 import InterfaceDao.UserDao;
-import Models.*;
-import com.mysql.cj.protocol.a.BinaryResultsetReader;
+import models.User;
 
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 
 public class UserDAO implements UserDao  {
@@ -99,6 +97,7 @@ public class UserDAO implements UserDao  {
         }
 
     }
+
 
     @Override
     public void createUser(User user) {

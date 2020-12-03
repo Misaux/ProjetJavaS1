@@ -1,12 +1,13 @@
-package DAO;
+package dao;
 
 import InterfaceDao.TeacherSessionDao;
-import Models.RoomSession;
-import Models.TeacherSession;
+import models.TeacherSession;
+
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class TeacherSessionDAO implements TeacherSessionDao {
 
@@ -50,6 +51,7 @@ public class TeacherSessionDAO implements TeacherSessionDao {
             return null;
         }
     }
+
 
     @Override
     public void createTeacherSession(TeacherSession teacherSession) {

@@ -1,7 +1,7 @@
 package InterfaceDao;
 
 
-import Models.TeacherSession;
+import models.TeacherSession;
 
 import java.util.List;
 

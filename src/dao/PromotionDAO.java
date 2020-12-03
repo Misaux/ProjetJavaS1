@@ -1,9 +1,7 @@
-package DAO;
+package dao;
 
 import InterfaceDao.PromotionDao;
-import Models.Course;
-import Models.Promotion;
-import Models.Site;
+import models.Promotion;
 
 import javax.management.relation.RelationSupportMBean;
 import java.sql.*;
@@ -20,13 +18,22 @@ public class PromotionDAO implements PromotionDao {
     private Connection connection;
     private ResultSet resultSet;
 
+    /**
+     * constructeur
+     * @param url url du serveur sql
+     * @param username nom d'utilisateur
+     * @param password mot de passe
+     */
     public PromotionDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
     }
 
-
+    /**
+     * mettre a jour une promo dans la BDD
+     * @param promotion promo passee en parametre pour remplacer une ancienne
+     */
     public void updatePromotion(Promotion promotion) {
 
         try {
@@ -59,6 +66,10 @@ public class PromotionDAO implements PromotionDao {
         }
     }
 
+    /**
+     * fonction pour obtenir toutes promos de la BDD
+     * @return List<Promotion></Promotion>
+     */
     @Override
     public List<Promotion> getAllPromotion() {
         List<Promotion> list = new ArrayList<>();
@@ -84,6 +95,10 @@ public class PromotionDAO implements PromotionDao {
         return list;
     }
 
+    /**
+     * ajoute une promo a la BDD
+     * @param promotion promo a ajouter a la BDD
+     */
     @Override
     public void createPromotion(Promotion promotion) {
         try {
@@ -112,6 +127,11 @@ public class PromotionDAO implements PromotionDao {
         }
     }
 
+    /**
+     * trouve une promo dans la BDD
+     * @param name nom de la promo a trouver
+     * @return la promo selon son nom
+     */
     @Override
     public Promotion findPromotionByName(String name) {
         Promotion promotion = new Promotion();
@@ -142,6 +162,10 @@ public class PromotionDAO implements PromotionDao {
         return null;
     }
 
+    /**
+     *  supprime la BDD selon les parametres
+     * @param promotion promo a supprimer
+     */
     @Override
     public void deletePromotion(Promotion promotion) {
         try {
@@ -162,6 +186,11 @@ public class PromotionDAO implements PromotionDao {
 
     }
 
+    /**
+     *  trouver une promo par son id
+     * @param id id de la promo pour rechercher
+     * @return la promo selon l'id saisi
+     */
     public Promotion getPromotionByID(Long id) {
         try {
             connection = DriverManager.getConnection(url, username, password);

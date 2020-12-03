@@ -1,7 +1,7 @@
-package DAO;
+package dao;
 
 import InterfaceDao.SiteDao;
-import Models.*;
+import models.*;
 //import com.mysql.cj.protocol.a.BinaryResultsetReader;
 
 import javax.swing.*;
@@ -19,13 +19,22 @@ public class SiteDAO implements SiteDao {
     private Connection connection;
     private PreparedStatement preparedStatement;
 
-
+    /**
+     * constructeur
+     * @param url adresse connexion serveur sql
+     * @param username nom de l'utilisateur
+     * @param password mot de passe
+     */
     public SiteDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
     }
 
+    /**
+     * ajoute un site a la BDD
+     * @param site site a ajouter
+     */
     public void saveSite(Site site) {
 
         try {
@@ -84,6 +93,10 @@ public class SiteDAO implements SiteDao {
         }
     }
 
+    /**
+     * permet d'obtenir tous les sites inscrits dans la BDD
+     * @return List<Site></Site>
+     */
     @Override
     public List<Site> getAllSite() {
         List<Site> list = new ArrayList<>();
@@ -108,16 +121,29 @@ public class SiteDAO implements SiteDao {
         return list;
     }
 
+    /**
+     * c
+     */
     @Override
     public void createSite() {
 
     }
 
+    /**
+     * met a jour le site donne dans la base de donnees
+     * @param site site a mettre a jour
+     * @return site qui a ete mis a jour
+     */
     @Override
     public Site updateSite(Site site) {
         return null;
     }
 
+    /**
+     * trouve le site de la BDD selon son nom
+     * @param name nom du site
+     * @return le site trouve avec le bon nom
+     */
     @Override
     public Site findSiteByName(String name) {
         Site site = new Site();
@@ -148,6 +174,11 @@ public class SiteDAO implements SiteDao {
         return site;
     }
 
+    /**
+     *trouve le site de la BDD selon son id
+     * @param id id du site a rechercher
+     * @return le site trouve avec le bon id
+     */
     @Override
     public Site findSiteByID(Long id) {
         Site site = new Site();
@@ -178,6 +209,10 @@ public class SiteDAO implements SiteDao {
         return site;
     }
 
+    /**
+     * supprime le site qu'on lui passe en parametre
+     * @param site site a supprimer
+     */
     @Override
     public void deleteSite(Site site) {
         try{

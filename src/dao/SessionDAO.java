@@ -1,10 +1,7 @@
-package DAO;
+package dao;
 
-import Models.CourseType;
-import Models.Session;
-import Models.User;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
+import models.Session;
+import models.User;
 import org.jfree.data.jdbc.JDBCPieDataset;
 import org.w3c.dom.css.Counter;
 
@@ -24,16 +21,28 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
-
+    /**
+     * constructeur
+     * @param url adresse connexion serveur sql
+     * @param username nom de l'utilisateur
+     * @param password mot de passe
+     */
     public SessionDAO(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
     }
 
+    /**
+     * constructeur par defaut
+     */
     public SessionDAO() {
     }
 
+    /**
+     * fonction pour obtenir toutes les sessions
+     * @return List<Session></Session>
+     */
     @Override
     public List<Session> getAllSession() {
 
@@ -68,6 +77,12 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         }
     }
 
+    /**
+     * fonction pour obtenir toutes les sessions selon l'eleve choisi et la semaine
+     * @param user eleve
+     * @param weekSelected semaine choisie
+     * @return List<Session></Session>
+     */
     public List<Session> getWeekSessionStudent(User user, String weekSelected) {
 
         List<Session> list = new ArrayList<>();
@@ -135,6 +150,12 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
     }
 
+    /**
+     * fonction pour obtenir toutes les sessions selon l'enseignant choisi et la semaine
+     * @param user enseignant
+     * @param weekSelected semaine choisie
+     * @return List<Session></Session>
+     */
     public List<Session> getWeekSessionTeacher(User user, String weekSelected) {
 
         /*pour la version teacher
@@ -193,7 +214,10 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         }
     }
 
-
+    /**
+     *fonction pour obtenir tous les etats possibles de session
+     * @return List<String></String></>
+     */
     @Override
     public List<String> getAllSessionState() {
 
@@ -218,7 +242,10 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             return null;
         }
     }
-
+    /**
+     *fonction pour obtenir toutes les heures de debut de session dans la BDD
+     * @return List<String></String></>
+     */
     @Override
     public List<String> getAllSessionStartTime() {
 
@@ -244,6 +271,10 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         }
     }
 
+    /**
+     * fonction pour obtenir toutes les date de session dans la BDD
+     * @return List<String></String></>
+     */
     @Override
     public List<String> getAllSessionDate() {
 
@@ -268,7 +299,10 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
             return null;
         }
     }
-
+    /**
+     *fonction pour obtenir toutes les sessions d'info  dans la BDD
+     * @return List<Session></Session>
+     */
     @Override
 
     public List<Session> getInfomatiqueSession() {
@@ -286,8 +320,11 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         return sessionInformatique;
     }
 
+    /**
+     * fonction pour obtenir toutes les sessions de maths  dans la BDD
+     * @return List<Session></Session>
+     */
     @Override
-
     public List<Session> getMathematiqueSession() {
 
         List<Session> sessionMaths = new ArrayList<>();
@@ -303,7 +340,10 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         return sessionMaths;
     }
 
-
+    /**
+     * fonction pour obtenir toutes les sessions d'anglais  dans la BDD
+     * @return List<Session></Session>
+     */
     @Override
     public List<Session> getAnglaisSession() {
 
@@ -320,7 +360,10 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
         return sessionAnglais;
     }
 
-
+    /**
+     * fonction pour creer une nouvelle session
+     * @param session session que l'on veut creer dans la BDD
+     */
     @Override
     public void createSession(Session session) {
         try {
@@ -354,6 +397,14 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
     }
 
+    /**
+     * fonction pour trouver une session dans la BDD
+     * @param week semaine de la session
+     * @param date date de la session
+     * @param time heure de debut de la session
+     * @param idcourse cours de la session
+     * @return la session trouvee
+     */
     @Override
     public Session readSession(int week, String date, String time, Long idcourse) {
         try {
@@ -395,7 +446,10 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
     }
 
-
+    /**
+     * met a jour une session dans la bdd
+     * @param session session a mettre a jour
+     */
     @Override
     public void updateSession(Session session) {
         try {
@@ -437,6 +491,10 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
     }
 
+    /**
+     * supprime une session de la BDD
+     * @param session session a supprimer
+     */
     @Override
     public void deleteSession(Session session) {
         try {
@@ -460,6 +518,10 @@ public class SessionDAO implements InterfaceDao.SessionDAO {
 
     }
 
+    /**
+     * permet de savoir sous la forme d'un camembert, la proportion des differentes sessions dans la BDD
+     * @return JDBCPieDataset
+     */
     @Override
     public JDBCPieDataset readData() {
         JDBCPieDataset data = null;

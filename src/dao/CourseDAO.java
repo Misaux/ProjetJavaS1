@@ -1,7 +1,6 @@
-package DAO;
+package dao;
 import InterfaceDao.CoursDao;
-import Models.Course;
-import Models.CourseType;
+import models.Course;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,6 +17,12 @@ public class CourseDAO implements CoursDao {
     private ResultSet resultSet;
     private PreparedStatement preparedStatement;
 
+    /**
+     * constructeur de la classe  avec parametres
+     * @param url url permettant d'acceder a PhpMyAdmin
+     * @param username nom d'utilisateur pour se connecter
+     * @param password mot de passe utilisateur
+     */
     public CourseDAO(String url, String username, String password){
         this.url = url;
         this.username = username;

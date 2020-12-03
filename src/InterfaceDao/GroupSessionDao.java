@@ -1,7 +1,6 @@
 package InterfaceDao;
 
-import Models.GroupSession;
-import Models.RoomSession;
+import models.GroupSession;
 
 import java.util.List;
 

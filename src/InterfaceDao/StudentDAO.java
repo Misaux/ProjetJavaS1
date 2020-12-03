@@ -1,8 +1,7 @@
 package InterfaceDao;
 
-import Models.Student;
-import Models.Teacher;
-import Models.User;
+import models.Student;
+import models.User;
 
 import java.util.List;
 
